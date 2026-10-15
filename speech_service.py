@@ -59,34 +59,79 @@ load_env_file()
 def get_ffmpeg_executable():
     """
     Locate a functional FFmpeg executable across:
-    1. imageio_ffmpeg bundled binary (guaranteed standalone Gyan build)
-    2. System PATH (ffmpeg / ffmpeg.exe)
-    3. Common Windows app install paths
+    1. /tmp/ffmpeg (if already staged and executable in serverless)
+    2. imageio_ffmpeg bundled binary (with auto-copy to /tmp on serverless Linux)
+    3. System PATH (ffmpeg / ffmpeg.exe)
+    4. Common Windows / Linux install paths
     """
-    # 1. imageio_ffmpeg
+    tmp_ffmpeg = '/tmp/ffmpeg'
+    if os.path.exists(tmp_ffmpeg) and os.access(tmp_ffmpeg, os.X_OK):
+        return tmp_ffmpeg
+
+    candidate = None
     try:
         import imageio_ffmpeg
         exe = imageio_ffmpeg.get_ffmpeg_exe()
         if exe and os.path.exists(exe):
-            return exe
+            candidate = exe
     except Exception:
         pass
 
-    # 2. System PATH
-    which_ffmpeg = shutil.which('ffmpeg')
-    if which_ffmpeg:
-        return which_ffmpeg
+    if not candidate:
+        candidate = shutil.which('ffmpeg')
 
-    # 3. Known fallback locations on Windows
-    fallback_paths = [
-        r'C:\ProgramData\chocolatey\bin\ffmpeg.exe',
-        r'C:\ffmpeg\bin\ffmpeg.exe'
-    ]
-    for p in fallback_paths:
-        if os.path.exists(p):
-            return p
+    if not candidate:
+        fallback_paths = [
+            r'C:\ProgramData\chocolatey\bin\ffmpeg.exe',
+            r'C:\ffmpeg\bin\ffmpeg.exe',
+            '/usr/bin/ffmpeg',
+            '/usr/local/bin/ffmpeg'
+        ]
+        for p in fallback_paths:
+            if os.path.exists(p):
+                candidate = p
+                break
 
-    return None
+    if not candidate:
+        return None
+
+    # On Windows, candidate .exe is directly usable
+    if sys.platform.startswith('win'):
+        return candidate
+
+    # On Linux / macOS / Serverless:
+    try:
+        if os.access(candidate, os.X_OK):
+            res = subprocess.run([candidate, '-version'], capture_output=True, timeout=5)
+            if res.returncode == 0:
+                return candidate
+    except Exception:
+        pass
+
+    # If candidate failed execution or lacks permissions (common on serverless /var/task), copy to /tmp and chmod +x
+    try:
+        if not os.path.exists(tmp_ffmpeg) or os.path.getsize(tmp_ffmpeg) != os.path.getsize(candidate):
+            shutil.copy2(candidate, tmp_ffmpeg)
+        os.chmod(tmp_ffmpeg, 0o755)
+        if os.access(tmp_ffmpeg, os.X_OK):
+            return tmp_ffmpeg
+    except Exception:
+        pass
+
+    return candidate
+
+
+def is_pcm_wav(file_path):
+    """Checks if file is a standard PCM WAV readable by wave and SpeechRecognition."""
+    try:
+        with wave.open(file_path, 'rb') as w:
+            comptype = w.getcomptype()
+            sampwidth = w.getsampwidth()
+            channels = w.getnchannels()
+            framerate = w.getframerate()
+            return comptype == 'NONE' and sampwidth == 2 and channels in (1, 2) and framerate in (8000, 16000, 22050, 44100, 48000)
+    except Exception:
+        return False
 
 
 # ---------------------------------------------------------------------------
@@ -101,8 +146,19 @@ def convert_to_pcm_wav(input_audio_path, output_wav_path=None):
     if not os.path.exists(input_audio_path):
         return None, "Audio file does not exist on disk."
 
+    # If it is already a 16kHz mono 16-bit PCM WAV, return directly
+    try:
+        with wave.open(input_audio_path, 'rb') as w:
+            if w.getcomptype() == 'NONE' and w.getsampwidth() == 2 and w.getnchannels() == 1 and w.getframerate() == 16000:
+                return input_audio_path, None
+    except Exception:
+        pass
+
     ffmpeg_exe = get_ffmpeg_executable()
     if not ffmpeg_exe:
+        # If FFmpeg is unavailable, but input is any readable PCM WAV, SpeechRecognition can still parse it directly
+        if is_pcm_wav(input_audio_path):
+            return input_audio_path, None
         return None, (
             "FFmpeg executable not found. Please install imageio-ffmpeg or ffmpeg "
             "to convert audio files into WAV format."
@@ -143,14 +199,22 @@ def convert_to_pcm_wav(input_audio_path, output_wav_path=None):
             proc = subprocess.run(cmd_basic, capture_output=True, text=True, timeout=90)
 
         if proc.returncode != 0:
+            if is_pcm_wav(input_audio_path):
+                return input_audio_path, None
             err_msg = proc.stderr.strip() if proc.stderr else f"FFmpeg exited with code {proc.returncode}"
             return None, f"Audio format conversion failed: {err_msg}"
         if not os.path.exists(output_wav_path) or os.path.getsize(output_wav_path) == 0:
+            if is_pcm_wav(input_audio_path):
+                return input_audio_path, None
             return None, "Conversion produced an empty audio file."
         return output_wav_path, None
     except subprocess.TimeoutExpired:
+        if is_pcm_wav(input_audio_path):
+            return input_audio_path, None
         return None, "Audio conversion timed out after 90 seconds."
     except Exception as e:
+        if is_pcm_wav(input_audio_path):
+            return input_audio_path, None
         return None, f"Unexpected error during audio conversion: {str(e)}"
 
 

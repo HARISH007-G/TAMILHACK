@@ -1079,6 +1079,10 @@
                 <button id="recordToggleBtn" class="btn-record" onclick="toggleRecording()">🎙️</button>
                 <div id="recordStatus" style="font-size: 14px; font-weight: 500; color: hsl(var(--muted-foreground)); margin-top: 14px;">மைக் பதிவு செய்யத் தொடங்குங்கள்</div>
                 <div id="recordTimer" style="font-size: 26px; font-weight: 700; color: #f87171; margin-top: 6px; font-family: var(--font-display);">00:00</div>
+                <div id="recordLivePreview" style="display: none; margin-top: 14px; padding: 12px 16px; background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 10px; font-size: 13.5px; color: #bae6fd; text-align: left; max-height: 120px; overflow-y: auto; line-height: 1.6;">
+                  <div style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #38bdf8; margin-bottom: 4px;">நேரலை எழுத்தாக்கம் (Live Speech Recognition):</div>
+                  <span id="recordLiveText"></span>
+                </div>
               </div>
             </div>
 
@@ -1543,6 +1547,8 @@
     let recordInterval = null;
     let recordSeconds = 0;
     let lastRegionMetadata = null;
+    let liveSpeechRecognizer = null;
+    let liveRecordedTranscript = '';
 
     // Set today's date
     document.getElementById('recordDate').value = new Date().toISOString().split('T')[0];
@@ -1567,6 +1573,7 @@
       if (input.files && input.files[0]) {
         activeAudioFile = input.files[0];
         activeAudioBlob = null;
+        liveRecordedTranscript = '';
         document.getElementById('fileLabel').textContent = "தேர்ந்தெடுக்கப்பட்டது: " + activeAudioFile.name;
         showAudioPreview(URL.createObjectURL(activeAudioFile));
         document.getElementById('btnTranscribe').disabled = false;
@@ -1584,12 +1591,49 @@
       const btn = document.getElementById('recordToggleBtn');
       const status = document.getElementById('recordStatus');
       const timer = document.getElementById('recordTimer');
+      const liveBox = document.getElementById('recordLivePreview');
+      const liveText = document.getElementById('recordLiveText');
 
       if (!mediaRecorder || mediaRecorder.state === 'inactive') {
         try {
           const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
           mediaRecorder = new MediaRecorder(stream);
           audioChunks = [];
+          liveRecordedTranscript = '';
+
+          // Initialize native browser speech recognition for zero-latency live Tamil transcription
+          const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+          if (SpeechRec) {
+            try {
+              liveSpeechRecognizer = new SpeechRec();
+              liveSpeechRecognizer.lang = 'ta-IN';
+              liveSpeechRecognizer.continuous = true;
+              liveSpeechRecognizer.interimResults = true;
+              if (liveBox) liveBox.style.display = 'block';
+              if (liveText) liveText.textContent = 'குரலைக் கேட்கிறது... பேசத் தொடங்குங்கள் (Listening...)';
+
+              liveSpeechRecognizer.onresult = (e) => {
+                let interim = '';
+                for (let i = e.resultIndex; i < e.results.length; ++i) {
+                  if (e.results[i].isFinal) {
+                    liveRecordedTranscript += e.results[i][0].transcript + ' ';
+                  } else {
+                    interim += e.results[i][0].transcript;
+                  }
+                }
+                const display = (liveRecordedTranscript + interim).trim();
+                if (liveText && display) {
+                  liveText.textContent = display;
+                }
+              };
+              liveSpeechRecognizer.onerror = (e) => {
+                console.warn("SpeechRecognition notice:", e.error);
+              };
+              liveSpeechRecognizer.start();
+            } catch (recErr) {
+              console.warn("Live SpeechRecognition init exception:", recErr);
+            }
+          }
 
           mediaRecorder.ondataavailable = e => { if (e.data.size > 0) audioChunks.push(e.data); };
           mediaRecorder.onstop = () => {
@@ -1600,6 +1644,18 @@
             document.getElementById('btnTranscribe').disabled = false;
             status.textContent = "பதிவு முடிந்தது! மேலே உள்ள முன்னோட்டத்தைக் கேட்கலாம்.";
             clearInterval(recordInterval);
+
+            if (liveSpeechRecognizer) {
+              try { liveSpeechRecognizer.stop(); } catch(e){}
+            }
+
+            // If speech was recognized live, auto-populate into transcript field immediately
+            if (liveRecordedTranscript && liveRecordedTranscript.trim()) {
+              const curTranscript = document.getElementById('transcriptText');
+              if (!curTranscript.value || !curTranscript.value.trim()) {
+                curTranscript.value = liveRecordedTranscript.trim();
+              }
+            }
           };
 
           mediaRecorder.start();
@@ -1619,6 +1675,9 @@
         }
       } else if (mediaRecorder.state === 'recording') {
         mediaRecorder.stop();
+        if (liveSpeechRecognizer) {
+          try { liveSpeechRecognizer.stop(); } catch(e){}
+        }
         btn.classList.remove('recording');
         btn.textContent = '🎙️';
       }
@@ -1673,10 +1732,26 @@
           }
           explainRecordedSpeechWithAI(false);
         } else {
-          showAlert("உரை மாற்றத்தில் சிக்கல்: " + (data.error || "உரை கிடைக்கவில்லை"), false);
+          // If server transcription was unsuccessful, check if client captured live Tamil speech
+          if (liveRecordedTranscript && liveRecordedTranscript.trim()) {
+            document.getElementById('transcriptText').value = liveRecordedTranscript.trim();
+            showAlert("ஒலி எழுத்தாக்கம் பெறப்பட்டது (நேரலை ஒலிப்பதிவு இயந்திரம்). பகுப்பாய்வு துவங்குகிறது...");
+            triggerRegionAnalysis();
+            explainRecordedSpeechWithAI(false);
+          } else {
+            showAlert("உரை மாற்றத்தில் சிக்கல்: " + (data.error || "உரை கிடைக்கவில்லை"), false);
+          }
         }
       } catch (err) {
-        showAlert("சேவையகத்தை தொடர்பு கொள்வதில் பிழை: " + err.message, false);
+        // Network or serverless timeout fallback to live captured speech
+        if (liveRecordedTranscript && liveRecordedTranscript.trim()) {
+          document.getElementById('transcriptText').value = liveRecordedTranscript.trim();
+          showAlert("ஒலி எழுத்தாக்கம் பெறப்பட்டது (நேரலை ஒலிப்பதிவு இயந்திரம்). பகுப்பாய்வு துவங்குகிறது...");
+          triggerRegionAnalysis();
+          explainRecordedSpeechWithAI(false);
+        } else {
+          showAlert("சேவையகத்தை தொடர்பு கொள்வதில் பிழை: " + err.message, false);
+        }
       } finally {
         btn.disabled = false;
         btn.innerHTML = '<span>🎙️ தமிழ் உரையாக மாற்று (Transcribe Speech)</span>';

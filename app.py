@@ -32,12 +32,31 @@ app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # 50MB max upload limit
 
 # Upload directories
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-AUDIO_UPLOAD_DIR = os.path.join(BASE_DIR, 'static', 'uploads', 'audio')
-try:
-    os.makedirs(AUDIO_UPLOAD_DIR, exist_ok=True)
-except OSError:
-    AUDIO_UPLOAD_DIR = os.path.join('/tmp', 'uploads', 'audio')
-    os.makedirs(AUDIO_UPLOAD_DIR, exist_ok=True)
+import tempfile
+
+def get_audio_upload_dir():
+    """Returns a verified writable directory for audio uploads, using temp directory on Vercel or read-only environments."""
+    if os.environ.get('VERCEL') or os.environ.get('AWS_LAMBDA_FUNCTION_NAME'):
+        base_tmp = '/tmp' if os.name != 'nt' else tempfile.gettempdir()
+        tmp_dir = os.path.join(base_tmp, 'uploads', 'audio')
+        os.makedirs(tmp_dir, exist_ok=True)
+        return tmp_dir
+
+    default_dir = os.path.join(BASE_DIR, 'static', 'uploads', 'audio')
+    try:
+        os.makedirs(default_dir, exist_ok=True)
+        probe_path = os.path.join(default_dir, '.write_probe')
+        with open(probe_path, 'w') as f:
+            f.write('1')
+        os.remove(probe_path)
+        return default_dir
+    except (OSError, IOError, PermissionError):
+        base_tmp = '/tmp' if os.name != 'nt' else tempfile.gettempdir()
+        tmp_dir = os.path.join(base_tmp, 'uploads', 'audio')
+        os.makedirs(tmp_dir, exist_ok=True)
+        return tmp_dir
+
+AUDIO_UPLOAD_DIR = get_audio_upload_dir()
 
 # Initialize SQLite database and Atlas schema
 database.init_db()
@@ -146,6 +165,48 @@ def api_get_story_constellation():
 
 
 # =========================================================================
+# AUDIO STREAMING & SERVING ROUTES (Serverless /tmp & Static Hybrid)
+# =========================================================================
+
+@app.route('/api/audio/<path:filename>')
+def serve_audio(filename):
+    """Serves uploaded or preserved audio from temp or static directory."""
+    from flask import send_from_directory
+    base_tmp = '/tmp' if os.name != 'nt' else tempfile.gettempdir()
+    candidate_dirs = [
+        os.path.join(base_tmp, 'uploads', 'audio'),
+        os.path.join(BASE_DIR, 'static', 'uploads', 'audio')
+    ]
+    if os.path.exists('/tmp'):
+        candidate_dirs.append(os.path.join('/tmp', 'uploads', 'audio'))
+
+    for c_dir in candidate_dirs:
+        if os.path.exists(os.path.join(c_dir, filename)):
+            return send_from_directory(c_dir, filename)
+
+    return jsonify({"error": "Audio file not found"}), 404
+
+
+@app.route('/static/uploads/audio/<path:filename>')
+def serve_static_audio(filename):
+    """Fallback handler for static audio path in serverless environments."""
+    from flask import send_from_directory
+    base_tmp = '/tmp' if os.name != 'nt' else tempfile.gettempdir()
+    candidate_dirs = [
+        os.path.join(base_tmp, 'uploads', 'audio'),
+        os.path.join(BASE_DIR, 'static', 'uploads', 'audio')
+    ]
+    if os.path.exists('/tmp'):
+        candidate_dirs.append(os.path.join('/tmp', 'uploads', 'audio'))
+
+    for c_dir in candidate_dirs:
+        if os.path.exists(os.path.join(c_dir, filename)):
+            return send_from_directory(c_dir, filename)
+
+    return jsonify({"error": "Audio file not found"}), 404
+
+
+# =========================================================================
 # CORE SPEECH & ENTITY EXTRACTION APIS
 # =========================================================================
 
@@ -175,8 +236,9 @@ def api_transcribe():
             "error": f"ஆதரிக்கப்படாத ஒலிக்கோப்பு வடிவம் ({orig_ext}). தயவுசெய்து வழக்கமான ஒலிக்கோப்பைப் பதிவேற்றவும்."
         }), 400
 
+    upload_dir = get_audio_upload_dir()
     safe_name = f"story_rec_{int(time.time() * 1000)}{orig_ext}"
-    temp_path = os.path.join(AUDIO_UPLOAD_DIR, safe_name)
+    temp_path = os.path.join(upload_dir, safe_name)
 
     try:
         audio_file.save(temp_path)
@@ -189,7 +251,7 @@ def api_transcribe():
     # Call Tamil Speech Transcription engine
     result = speech_service.transcribe_tamil_audio(temp_path)
     result['audio_filename'] = safe_name
-    result['audio_url'] = url_for('static', filename=f'uploads/audio/{safe_name}')
+    result['audio_url'] = url_for('serve_audio', filename=safe_name)
 
     # Automatically extract full metadata and identify region from transcribed speech
     if result.get('success') and result.get('text'):
@@ -252,9 +314,10 @@ def api_save_story():
         if af and af.filename:
             ext = os.path.splitext(af.filename)[1].lower() or '.webm'
             safe_af_name = f"story_audio_{int(time.time() * 1000)}{ext}"
-            dest = os.path.join(AUDIO_UPLOAD_DIR, safe_af_name)
+            upload_dir = get_audio_upload_dir()
+            dest = os.path.join(upload_dir, safe_af_name)
             af.save(dest)
-            audio_path = url_for('static', filename=f'uploads/audio/{safe_af_name}')
+            audio_path = url_for('serve_audio', filename=safe_af_name)
 
     record_id = database.insert_record(
         title=title,

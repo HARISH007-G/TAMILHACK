@@ -7,8 +7,11 @@ from datetime import datetime
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DEFAULT_DB = os.path.join(BASE_DIR, 'tamil_heritage.db')
 
+import tempfile
+
 if os.environ.get('VERCEL') or os.environ.get('AWS_LAMBDA_FUNCTION_NAME'):
-    TMP_DB = os.path.join('/tmp', 'tamil_heritage.db')
+    base_tmp = '/tmp' if os.name != 'nt' else tempfile.gettempdir()
+    TMP_DB = os.path.join(base_tmp, 'tamil_heritage.db')
     if not os.path.exists(TMP_DB) and os.path.exists(DEFAULT_DB):
         try:
             shutil.copy2(DEFAULT_DB, TMP_DB)
