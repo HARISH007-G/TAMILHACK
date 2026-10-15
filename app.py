@@ -33,7 +33,11 @@ app.config['MAX_CONTENT_LENGTH'] = 50 * 1024 * 1024  # 50MB max upload limit
 # Upload directories
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 AUDIO_UPLOAD_DIR = os.path.join(BASE_DIR, 'static', 'uploads', 'audio')
-os.makedirs(AUDIO_UPLOAD_DIR, exist_ok=True)
+try:
+    os.makedirs(AUDIO_UPLOAD_DIR, exist_ok=True)
+except OSError:
+    AUDIO_UPLOAD_DIR = os.path.join('/tmp', 'uploads', 'audio')
+    os.makedirs(AUDIO_UPLOAD_DIR, exist_ok=True)
 
 # Initialize SQLite database and Atlas schema
 database.init_db()

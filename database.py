@@ -1,8 +1,22 @@
 import os
+import shutil
 import sqlite3
 from datetime import datetime
 
-DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'tamil_heritage.db')
+# Determine SQLite DB Path (use /tmp on Vercel or read-only serverless environments)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DEFAULT_DB = os.path.join(BASE_DIR, 'tamil_heritage.db')
+
+if os.environ.get('VERCEL') or os.environ.get('AWS_LAMBDA_FUNCTION_NAME'):
+    TMP_DB = os.path.join('/tmp', 'tamil_heritage.db')
+    if not os.path.exists(TMP_DB) and os.path.exists(DEFAULT_DB):
+        try:
+            shutil.copy2(DEFAULT_DB, TMP_DB)
+        except Exception:
+            pass
+    DB_PATH = TMP_DB if os.path.exists(TMP_DB) else DEFAULT_DB
+else:
+    DB_PATH = DEFAULT_DB
 
 
 def get_db_connection():
