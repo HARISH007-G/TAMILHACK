@@ -199,6 +199,33 @@ def patch_speech_recognition_flac():
 patch_speech_recognition_flac()
 
 
+def recognize_google_l16(pcm_bytes, sample_rate=16000, language='ta-IN'):
+    """
+    Direct zero-dependency Google Speech Recognition using raw 16-bit linear PCM (audio/l16).
+    Completely avoids any external flac or ffmpeg binary dependencies.
+    """
+    url = f"http://www.google.com/speech-api/v2/recognize?client=chromium&lang={language}&key=AIzaSyBOti4mM-6x9WDnZIjIeyEU21OpBXqWBgw"
+    headers = {"Content-Type": f"audio/l16; rate={sample_rate}"}
+    try:
+        resp = requests.post(url, headers=headers, data=pcm_bytes, timeout=30)
+        if resp.status_code == 200:
+            transcripts = []
+            for line in resp.text.strip().splitlines():
+                try:
+                    data = json.loads(line)
+                    for r in data.get('result', []):
+                        alts = r.get('alternative', [])
+                        if alts and 'transcript' in alts[0]:
+                            transcripts.append(alts[0]['transcript'].strip())
+                except Exception:
+                    continue
+            if transcripts:
+                return " ".join(transcripts).strip()
+    except Exception:
+        pass
+    return None
+
+
 def is_pcm_wav(file_path):
     """Checks if file is a standard PCM WAV readable by wave and SpeechRecognition."""
     try:
@@ -551,20 +578,30 @@ def transcribe_tamil_audio(audio_file_path):
 
     try:
         for chunk_file in chunks:
+            seg_text = None
             try:
-                with sr.AudioFile(chunk_file) as source:
-                    audio_data = recognizer.record(source)
-                seg_text = recognizer.recognize_google(audio_data, language="ta-IN")
+                # 1. Pure Python raw PCM recognition (zero-dependency, no flac, no subprocess)
+                with wave.open(chunk_file, 'rb') as w:
+                    raw_pcm = w.readframes(w.getnframes())
+                    rate = w.getframerate()
+                seg_text = recognize_google_l16(raw_pcm, sample_rate=rate, language="ta-IN")
+
+                # 2. Fallback to speech_recognition library if direct request returned None
+                if not seg_text:
+                    with sr.AudioFile(chunk_file) as source:
+                        audio_data = recognizer.record(source)
+                    seg_text = recognizer.recognize_google(audio_data, language="ta-IN")
+
                 if seg_text and seg_text.strip():
                     transcribed_segments.append(seg_text.strip())
                     has_recognized_any = True
             except sr.UnknownValueError:
-                # Silence or unintelligible segment; continue to next chunk
                 pass
             except sr.RequestError as req_err:
                 recognition_error_detail = f"Google Speech API தொடர்புப் பிழை: {str(req_err)}"
             except Exception as e:
-                recognition_error_detail = str(e)
+                if not seg_text:
+                    recognition_error_detail = str(e)
     finally:
         # Clean up chunk files (do not delete the primary converted file yet)
         for chunk_file in chunks:

@@ -1701,6 +1701,64 @@
       return data;
     }
 
+    // Client-side pure Web Audio API conversion to 16kHz mono 16-bit PCM WAV
+    async function audioBlobTo16kHzWav(audioBlob) {
+      try {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        const OfflineContextClass = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+        if (!AudioContextClass || !OfflineContextClass) return audioBlob;
+
+        const arrayBuffer = await audioBlob.arrayBuffer();
+        const audioCtx = new AudioContextClass();
+        const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+
+        const targetRate = 16000;
+        const totalFrames = Math.max(1, Math.ceil(audioBuffer.duration * targetRate));
+        const offlineCtx = new OfflineContextClass(1, totalFrames, targetRate);
+
+        const srcNode = offlineCtx.createBufferSource();
+        srcNode.buffer = audioBuffer;
+        srcNode.connect(offlineCtx.destination);
+        srcNode.start(0);
+
+        const rendered = await offlineCtx.startRendering();
+        const samples = rendered.getChannelData(0);
+
+        // Build 16-bit PCM WAV container
+        const wavBuffer = new ArrayBuffer(44 + samples.length * 2);
+        const view = new DataView(wavBuffer);
+
+        function putStr(pos, s) {
+          for (let i = 0; i < s.length; i++) view.setUint8(pos + i, s.charCodeAt(i));
+        }
+
+        putStr(0, 'RIFF');
+        view.setUint32(4, 36 + samples.length * 2, true);
+        putStr(8, 'WAVE');
+        putStr(12, 'fmt ');
+        view.setUint32(16, 16, true); // PCM chunk size
+        view.setUint16(20, 1, true);  // Audio format 1 = PCM
+        view.setUint16(22, 1, true);  // 1 channel (mono)
+        view.setUint32(24, targetRate, true);
+        view.setUint32(28, targetRate * 2, true); // Byte rate
+        view.setUint16(32, 2, true);  // Block align
+        view.setUint16(34, 16, true); // 16-bit
+        putStr(36, 'data');
+        view.setUint32(40, samples.length * 2, true);
+
+        let p = 44;
+        for (let i = 0; i < samples.length; i++, p += 2) {
+          const val = Math.max(-1, Math.min(1, samples[i]));
+          view.setInt16(p, val < 0 ? val * 0x8000 : val * 0x7FFF, true);
+        }
+
+        return new Blob([view], { type: 'audio/wav' });
+      } catch (convErr) {
+        console.warn("Client Web Audio conversion error, falling back to original:", convErr);
+        return audioBlob;
+      }
+    }
+
     async function transcribeAudio() {
       if (!activeAudioFile && !activeAudioBlob) {
         showAlert("தயவுசெய்து ஒரு ஒலிக்கோப்பைப் பதிவேற்றவும் அல்லது பதிவு செய்யவும்.", false);
@@ -1711,14 +1769,26 @@
       if (btn.dataset.processing === 'true') return;
       btn.dataset.processing = 'true';
       btn.disabled = true;
+      btn.innerHTML = '<span class="spinner" style="border-top-color: #041220; border-color: rgba(0,0,0,0.2); width: 14px; height: 14px; margin-right: 6px;"></span> ஒலிவடிவம் தயாராகிறது...';
+
+      let uploadBlob = activeAudioFile || activeAudioBlob;
+      let uploadName = activeAudioFile ? activeAudioFile.name : 'voice_recording.webm';
+
+      // Pre-convert audio to 16kHz mono WAV in browser
+      try {
+        const converted = await audioBlobTo16kHzWav(uploadBlob);
+        if (converted && converted.size > 100) {
+          uploadBlob = converted;
+          uploadName = 'voice_recording_16k.wav';
+        }
+      } catch (prepErr) {
+        console.warn("Audio preparation note:", prepErr);
+      }
+
       btn.innerHTML = '<span class="spinner" style="border-top-color: #041220; border-color: rgba(0,0,0,0.2); width: 14px; height: 14px; margin-right: 6px;"></span> தமிழ் உரையாக மாற்றப்படுகிறது... காத்திருக்கவும்';
 
       const formData = new FormData();
-      if (activeAudioFile) {
-        formData.append('audio', activeAudioFile);
-      } else {
-        formData.append('audio', activeAudioBlob, 'voice_recording.webm');
-      }
+      formData.append('audio', uploadBlob, uploadName);
 
       try {
         const resp = await fetch('/api/transcribe', {
