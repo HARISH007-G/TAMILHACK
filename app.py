@@ -57,6 +57,8 @@ ALLOWED_AUDIO_EXTENSIONS = {
 # =========================================================================
 
 @app.route('/')
+@app.route('/api/index')
+@app.route('/api/index.py')
 def index():
     """Main and only page of the website: MARAPOLI Tamil Audio Studio."""
     return render_template('audio.html')
