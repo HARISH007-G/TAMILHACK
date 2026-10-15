@@ -1577,6 +1577,8 @@
         document.getElementById('fileLabel').textContent = "தேர்ந்தெடுக்கப்பட்டது: " + activeAudioFile.name;
         showAudioPreview(URL.createObjectURL(activeAudioFile));
         document.getElementById('btnTranscribe').disabled = false;
+        // Auto-transcribe chosen audio file
+        transcribeAudio();
       }
     }
 
@@ -1642,7 +1644,7 @@
             const audioUrl = URL.createObjectURL(activeAudioBlob);
             showAudioPreview(audioUrl);
             document.getElementById('btnTranscribe').disabled = false;
-            status.textContent = "பதிவு முடிந்தது! மேலே உள்ள முன்னோட்டத்தைக் கேட்கலாம்.";
+            status.textContent = "பதிவு முடிந்தது! உரை மாற்றப்படுகிறது...";
             clearInterval(recordInterval);
 
             if (liveSpeechRecognizer) {
@@ -1656,6 +1658,9 @@
                 curTranscript.value = liveRecordedTranscript.trim();
               }
             }
+
+            // Immediately auto-transcribe recorded speech
+            transcribeAudio();
           };
 
           mediaRecorder.start();
@@ -1703,6 +1708,8 @@
       }
 
       const btn = document.getElementById('btnTranscribe');
+      if (btn.dataset.processing === 'true') return;
+      btn.dataset.processing = 'true';
       btn.disabled = true;
       btn.innerHTML = '<span class="spinner" style="border-top-color: #041220; border-color: rgba(0,0,0,0.2); width: 14px; height: 14px; margin-right: 6px;"></span> தமிழ் உரையாக மாற்றப்படுகிறது... காத்திருக்கவும்';
 
@@ -1753,6 +1760,7 @@
           showAlert("சேவையகத்தை தொடர்பு கொள்வதில் பிழை: " + err.message, false);
         }
       } finally {
+        btn.dataset.processing = 'false';
         btn.disabled = false;
         btn.innerHTML = '<span>🎙️ தமிழ் உரையாக மாற்று (Transcribe Speech)</span>';
       }

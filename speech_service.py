@@ -60,7 +60,7 @@ def get_ffmpeg_executable():
     """
     Locate a functional FFmpeg executable across:
     1. /tmp/ffmpeg (if already staged and executable in serverless)
-    2. imageio_ffmpeg bundled binary (with auto-copy to /tmp on serverless Linux)
+    2. imageio_ffmpeg bundled binary directly from package directory (staged to /tmp on serverless Linux)
     3. System PATH (ffmpeg / ffmpeg.exe)
     4. Common Windows / Linux install paths
     """
@@ -69,13 +69,27 @@ def get_ffmpeg_executable():
         return tmp_ffmpeg
 
     candidate = None
+    # 1. Direct discovery from imageio_ffmpeg package directory without triggering _is_valid_exe prematurely
     try:
-        import imageio_ffmpeg
-        exe = imageio_ffmpeg.get_ffmpeg_exe()
-        if exe and os.path.exists(exe):
-            candidate = exe
+        import imageio_ffmpeg._utils as u
+        bin_dir = u._get_bin_dir()
+        plat = u.get_platform()
+        fname = u.FNAME_PER_PLATFORM.get(plat, "")
+        if fname:
+            bundled = os.path.join(bin_dir, fname)
+            if os.path.exists(bundled):
+                candidate = bundled
     except Exception:
         pass
+
+    if not candidate:
+        try:
+            import imageio_ffmpeg
+            exe = imageio_ffmpeg.get_ffmpeg_exe()
+            if exe and os.path.exists(exe):
+                candidate = exe
+        except Exception:
+            pass
 
     if not candidate:
         candidate = shutil.which('ffmpeg')
@@ -119,6 +133,70 @@ def get_ffmpeg_executable():
         pass
 
     return candidate
+
+
+def patch_speech_recognition_flac():
+    """
+    Patches speech_recognition.AudioData.get_flac_data to encode FLAC via FFmpeg.
+    This resolves:
+    1. Windows: [WinError 623] caused by ancient bundled 32-bit flac-win32.exe.
+    2. Linux/Serverless: Permission denied caused by non-executable flac-linux-x86_64 in read-only /var/task.
+    """
+    try:
+        import speech_recognition as sr
+        ffmpeg_exe = get_ffmpeg_executable()
+
+        def custom_get_flac_data(self, convert_rate=None, convert_width=None):
+            wav_bytes = self.get_wav_data(convert_rate, convert_width)
+            # 1. Primary: Use FFmpeg directly to encode FLAC from stdin to stdout
+            if ffmpeg_exe:
+                try:
+                    proc = subprocess.run(
+                        [ffmpeg_exe, '-y', '-i', '-', '-c:a', 'flac', '-f', 'flac', '-'],
+                        input=wav_bytes,
+                        capture_output=True,
+                        timeout=30
+                    )
+                    if proc.returncode == 0 and len(proc.stdout) > 0:
+                        return proc.stdout
+                except Exception:
+                    pass
+
+            # 2. Fallback: If on Linux, stage bundled flac to /tmp/flac and chmod +x
+            if sys.platform != 'win32':
+                try:
+                    tmp_flac = '/tmp/flac'
+                    if not os.path.exists(tmp_flac):
+                        base_path = os.path.dirname(os.path.abspath(sr.__file__))
+                        orig_flac = os.path.join(base_path, 'flac-linux-x86_64')
+                        if os.path.exists(orig_flac):
+                            shutil.copy2(orig_flac, tmp_flac)
+                            os.chmod(tmp_flac, 0o755)
+                    if os.path.exists(tmp_flac) and os.access(tmp_flac, os.X_OK):
+                        proc = subprocess.run(
+                            [tmp_flac, '--stdout', '--totally-silent', '--best', '-'],
+                            input=wav_bytes,
+                            capture_output=True,
+                            timeout=30
+                        )
+                        if proc.returncode == 0 and len(proc.stdout) > 0:
+                            return proc.stdout
+                except Exception:
+                    pass
+
+            # 3. Ultimate fallback: original method
+            if hasattr(sr.AudioData, '_original_get_flac_data'):
+                return sr.AudioData._original_get_flac_data(self, convert_rate, convert_width)
+            raise RuntimeError("Could not convert audio to FLAC for speech recognition.")
+
+        if not hasattr(sr.AudioData, '_original_get_flac_data'):
+            sr.AudioData._original_get_flac_data = sr.AudioData.get_flac_data
+        sr.AudioData.get_flac_data = custom_get_flac_data
+    except Exception:
+        pass
+
+# Initialize patch on module load
+patch_speech_recognition_flac()
 
 
 def is_pcm_wav(file_path):
