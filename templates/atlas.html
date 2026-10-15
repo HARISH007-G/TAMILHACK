@@ -842,6 +842,19 @@
       }
     ];
 
+    // Helper to safely parse JSON and prevent SyntaxError on HTML responses
+    async function safeParseResponse(resp, defaultMsg = 'சேவையகப் பிழை') {
+      const contentType = resp.headers.get('content-type') || '';
+      if (!contentType.includes('application/json')) {
+        throw new Error(`${defaultMsg} (${resp.status})`);
+      }
+      const data = await resp.json();
+      if (!resp.ok && data && data.error) {
+        throw new Error(data.error);
+      }
+      return data;
+    }
+
     // Initialize Atlas Map
     function initAtlasMap() {
       const mapEl = document.getElementById('atlasMapContainer');
@@ -893,7 +906,7 @@
 
       try {
         const resp = await fetch(url);
-        const data = await resp.json();
+        const data = await safeParseResponse(resp, 'ஊர் விவரங்களை ஏற்ற முடியவில்லை');
 
         if (data.success) {
           allLocations = data.locations || [];
@@ -1089,7 +1102,7 @@
 
       try {
         const resp = await fetch(`/api/atlas/locations/${locationId}/stories?category=${encodeURIComponent(activeCategory)}`);
-        const data = await resp.json();
+        const data = await safeParseResponse(resp, 'கதைகளைப் பெற முடியவில்லை');
 
         if (data.success) {
           const lInfo = data.location;
@@ -1289,7 +1302,7 @@
 
       try {
         const resp = await fetch(`/api/atlas/stories/${storyId}`);
-        const data = await resp.json();
+        const data = await safeParseResponse(resp, 'கதைச் சுருக்கம் பெற முடியவில்லை');
         if (data.success && data.story) {
           const s = data.story;
           content.innerHTML = `
@@ -1323,7 +1336,7 @@
 
       try {
         const resp = await fetch(`/api/atlas/stories/${storyId}`);
-        const data = await resp.json();
+        const data = await safeParseResponse(resp, 'சொற்கள் பெற முடியவில்லை');
         if (data.success && data.story) {
           const words = data.story.vocabulary || [];
           if (words.length === 0) {
@@ -1360,7 +1373,7 @@
 
       try {
         const resp = await fetch(`/api/atlas/stories/${storyId}/related`);
-        const data = await resp.json();
+        const data = await safeParseResponse(resp, 'தொடர்புடைய கதைகள் பெற முடியவில்லை');
         if (data.success) {
           const list = data.related || [];
           if (list.length === 0) {
@@ -1388,7 +1401,7 @@
     async function jumpToStory(targetStoryId) {
       try {
         const resp = await fetch(`/api/atlas/stories/${targetStoryId}`);
-        const data = await resp.json();
+        const data = await safeParseResponse(resp, 'கதை விவரம் பெற முடியவில்லை');
         if (data.success && data.story && data.story.location.id) {
           selectLocation(data.story.location.id, true);
         }

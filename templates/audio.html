@@ -1624,6 +1624,19 @@
       }
     }
 
+    // Helper to safely parse JSON responses and avoid SyntaxError on HTML error pages
+    async function safeParseResponse(resp, defaultMsg = 'சேவையகப் பிழை') {
+      const contentType = resp.headers.get('content-type') || '';
+      if (!contentType.includes('application/json')) {
+        throw new Error(`${defaultMsg} (${resp.status})`);
+      }
+      const data = await resp.json();
+      if (!resp.ok && data && data.error) {
+        throw new Error(data.error);
+      }
+      return data;
+    }
+
     async function transcribeAudio() {
       if (!activeAudioFile && !activeAudioBlob) {
         showAlert("தயவுசெய்து ஒரு ஒலிக்கோப்பைப் பதிவேற்றவும் அல்லது பதிவு செய்யவும்.", false);
@@ -1646,7 +1659,7 @@
           method: 'POST',
           body: formData
         });
-        const data = await resp.json();
+        const data = await safeParseResponse(resp, 'உரை மாற்றத்தில் சிக்கல்');
 
         if (data.success && data.text) {
           document.getElementById('transcriptText').value = data.text;
@@ -1724,7 +1737,7 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ text: text })
         });
-        const data = await resp.json();
+        const data = await safeParseResponse(resp, 'சொல் விளக்கம் பெறுவதில் பிழை');
 
         if (data.success && data.entries && data.entries.length > 0) {
           renderLiveWordCards(data.entries);
@@ -1769,7 +1782,7 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ word: word, context: context })
         });
-        const data = await resp.json();
+        const data = await safeParseResponse(resp, 'சொல் பொருள் தேடலில் பிழை');
 
         const placeholder = document.getElementById(tempId);
         if (placeholder) placeholder.remove();
@@ -1889,9 +1902,9 @@
           body: JSON.stringify({ transcript: transcript })
         });
 
-        const data = await resp.json();
+        const data = await safeParseResponse(resp, 'கதைச் சுருக்கம் பெறுவதில் சிக்கல்');
 
-        if (resp.ok && data.success) {
+        if (data.success) {
           const taEl = document.getElementById('tamilSummaryText');
           const enEl = document.getElementById('englishSummaryText');
           if (taEl) taEl.textContent = data.summary_ta || 'சுருக்கம் கிடைக்கவில்லை.';
@@ -2065,9 +2078,9 @@
           body: JSON.stringify({ transcript: transcript })
         });
 
-        const data = await resp.json();
+        const data = await safeParseResponse(resp, 'வட்டார மொழிப் பகுப்பாய்வில் பிழை');
 
-        if (resp.ok && data.success) {
+        if (data.success) {
           currentDialectData = data;
           lastAnalyzedTranscript = transcript;
           renderDialectDNA(data);
@@ -2570,7 +2583,7 @@
           method: 'POST',
           body: formData
         });
-        const data = await resp.json();
+        const data = await safeParseResponse(resp, 'சேமிப்பில் பிழை');
         if (data.success) {
           showAlert("🎉 ஆவணம் வெற்றிகரமாகத் தமிழ் மரபுப் பெட்டகத்தில் சேமிக்கப்பட்டது! (Saved to Archive successfully)");
           loadSavedRecords();
@@ -2592,7 +2605,7 @@
 
       try {
         const resp = await fetch(`/api/library?q=${encodeURIComponent(q)}`);
-        const data = await resp.json();
+        const data = await safeParseResponse(resp, 'ஆவணங்களை ஏற்ற முடியவில்லை');
 
         if (!data.success || !data.records || data.records.length === 0) {
           container.innerHTML = `
