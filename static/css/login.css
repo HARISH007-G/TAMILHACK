@@ -1,0 +1,140 @@
+
+body{
+    overflow: auto;
+    background-image: url("../img/so-white1.png");
+}
+/* green background */
+.green-background{
+    height: 43vh;
+    position: absolute;
+    bottom: 0px;
+    right: 0;
+    z-index:-1;
+    opacity:90%;
+}
+/* thiruvalluvar */
+.daddy{
+    opacity:90%;
+    height:40vh;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index:-1;
+}
+
+/* title */
+.leaf{
+    /* margin-left: 127px; */
+    position: absolute;
+    left:127px;
+    top:28px;
+
+}
+.title{
+    display: flex;
+}
+#logo{
+    width: 70px;
+    height:82px ;
+}
+#title-text{
+    margin: 15px;
+    margin-left:0px;
+    color: #753835;
+    font-size: 32px;
+    font-family: 'Moulpali';
+}
+
+#des{
+    word-spacing: 2px;
+    text-align: justify;
+    font-family: 'Gafata';
+    position: relative;
+    font-size: 17px;
+    bottom : 45px;
+    margin-top: 29px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+
+}
+/* form */
+#get-start{
+    color: #fff;
+    text-decoration: none;
+    font-family: 'Gafata';
+    padding-top: 10px;
+    margin-right: 48px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    width: 31%;
+    border-radius: 14px;
+    border: 2px solid white;
+    box-shadow: 0px 0px 15px 0px #0004;
+    background-color: #0c7d81;
+    font-size: 20px;
+}
+
+
+.container{
+  margin-top: 15vh;
+  text-align: center;
+  font-family: Gafata;
+}
+.container h1{
+  margin-bottom: 10px;
+}
+#underline{
+  height: 5px;
+  width: 5vw;
+  margin-inline: auto;
+  background-color: #0c7d81;
+}
+.image-container{
+margin-top:5vh;
+  gap: 10px;
+  display: grid;
+  grid-template-columns:repeat(4,1fr);
+  grid-template-rows:repeat(2,1fr);
+  justify-items: center;
+  align-items: center;
+}
+.image{
+  max-width: 10vw;
+  display: flex;
+  flex-direction: column;
+}
+.image img{
+  border-radius: 50%;
+}
+.fa {
+  padding: 3px;
+  font-size: 20px;
+  width: 30px;
+  border-radius:2px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.fa:hover {
+    opacity: 0.7;
+}
+
+.fa-linkedin {
+  background: #007bb5;
+  color: white;
+}
+
+.fa-instagram {
+  background: #d62976;
+  color: white;
+}
+.fa-envelope {
+  height:90%;
+  background: #EA4335;
+  color: white;
+}
+.subtext{
+  font-size: 12px;
+}
+
+

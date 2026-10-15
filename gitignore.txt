@@ -1,0 +1,58 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual Environments
+venv/
+venv-modern-ocr/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Testing & Linting
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Local IDE & OS State
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Model download caches
+models/onnx_tamil/.cache/
+
+# Local secrets & environment files
+.env
+.env.local
+*.local
+
+# Temporary logs & debug outputs
+*.log
+demo_test_out.png
+
+# Large Binaries & Executables
+*.exe
+Antigravity-x64.exe
+
+# Dynamic upload caches
+static/uploads/audio/*.wav
+static/uploads/audio/*.webm
+static/uploads/audio/*.mp3
+static/uploads/audio/*.m4a
+static/uploads/manuscripts/*.png
+static/uploads/manuscripts/*.jpg
+static/uploads/manuscripts/*.jpeg
+!static/uploads/audio/.gitkeep
+!static/uploads/manuscripts/.gitkeep

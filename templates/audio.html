@@ -1,0 +1,3185 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Velorah® — மரபொலி (MARAPOLI) • Tamil Oral History &amp; Speech Studio</title>
+  <link rel="icon" href="{{ url_for('static', filename='img/leaves-svgrepo-com 1.png') }}">
+
+  <!-- Google Fonts: Instrument Serif, Inter, Noto Serif Tamil, Noto Sans Tamil -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=Noto+Serif+Tamil:wght@400;600;700&family=Noto+Sans+Tamil:wght@400;500;600;700&display=swap">
+
+  <style>
+    /* ================================================================
+       THEME SPECIFICATIONS (DARK NAVY BLUE, HSL TOKENS)
+       ================================================================ */
+    :root {
+      --background: 201 90% 16%;         /* slightly brighter, richer navy blue */
+      --foreground: 0 0% 100%;           /* white */
+      --muted-foreground: 240 6% 74%;    /* lighter muted gray for better contrast */
+      --primary: 0 0% 100%;
+      --primary-foreground: 0 0% 4%;
+      --secondary: 0 0% 12%;
+      --muted: 0 0% 12%;
+      --accent: 0 0% 12%;
+      --border: 0 0% 22%;
+      --input: 0 0% 22%;
+
+      --font-display: 'Instrument Serif', 'Noto Serif Tamil', serif;
+      --font-body: 'Inter', 'Noto Sans Tamil', -apple-system, BlinkMacSystemFont, sans-serif;
+
+      /* Color references */
+      --color-bg: hsl(var(--background));
+      --color-fg: hsl(var(--foreground));
+      --color-muted-fg: hsl(var(--muted-foreground));
+      --color-border: hsl(var(--border));
+      --color-input: hsl(var(--input));
+      --color-card-bg: rgba(10, 34, 62, 0.48);
+      --color-card-border: rgba(255, 255, 255, 0.16);
+
+      /* Accent cyan/teal glow for interactive elements */
+      --glow-teal: rgba(56, 189, 248, 0.25);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: hsl(var(--background));
+      color: hsl(var(--foreground));
+      font-family: var(--font-body);
+      min-height: 100vh;
+      line-height: 1.7;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ================================================================
+       FULLSCREEN LOOPING BACKGROUND VIDEO
+       ================================================================ */
+    .video-bg-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .video-bg-container video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+      filter: brightness(1.24) contrast(1.06) saturate(1.15);
+    }
+
+    /* Lighter gradient scrim so video remains vivid and bright while ensuring text legibility */
+    .video-bg-scrim {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 50% 15%, rgba(56, 189, 248, 0.15) 0%, transparent 68%),
+        linear-gradient(
+          180deg,
+          rgba(0, 24, 48, 0.18) 0%,
+          rgba(0, 26, 50, 0.35) 45%,
+          rgba(0, 18, 36, 0.60) 100%
+        );
+      z-index: 1;
+    }
+
+    /* Page Content Layer above video */
+    .site-content {
+      position: relative;
+      z-index: 10;
+    }
+
+    /* ================================================================
+       LIQUID GLASS EFFECT (EXACT USER SPECIFICATION)
+       ================================================================ */
+    .liquid-glass {
+      background: rgba(255, 255, 255, 0.04);
+      background-blend-mode: luminosity;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: none;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15), 0 8px 32px rgba(0, 0, 0, 0.35);
+      position: relative;
+      overflow: hidden;
+      color: hsl(var(--foreground));
+      transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+      cursor: pointer;
+    }
+
+    .liquid-glass::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 1.4px;
+      background: linear-gradient(180deg,
+        rgba(255,255,255,0.45) 0%, rgba(255,255,255,0.15) 20%,
+        rgba(255,255,255,0) 40%, rgba(255,255,255,0) 60%,
+        rgba(255,255,255,0.15) 80%, rgba(255,255,255,0.45) 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .liquid-glass:hover {
+      transform: scale(1.03);
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.25), 0 12px 40px rgba(0, 0, 0, 0.45);
+    }
+
+    /* ================================================================
+       ANIMATIONS (EXACT USER SPECIFICATION)
+       ================================================================ */
+    @keyframes fade-rise {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-fade-rise {
+      animation: fade-rise 0.8s ease-out both;
+    }
+
+    .animate-fade-rise-delay {
+      animation: fade-rise 0.8s ease-out 0.2s both;
+    }
+
+    .animate-fade-rise-delay-2 {
+      animation: fade-rise 0.8s ease-out 0.4s both;
+    }
+
+    /* ================================================================
+       NAVIGATION BAR (EXACT SPECIFICATION)
+       ================================================================ */
+    .nav-bar-container {
+      position: relative;
+      z-index: 20;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 24px 32px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 30px;
+      letter-spacing: -0.04em;
+      color: hsl(var(--foreground));
+      text-decoration: none;
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+    }
+
+    .nav-logo sup {
+      font-size: 12px;
+      font-family: var(--font-body);
+      vertical-align: super;
+      opacity: 0.8;
+    }
+
+    .nav-logo-sub {
+      font-size: 11.5px;
+      font-family: var(--font-body);
+      color: hsl(var(--muted-foreground));
+      letter-spacing: 0.02em;
+      margin-left: 10px;
+      padding-left: 10px;
+      border-left: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .nav-links {
+      display: none;
+      gap: 28px;
+      align-items: center;
+    }
+
+    @media (min-width: 768px) {
+      .nav-links {
+        display: flex;
+      }
+    }
+
+    .nav-link {
+      font-size: 14px;
+      font-weight: 500;
+      color: hsl(var(--muted-foreground));
+      text-decoration: none;
+      transition: color 0.2s ease;
+      cursor: pointer;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      color: hsl(var(--foreground));
+    }
+
+    .nav-cta-btn {
+      border-radius: 9999px;
+      padding: 10px 24px;
+      font-size: 14px;
+      font-weight: 500;
+      color: hsl(var(--foreground));
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ================================================================
+       HERO SECTION (EXACT SPECIFICATION)
+       ================================================================ */
+    .hero-section {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 128px 24px 160px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .hero-h1 {
+      font-family: 'Instrument Serif', 'Noto Serif Tamil', serif;
+      font-size: clamp(48px, 8vw, 96px);
+      line-height: 0.95;
+      letter-spacing: -2.46px;
+      max-width: 1280px;
+      font-weight: 400;
+      margin: 0 auto;
+      color: hsl(var(--foreground));
+      text-shadow: 0 4px 28px rgba(0, 14, 30, 0.7);
+    }
+
+    .hero-h1 em {
+      font-style: normal;
+      color: hsl(var(--muted-foreground));
+    }
+
+    .hero-subtext {
+      color: #d1d5db;
+      font-size: clamp(16px, 2vw, 18px);
+      max-width: 672px;
+      margin-top: 32px;
+      line-height: 1.7;
+      text-shadow: 0 2px 14px rgba(0, 14, 30, 0.65);
+    }
+
+    .hero-subtext-ta {
+      font-size: 14.5px;
+      margin-top: 10px;
+      color: rgba(255, 255, 255, 0.88);
+      text-shadow: 0 2px 12px rgba(0, 14, 30, 0.65);
+    }
+
+    .hero-cta-btn {
+      border-radius: 9999px;
+      padding: 20px 56px;
+      font-size: 16px;
+      font-weight: 500;
+      color: hsl(var(--foreground));
+      margin-top: 48px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    /* ================================================================
+       CONTAINER & STUDIO SECTION
+       ================================================================ */
+    .container {
+      max-width: 1240px;
+      margin: 0 auto 60px;
+      padding: 0 24px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .section-header-banner {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 16px;
+      padding: 24px 32px;
+      margin-bottom: 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .section-header-banner h2 {
+      margin: 0 0 6px 0;
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 400;
+      letter-spacing: -0.5px;
+      color: hsl(var(--foreground));
+    }
+
+    .section-header-banner p {
+      margin: 0;
+      font-size: 13.5px;
+      color: hsl(var(--muted-foreground));
+    }
+
+    .grid-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+
+    @media (max-width: 900px) {
+      .grid-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ================================================================
+       GLASS CARDS FOR EXISTING FEATURES
+       ================================================================ */
+    .card {
+      background: var(--color-card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--color-card-border);
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+      margin-bottom: 28px;
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .card:hover {
+      border-color: rgba(255, 255, 255, 0.22);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45);
+    }
+
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 400;
+      color: hsl(var(--foreground));
+      margin-top: 0;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      letter-spacing: -0.2px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 12px;
+    }
+
+    /* ================================================================
+       AUDIO INPUT CONTROLS
+       ================================================================ */
+    .audio-input-toggle {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 14px;
+    }
+
+    .toggle-btn {
+      flex: 1;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 13.5px;
+      font-weight: 500;
+      color: hsl(var(--muted-foreground));
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      font-family: var(--font-body);
+    }
+
+    .toggle-btn.active {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.4);
+      color: hsl(var(--foreground));
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .drop-zone {
+      border: 2px dashed rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 14px;
+      padding: 36px 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .drop-zone:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .drop-zone input[type="file"] {
+      display: none;
+    }
+
+    .record-controls {
+      text-align: center;
+      padding: 30px 20px;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-record {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #ef4444, #991b1b);
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      color: #FFFFFF;
+      font-size: 28px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 0 24px rgba(239, 68, 68, 0.4);
+    }
+
+    .btn-record:hover {
+      transform: scale(1.06);
+      box-shadow: 0 0 32px rgba(239, 68, 68, 0.6);
+    }
+
+    .btn-record.recording {
+      animation: pulse 1.2s infinite;
+      background: radial-gradient(circle at 35% 35%, #dc2626, #7f1d1d);
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.08); box-shadow: 0 0 36px rgba(239, 68, 68, 0.8); }
+      100% { transform: scale(1); }
+    }
+
+    /* ================================================================
+       BUTTONS & FORM INPUTS
+       ================================================================ */
+    .btn-primary {
+      background: #FFFFFF;
+      color: #041220;
+      border: none;
+      border-radius: 9999px;
+      padding: 13px 24px;
+      font-size: 14.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      transition: all 0.2s ease;
+      margin-top: 18px;
+      font-family: var(--font-body);
+      box-shadow: 0 4px 16px rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-primary:hover {
+      background: #E6F0FA;
+      transform: scale(1.01);
+      box-shadow: 0 6px 20px rgba(255, 255, 255, 0.25);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: hsl(var(--foreground));
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 9999px;
+      padding: 7px 16px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: var(--font-body);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.4);
+      transform: scale(1.02);
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: hsl(var(--muted-foreground));
+      margin-bottom: 6px;
+      letter-spacing: 0.2px;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      font-family: var(--font-body);
+      font-size: 14px;
+      color: hsl(var(--foreground));
+      background: rgba(0, 16, 32, 0.5);
+      backdrop-filter: blur(8px);
+      transition: all 0.2s ease;
+      line-height: 1.6;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: rgba(255, 255, 255, 0.5);
+      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+      background: rgba(0, 20, 40, 0.7);
+    }
+
+    .form-control::placeholder {
+      color: rgba(255, 255, 255, 0.35);
+    }
+
+    textarea.form-control {
+      resize: vertical;
+      min-height: 130px;
+      line-height: 1.8;
+    }
+
+    select.form-control {
+      appearance: auto;
+    }
+
+    select.form-control option {
+      background: #041220;
+      color: #FFFFFF;
+    }
+
+    /* ================================================================
+       REGION & LIVE DICTIONARY CARDS
+       ================================================================ */
+    .region-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-left: 3px solid rgba(56, 189, 248, 0.8);
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-top: 14px;
+    }
+
+    .region-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      color: hsl(var(--foreground));
+      margin: 0 0 6px 0;
+    }
+
+    .tag-badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.08);
+      color: hsl(var(--foreground));
+      font-size: 12px;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      margin-right: 5px;
+      margin-top: 5px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      font-weight: 500;
+    }
+
+    /* ================================================================
+       ALERTS & SPINNER
+       ================================================================ */
+    .alert {
+      padding: 12px 18px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      display: none;
+      line-height: 1.5;
+      backdrop-filter: blur(8px);
+    }
+
+    .alert-success {
+      background: rgba(34, 197, 94, 0.15);
+      color: #86efac;
+      border: 1px solid rgba(34, 197, 94, 0.35);
+    }
+
+    .alert-danger {
+      background: rgba(239, 68, 68, 0.15);
+      color: #fca5a5;
+      border: 1px solid rgba(239, 68, 68, 0.35);
+    }
+
+    .spinner {
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-top: 2px solid #FFFFFF;
+      border-radius: 50%;
+      width: 16px;
+      height: 16px;
+      animation: spin 0.8s linear infinite;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    /* ================================================================
+       MODALS (GLASSMORPHIC DICTIONARIES)
+       ================================================================ */
+    .dict-modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 12, 24, 0.82);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .dict-modal {
+      background: rgba(4, 18, 34, 0.95);
+      border-radius: 20px;
+      max-width: 980px;
+      width: 100%;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      overflow: hidden;
+      animation: modalFadeIn 0.3s ease-out;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: translateY(16px) scale(0.98); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .dict-modal-header {
+      padding: 20px 28px;
+      background: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .dict-modal-header h2 {
+      margin: 0;
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 400;
+      color: hsl(var(--foreground));
+    }
+
+    .dict-modal-body {
+      padding: 24px;
+      overflow-y: auto;
+      flex: 1;
+      background: transparent;
+    }
+
+    .dict-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 24px;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 16px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      align-items: center;
+    }
+
+    .dict-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 16px;
+      transition: all 0.2s ease;
+    }
+
+    .dict-card:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .dict-word-title {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 400;
+      color: hsl(var(--foreground));
+      margin: 0;
+    }
+
+    .dict-cat-badge {
+      background: rgba(255, 255, 255, 0.08);
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 12px;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .dict-status-badge {
+      font-size: 12px;
+      font-weight: 500;
+      padding: 3px 10px;
+      border-radius: 9999px;
+    }
+
+    .dict-status-verified {
+      background: rgba(34, 197, 94, 0.15);
+      color: #86efac;
+      border: 1px solid rgba(34, 197, 94, 0.3);
+    }
+
+    .dict-status-pending {
+      background: rgba(234, 179, 8, 0.15);
+      color: #fde047;
+      border: 1px solid rgba(234, 179, 8, 0.3);
+    }
+
+    .dict-excerpt-box {
+      background: rgba(255, 255, 255, 0.02);
+      border-left: 3px solid rgba(255, 255, 255, 0.4);
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-size: 13.5px;
+      line-height: 1.7;
+      color: hsl(var(--muted-foreground));
+      margin: 12px 0;
+      font-style: italic;
+    }
+
+    .dict-meaning-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 12px 0;
+    }
+
+    @media (max-width: 768px) {
+      .dict-meaning-grid { grid-template-columns: 1fr; }
+    }
+
+    .dict-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: hsl(var(--muted-foreground));
+      margin-bottom: 4px;
+    }
+
+    .dict-val {
+      font-size: 14px;
+      color: hsl(var(--foreground));
+      line-height: 1.6;
+    }
+
+    .btn-icon {
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+      border: 1px solid transparent;
+      font-family: var(--font-body);
+    }
+
+    .btn-verify {
+      background: rgba(34, 197, 94, 0.12);
+      color: #86efac;
+      border-color: rgba(34, 197, 94, 0.3);
+    }
+
+    .btn-verify:hover {
+      background: rgba(34, 197, 94, 0.22);
+    }
+
+    .btn-edit {
+      background: rgba(255, 255, 255, 0.08);
+      color: hsl(var(--foreground));
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .btn-edit:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-del {
+      background: rgba(239, 68, 68, 0.12);
+      color: #fca5a5;
+      border-color: rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-del:hover {
+      background: rgba(239, 68, 68, 0.22);
+    }
+
+    /* ================================================================
+       DIALECT DNA STYLES (வட்டார மொழி அடையாளம்)
+       ================================================================ */
+    .dialect-indicator-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      padding: 14px 16px;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .dialect-indicator-card:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(56, 189, 248, 0.35);
+    }
+    .dialect-badge-possible {
+      background: rgba(56, 189, 248, 0.15);
+      color: #7dd3fc;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 9999px;
+    }
+    .dialect-badge-shared {
+      background: rgba(34, 197, 94, 0.15);
+      color: #86efac;
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 9999px;
+    }
+    .dialect-badge-insufficient {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fde68a;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 9999px;
+    }
+    .dialect-evidence-quote {
+      background: rgba(56, 189, 248, 0.08);
+      border-left: 3px solid #38bdf8;
+      border-radius: 6px;
+      padding: 8px 12px;
+      margin-top: 8px;
+      font-size: 13px;
+      color: #f1f5f9;
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .dialect-evidence-quote:hover {
+      background: rgba(56, 189, 248, 0.18);
+      border-color: #7dd3fc;
+    }
+    .dialect-vocab-card {
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+    }
+    .dialect-vocab-card:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(167, 139, 250, 0.4);
+      transform: translateY(-1px);
+    }
+    .radar-tooltip {
+      position: absolute;
+      background: rgba(0, 18, 36, 0.92);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      color: #FFFFFF;
+      pointer-events: none;
+      z-index: 100;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: rgba(0, 18, 36, 0.6); }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.35); }
+
+    /* Focus */
+    :focus-visible {
+      outline: 2px solid #FFFFFF;
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Fullscreen Looping Video Background (Exact User URL) -->
+  <div class="video-bg-container">
+    <video autoplay loop muted playsinline class="video-bg">
+      <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260314_131748_f2ca2a28-fed7-44c8-b9a9-bd9acdd5ec31.mp4" type="video/mp4">
+    </video>
+    <div class="video-bg-scrim"></div>
+  </div>
+
+  <div class="site-content">
+    <!-- Glassmorphic Navigation Bar (Exact User Spec) -->
+    <header class="nav-bar-container">
+      <a href="#" class="nav-logo">
+        Velorah<sup class="text-xs">®</sup>
+        <span class="nav-logo-sub">மரபொலி • மொழி நினைவு</span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="/" class="nav-link active">Home</a>
+        <a href="/atlas" class="nav-link" style="color: #38bdf8; font-weight: 600;">🗺️ Voice Atlas (குரல் வரைபடம்)</a>
+        <a href="#audioStudioSection" class="nav-link">Studio (அரங்கம்)</a>
+        <a href="javascript:void(0)" onclick="openGlobalDictionary()" class="nav-link">Journal (சொல் நினைவகம்)</a>
+        <a href="#savedArchivesSection" class="nav-link">Archive (ஆவணப் பெட்டகம்)</a>
+        <a href="#audioStudioSection" class="nav-link">Reach Us</a>
+      </nav>
+
+      <button onclick="document.getElementById('audioStudioSection').scrollIntoView({ behavior: 'smooth' })" class="liquid-glass nav-cta-btn">
+        Begin Journey
+      </button>
+    </header>
+
+    <!-- Cinematic Hero Section (Exact User Spec) -->
+    <section class="hero-section">
+      <h1 class="hero-h1 animate-fade-rise">
+        Where <em class="not-italic text-muted-foreground">dreams</em> rise <em class="not-italic text-muted-foreground">through the silence.</em>
+      </h1>
+
+      <p class="hero-subtext animate-fade-rise-delay">
+        We're designing tools for deep thinkers, bold creators, and quiet rebels. Amid the chaos, we build digital spaces for sharp focus and inspired work.
+      </p>
+
+      <div class="hero-subtext-ta animate-fade-rise-delay">
+        தமிழ் வாய்மொழி வரலாறு, பாரம்பரியக் கதைகள் மற்றும் வட்டார மரபு அறிவை அழியாமல் பாதுகாக்கும் டிஜிட்டல் நினைவகம்.
+      </div>
+
+      <button onclick="document.getElementById('audioStudioSection').scrollIntoView({ behavior: 'smooth' })" class="liquid-glass hero-cta-btn animate-fade-rise-delay-2">
+        <span>Begin Journey • குரலைப் பதிவு செய்க</span>
+        <span style="font-size: 18px;">&darr;</span>
+      </button>
+    </section>
+
+    <!-- Main Workspace Container: Audio Studio & Archive -->
+    <main class="container" id="audioStudioSection">
+      <!-- Section Banner -->
+      <div class="section-header-banner">
+        <div>
+          <h2>தமிழ் வாய்மொழி அரங்கம் (Audio Speech Studio)</h2>
+          <p>முதியவர்களின் கதைகள் மற்றும் கிராமத்து நினைவுகளை ஒலியில் இருந்து தமிழ் உரையாக மாற்றிப் பாதுகாக்கவும்.</p>
+        </div>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <button onclick="openGlobalDictionary()" class="liquid-glass" style="border-radius: 9999px; padding: 8px 18px; font-size: 13px;">
+            📖 சொல் நினைவகம்
+          </button>
+          <a href="#savedArchivesSection" class="liquid-glass" style="border-radius: 9999px; padding: 8px 18px; font-size: 13px; text-decoration: none;">
+            📚 ஆவணப் பெட்டகம் &darr;
+          </a>
+        </div>
+      </div>
+
+      <div id="statusAlert" class="alert"></div>
+
+      <div class="grid-layout">
+        <!-- Left Column: Audio Recording / Upload & Transcription -->
+        <div>
+          <div class="card">
+            <h2 class="card-title">1. ஒலிக்கோப்பைப் பதிவு செய்க அல்லது பதிவேற்றுக</h2>
+            
+            <div class="audio-input-toggle">
+              <button class="toggle-btn active" id="tabUploadBtn" onclick="switchAudioTab('upload')">📁 கோப்புப் பதிவேற்றம் (Upload)</button>
+              <button class="toggle-btn" id="tabRecordBtn" onclick="switchAudioTab('record')">🎙️ நேரலைப் பதிவு (Record Mic)</button>
+            </div>
+
+            <!-- File Upload Zone -->
+            <div id="uploadPane">
+              <div class="drop-zone" onclick="document.getElementById('audioFileInput').click()">
+                <input type="file" id="audioFileInput" accept="audio/*,video/*,.wav,.mp3,.m4a,.webm,.ogg,.flac,.mpeg,.mpg,.mp4,.3gp,.amr,.wma,.opus" onchange="handleFileSelected(this)">
+                <div style="font-size: 40px; margin-bottom: 8px;">🎧</div>
+                <strong style="color: #FFFFFF; font-size: 15px;" id="fileLabel">எந்த ஒலிக்கோப்பையும் இங்கே இழுத்துவிடவும் அல்லது சொடுக்கவும்</strong>
+                <div style="font-size: 12px; color: hsl(var(--muted-foreground)); margin-top: 6px;">அனைத்து வடிவங்களும் ஆதரிக்கப்படுகின்றன: MP3, WAV, MPEG, M4A, WEBM, OGG, 3GP, AMR, FLAC (50MB வரை)</div>
+              </div>
+            </div>
+
+            <!-- Mic Record Zone -->
+            <div id="recordPane" style="display: none;">
+              <div class="record-controls">
+                <button id="recordToggleBtn" class="btn-record" onclick="toggleRecording()">🎙️</button>
+                <div id="recordStatus" style="font-size: 14px; font-weight: 500; color: hsl(var(--muted-foreground)); margin-top: 14px;">மைக் பதிவு செய்யத் தொடங்குங்கள்</div>
+                <div id="recordTimer" style="font-size: 26px; font-weight: 700; color: #f87171; margin-top: 6px; font-family: var(--font-display);">00:00</div>
+              </div>
+            </div>
+
+            <!-- Audio Preview Player -->
+            <div id="audioPreviewContainer" style="margin-top: 18px; display: none;">
+              <label style="font-size: 13px; font-weight: 500; color: hsl(var(--muted-foreground));">ஒலி முன்னோட்டம் (Preview):</label>
+              <audio id="audioPreview" controls style="width: 100%; margin-top: 6px;"></audio>
+            </div>
+
+            <!-- Transcribe Button -->
+            <button id="btnTranscribe" class="btn-primary" onclick="transcribeAudio()" disabled>
+              <span>🎙️ தமிழ் உரையாக மாற்று (Transcribe Speech)</span>
+            </button>
+          </div>
+
+          <!-- Region & Dialect Analysis Result Box -->
+          <div id="regionAnalysisBox" class="card" style="display: none;">
+            <h2 class="card-title" style="color: #38bdf8;">2. வட்டார மொழி &amp; மண்டலப் பகுப்பாய்வு</h2>
+            <div class="region-card">
+              <div class="region-title" id="displayRegionName">கண்டறியப்பட்ட பகுதி</div>
+              <div style="font-size: 13px; color: hsl(var(--muted-foreground)); margin-bottom: 8px;">
+                மாவட்டம்: <strong id="displayDistrict" style="color: #FFFFFF;">-</strong> | நம்பிக்கை வீதம்: <strong id="displayConfidence" style="color: #FFFFFF;">-</strong>
+              </div>
+              <p id="displayEvidence" style="font-size: 14px; color: rgba(255, 255, 255, 0.9); margin: 0; line-height: 1.7;"></p>
+              <div id="displayKeywords" style="margin-top: 10px;"></div>
+            </div>
+          </div>
+
+          <!-- Live Tamil Word Meanings Directly From Recorded Text -->
+          <div id="liveDictionaryBox" class="card" style="display: none; border-left: 3px solid #38bdf8;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 8px;">
+              <h2 class="card-title" style="color: #FFFFFF; margin: 0; border-bottom: none; padding-bottom: 0;">📖 தமிழ்ச் சொல் விளக்கம் (Tamil Word Meanings)</h2>
+              <span style="font-size: 11px; background: rgba(56, 189, 248, 0.15); color: #7dd3fc; border: 1px solid rgba(56, 189, 248, 0.3); padding: 3px 8px; border-radius: 9999px; font-weight: 600;">நேரடி விளக்கம்</span>
+            </div>
+            <p style="font-size: 13px; color: hsl(var(--muted-foreground)); margin-top: 0; margin-bottom: 14px; line-height: 1.6;">
+              பதிவு செய்யப்பட்ட தமிழ்ப் பேச்சிலிருந்து பாரம்பரிய, மூலிகை மற்றும் வட்டாரச் சொற்களின் பொருள் நேரடியாகக் கண்டறியப்படுகிறது:
+            </p>
+
+            <!-- Quick single-word lookup bar -->
+            <div style="display: flex; gap: 8px; margin-bottom: 15px;">
+              <input type="text" id="quickWordInput" placeholder="குறிப்பிட்ட சொல்லின் பொருள் அறிய (எ.கா: முடக்கத்தான்)..." class="form-control" style="font-size: 13px;" onkeyup="if(event.key==='Enter') lookupQuickWord()">
+              <button type="button" class="liquid-glass" style="border-radius: 10px; padding: 7px 16px; font-size: 13px; font-weight: 600; white-space: nowrap; cursor: pointer;" onclick="lookupQuickWord()">🔍 பொருள் அறி</button>
+            </div>
+
+            <!-- Container where direct word cards appear -->
+            <div id="liveWordsListContainer"></div>
+          </div>
+        </div>
+
+        <!-- Right Column: Tamil Transcript & Metadata Archival Form -->
+        <div>
+          <div class="card">
+            <h2 class="card-title">3. தமிழ் உரை &amp; ஆவணக் குறிப்புகள்</h2>
+
+            <div class="form-group">
+              <label for="storyTitle">ஆவணத்தின் தலைப்பு (Title) *</label>
+              <input type="text" id="storyTitle" class="form-control" placeholder="எ.கா., எங்கள் ஊர் தைப்பொங்கல் கொண்டாட்ட நினைவுகள்" required>
+            </div>
+
+            <div class="form-group">
+              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 6px;">
+                <label for="transcriptText" style="margin-bottom: 0;">தமிழ் உரை (Tamil Transcript) *</label>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                  <button type="button" class="btn-secondary" style="padding: 4px 10px; font-size: 12px; cursor: pointer;" onclick="triggerRegionAnalysis()">📍 வட்டாரத்தை மீண்டும் சோதி</button>
+                  <button type="button" id="btnExplainSpeech" class="btn-secondary" style="padding: 4px 12px; font-size: 12px; font-weight:600; cursor: pointer;" onclick="explainRecordedSpeechWithAI()">📖 சொல் பொருள் காண்க</button>
+                  <button type="button" id="btnSummarizeHeader" class="btn-secondary" style="padding: 4px 12px; font-size: 12px; font-weight:600; cursor: pointer;" onclick="generateStorySummary()">📄 கதைச் சுருக்கம்</button>
+                  <button type="button" id="btnDialectHeader" class="btn-secondary" style="padding: 4px 12px; font-size: 12px; font-weight:600; cursor: pointer; color: #38bdf8; border-color: rgba(56, 189, 248, 0.4);" onclick="analyzeDialectDNA()">🧬 வட்டார மொழி அடையாளம்</button>
+                </div>
+              </div>
+              <textarea id="transcriptText" class="form-control" placeholder="ஒலிக்கோப்பிலிருந்து பெறப்பட்ட தமிழ் உரை இங்கே தோன்றும். தேவைப்பட்டால் திருத்திக் கொள்ளலாம்..." required oninput="onTranscriptChanged()"></textarea>
+            </div>
+
+            <!-- Action Buttons: Generate Summary & Dialect DNA -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: -6px; margin-bottom: 14px;">
+              <button type="button" id="btnGenerateSummaryMain" class="liquid-glass" style="width: 100%; border-radius: 10px; font-weight: 600; padding: 12px 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px; font-family: var(--font-body);" onclick="generateStorySummary()">
+                <span>📄 கதைச் சுருக்கம் (Summary)</span>
+              </button>
+              <button type="button" id="btnAnalyzeDialectMain" class="liquid-glass" style="width: 100%; border-radius: 10px; font-weight: 600; padding: 12px 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px; font-family: var(--font-body); border-color: rgba(56, 189, 248, 0.35); color: #7dd3fc;" onclick="analyzeDialectDNA()">
+                <span>🧬 வட்டார மொழியை ஆராய்க (Dialect DNA)</span>
+              </button>
+            </div>
+
+            <!-- Story Summary Card (Tamil & English) in Liquid Glass -->
+            <div id="storySummaryBox" style="display: none; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.15); border-left: 3px solid #a855f7; border-radius: 12px; padding: 16px; margin-bottom: 16px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 8px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span style="font-size: 18px;">📄</span>
+                  <strong style="font-size: 15px; color: #FFFFFF; font-family: var(--font-display);">கதைச் சுருக்கம் (Story Summary)</strong>
+                </div>
+                <div style="display: flex; gap: 6px; align-items: center;">
+                  <button type="button" id="btnRegenerateSummary" class="btn-secondary" style="padding: 4px 10px; font-size: 12px;" onclick="generateStorySummary()">🔄 மீண்டும் உருவாக்கு</button>
+                  <button type="button" id="btnCopySummary" class="btn-secondary" style="padding: 4px 10px; font-size: 12px;" onclick="copyStorySummary()">📋 சுருக்கத்தை நகலெடு</button>
+                </div>
+              </div>
+
+              <!-- Loading State -->
+              <div id="summaryLoadingIndicator" style="display: none; padding: 16px; text-align: center; color: rgba(255, 255, 255, 0.85); font-size: 13.5px;">
+                <span class="spinner" style="margin-right: 8px;"></span>
+                கதைச் சுருக்கம் உருவாக்கப்படுகிறது... தயவுசெய்து காத்திருக்கவும்... (Summarizing...)
+              </div>
+
+              <!-- Error State -->
+              <div id="summaryErrorAlert" style="display: none; padding: 10px 14px; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 8px; color: #fca5a5; font-size: 13px; margin-top: 8px;">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span>⚠️</span>
+                  <span id="summaryErrorMessage">சுருக்கம் உருவாக்குவதில் பிழை ஏற்பட்டது.</span>
+                </div>
+              </div>
+
+              <!-- Summary Content Body -->
+              <div id="summaryContentBody" style="display: none; margin-top: 10px;">
+                <!-- Tamil Summary Box -->
+                <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 12px 14px; margin-bottom: 10px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #d8b4fe; margin-bottom: 5px; display: flex; align-items: center; gap: 6px;">
+                    <span>🇮🇳</span> தமிழ் சுருக்கம் (Tamil Summary)
+                  </div>
+                  <div id="tamilSummaryText" style="font-size: 13.5px; line-height: 1.7; color: hsl(var(--foreground)); white-space: pre-line;"></div>
+                </div>
+
+                <!-- English Summary Box -->
+                <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 12px 14px; margin-bottom: 8px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #d8b4fe; margin-bottom: 5px; display: flex; align-items: center; gap: 6px;">
+                    <span>🌐</span> English Summary
+                  </div>
+                  <div id="englishSummaryText" style="font-size: 13.5px; line-height: 1.7; color: hsl(var(--foreground)); white-space: pre-line;"></div>
+                </div>
+
+                <!-- Key points container if present -->
+                <div id="summaryKeyPointsBox" style="display: none; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 10px 14px; margin-bottom: 8px;">
+                  <div style="font-size: 11.5px; font-weight: 600; color: #c084fc; margin-bottom: 4px;">📌 முக்கியக் குறிப்புகள் (Key Points)</div>
+                  <ul id="summaryKeyPointsList" style="margin: 0; padding-left: 20px; font-size: 12.5px; color: hsl(var(--muted-foreground)); line-height: 1.6;"></ul>
+                </div>
+
+                <!-- Option to apply to description -->
+                <div style="text-align: right; margin-top: 6px;">
+                  <button type="button" class="btn-secondary" style="padding: 4px 10px; font-size: 11.5px; background: transparent; border: 1px dashed rgba(255, 255, 255, 0.25); cursor: pointer;" onclick="applySummaryToDescription()">
+                    📝 இந்தச் சுருக்கத்தை ஆவண விளக்கத்தில் சேர்க்க (Use as Description)
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dialect DNA Card (வட்டார மொழி அடையாளம்) in Liquid Glass -->
+            <div id="dialectDnaBox" style="display: none; background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(56, 189, 248, 0.25); border-left: 3px solid #38bdf8; border-radius: 14px; padding: 18px; margin-bottom: 20px; box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);">
+              <!-- Header with title, sample stats, and actions -->
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 10px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                  <span style="font-size: 22px;">🧬</span>
+                  <div>
+                    <strong style="font-size: 16px; color: #FFFFFF; font-family: var(--font-display); letter-spacing: -0.2px;">வட்டார மொழி அடையாளம் (Dialect DNA)</strong>
+                    <div style="font-size: 11.5px; color: hsl(var(--muted-foreground));" id="dialectMetaStats">சான்று அடிப்படையிலான தமிழ் மொழியியல் பகுப்பாய்வு</div>
+                  </div>
+                </div>
+                <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap;">
+                  <button type="button" id="btnRegenerateDialect" class="btn-secondary" style="padding: 4px 10px; font-size: 12px;" onclick="analyzeDialectDNA()">🔄 மீண்டும் ஆராய்க</button>
+                  <button type="button" id="btnCopyDialect" class="btn-secondary" style="padding: 4px 10px; font-size: 12px;" onclick="copyDialectReport()">📋 அறிக்கை நகலெடு</button>
+                </div>
+              </div>
+
+              <!-- Outdated Warning Banner if transcript was edited -->
+              <div id="dialectOutdatedAlert" style="display: none; padding: 10px 14px; background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: 8px; color: #fde68a; font-size: 12.5px; margin-bottom: 14px; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span>⚠️</span>
+                  <span>தமிழ் உரை மாற்றப்பட்டுள்ளது. புதிய உரைக்கான பகுப்பாய்வைப் பெற 'மீண்டும் ஆராய்க' அழுத்தவும்.</span>
+                </div>
+                <button type="button" class="btn-secondary" style="padding: 3px 10px; font-size: 11.5px; border-color: rgba(245, 158, 11, 0.4); background: rgba(245, 158, 11, 0.1);" onclick="analyzeDialectDNA()">இப்போது புதுப்பி</button>
+              </div>
+
+              <!-- Loading State -->
+              <div id="dialectLoadingIndicator" style="display: none; padding: 26px 16px; text-align: center; color: rgba(255, 255, 255, 0.85); font-size: 13.5px;">
+                <span class="spinner" style="margin-right: 8px; border-top-color: #38bdf8;"></span>
+                வட்டார மொழியியல் மரபணு ஆராயப்படுகிறது... தயவுசெய்து காத்திருக்கவும்... (Analyzing Linguistic DNA...)
+              </div>
+
+              <!-- Error State -->
+              <div id="dialectErrorAlert" style="display: none; padding: 12px 14px; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 8px; color: #fca5a5; font-size: 13px; margin-top: 8px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;">
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <span>⚠️</span>
+                    <span id="dialectErrorMessage">பகுப்பாய்வில் பிழை ஏற்பட்டது.</span>
+                  </div>
+                  <button type="button" class="btn-secondary" style="padding: 3px 8px; font-size: 11.5px;" onclick="analyzeDialectDNA()">மீண்டும் முயற்சி</button>
+                </div>
+              </div>
+
+              <!-- Content Body -->
+              <div id="dialectContentBody" style="display: none; margin-top: 10px;">
+                <!-- 1. Overall Assessment -->
+                <div style="background: rgba(255, 255, 255, 0.025); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 12px 14px; margin-bottom: 14px;">
+                  <div style="font-size: 12px; font-weight: 600; color: #7dd3fc; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                    <span>🔍</span> ஒட்டுமொத்த மொழியியல் மதிப்பீடு (Linguistic Assessment)
+                  </div>
+                  <p id="dialectOverallText" style="margin: 0; font-size: 13.5px; line-height: 1.7; color: hsl(var(--foreground));"></p>
+                </div>
+
+                <!-- 2. Dialect DNA Feature Distribution (Radar Chart) -->
+                <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 14px; margin-bottom: 14px;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 6px;">
+                    <div style="font-size: 12px; font-weight: 600; color: #38bdf8; display: flex; align-items: center; gap: 6px;">
+                      <span>📊</span> மொழியியல் கூறுகள் விநியோகம் (Dialect Feature Radar)
+                    </div>
+                    <button type="button" id="btnToggleRadarTable" class="btn-secondary" style="padding: 2px 8px; font-size: 11px; cursor: pointer;" onclick="toggleRadarAccessibleTable()">
+                      👁️ தரவு அட்டவணை (Table View)
+                    </button>
+                  </div>
+                  <div style="font-size: 11.5px; color: hsl(var(--muted-foreground)); margin-bottom: 12px;">
+                    உரையில் நேரடியாகக் காணப்பட்ட மொழியியல் கூறுகளின் ஒப்பீட்டு அடர்த்தி (10-100%). இது வட்டார வாய்ப்பு வீதமல்ல; சான்றுகளின் பரவல் மட்டுமே.
+                  </div>
+
+                  <!-- Radar SVG Container -->
+                  <div id="radarChartContainer" style="display: flex; justify-content: center; align-items: center; min-height: 280px; position: relative;"></div>
+
+                  <!-- Accessible Table -->
+                  <div id="radarAccessibleTable" style="display: none; margin-top: 10px; overflow-x: auto;">
+                    <table style="width: 100%; font-size: 12px; border-collapse: collapse; text-align: left;" role="table" aria-label="மொழியியல் கூறுகளின் பகிர்வு அட்டவணை">
+                      <thead>
+                        <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.15); color: #7dd3fc;">
+                          <th style="padding: 6px 8px;">கூறு (Category)</th>
+                          <th style="padding: 6px 8px;">அடர்த்தி (Score)</th>
+                          <th style="padding: 6px 8px;">சான்றுகள் (Evidence Count)</th>
+                        </tr>
+                      </thead>
+                      <tbody id="radarTableBody"></tbody>
+                    </table>
+                  </div>
+                </div>
+
+                <!-- 3. Regional Dialect Indicators -->
+                <div style="margin-bottom: 14px;">
+                  <div style="font-size: 12.5px; font-weight: 600; color: #f4c430; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                    <span>📍</span> வட்டார மொழி அடையாளங்கள் &amp; சான்றுகள் (Regional Indicators)
+                  </div>
+                  <div id="regionalIndicatorsList" style="display: flex; flex-direction: column; gap: 10px;"></div>
+                </div>
+
+                <!-- 4. Distinctive Vocabulary -->
+                <div style="margin-bottom: 14px;">
+                  <div style="font-size: 12.5px; font-weight: 600; color: #a78bfa; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                    <span>📖</span> தனித்துவமான சொற்கள் (Distinctive Spoken Lexicon)
+                  </div>
+                  <div id="distinctiveVocabList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px;"></div>
+                </div>
+
+                <!-- 5. Linguistic Features & Morphological Patterns -->
+                <div id="linguisticFeaturesContainer" style="margin-bottom: 14px; display: none;">
+                  <div style="font-size: 12.5px; font-weight: 600; color: #86efac; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
+                    <span>📐</span> உருபனியல் &amp; வாக்கிய அமைப்பு (Morphological &amp; Syntactic Markers)
+                  </div>
+                  <div id="linguisticFeaturesList" style="display: flex; flex-direction: column; gap: 8px;"></div>
+                </div>
+
+                <!-- 6. Limitations Note -->
+                <div style="background: rgba(255, 255, 255, 0.02); border: 1px dashed rgba(255, 255, 255, 0.15); border-radius: 10px; padding: 12px 14px; margin-top: 10px;">
+                  <div style="font-size: 11.5px; font-weight: 600; color: hsl(var(--muted-foreground)); margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                    <span>ℹ️</span> விளக்க வரம்புகள் &amp; ஆய்வு நெறிமுறைகள் (Linguistic Caveats &amp; Limitations)
+                  </div>
+                  <ul id="dialectLimitationsList" style="margin: 0; padding-left: 18px; font-size: 12px; color: hsl(var(--muted-foreground)); line-height: 1.6;"></ul>
+                </div>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <div class="form-group">
+                <label for="storyteller">கூறுபவர் பெயர் (Storyteller)</label>
+                <input type="text" id="storyteller" class="form-control" placeholder="எ.கா., பொன்னுசாமி (வயது 78)">
+              </div>
+              <div class="form-group">
+                <label for="topic">வகை (Category / Topic)</label>
+                <select id="topic" class="form-control">
+                  <option value="வாய்மொழி வரலாறு">வாய்மொழி வரலாறு (Oral History)</option>
+                  <option value="நாட்டுப்புறக் கதைகள்">நாட்டுப்புறக் கதைகள் (Folk Tales)</option>
+                  <option value="பாரம்பரிய விவசாயம்">பாரம்பரிய விவசாயம் (Agriculture)</option>
+                  <option value="சித்த மருத்துவம்">சித்த மருத்துவம் (Siddha Medicine)</option>
+                  <option value="கிராமத்துக் கலைகள்">கிராமத்துக் கலைகள் (Rural Arts)</option>
+                  <option value="பண்டைய சடங்குகள்">பண்டைய சடங்குகள் (Customs)</option>
+                </select>
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <div class="form-group">
+                <label for="region">ஊர் / மாவட்டம் (Region / District)</label>
+                <input type="text" id="region" class="form-control" placeholder="எ.கா., மதுரை / கொங்கு நாடு">
+              </div>
+              <div class="form-group">
+                <label for="recordDate">பதிவு தேதி (Recording Date)</label>
+                <input type="date" id="recordDate" class="form-control">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="description">விளக்கம் / சிறப்புக் குறிப்பு (Description)</label>
+              <input type="text" id="description" class="form-control" placeholder="எ.கா., பழைய தலைமுறையின் நீர்ப்பாசன முறைகள் பற்றிய பகிர்வு">
+            </div>
+
+            <button id="btnSaveArchive" class="btn-primary" onclick="saveToArchive()">
+              <span>💾 தமிழ் மரபுப் பெட்டகத்தில் சேமிக்க (Save to Archive)</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Preserved Heritage Records Section -->
+      <section id="savedArchivesSection" style="margin-top: 56px; padding-top: 32px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <h2 style="font-family: var(--font-display); font-size: 26px; font-weight: 400; color: hsl(var(--foreground)); margin: 0 0 6px 0;">📚 சேமிக்கப்பட்ட தமிழ் மரபு ஆவணங்கள் (Preserved Heritage Archive)</h2>
+            <div style="font-size: 13px; color: hsl(var(--muted-foreground));">இந்தத் தளத்தில் பதிவு செய்யப்பட்டுப் பாதுகாக்கப்பட்ட வாய்மொழி வரலாறுகள் மற்றும் குறிப்புகள்.</div>
+          </div>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+            <button class="liquid-glass" onclick="openGlobalDictionary()" style="border-radius: 9999px; font-size: 13px; padding: 7px 16px; font-weight:500;">📖 பொதுச் சொல் நினைவகம்</button>
+            <input type="text" id="archiveSearchInput" placeholder="ஆவணங்களைத் தேடுக..." class="form-control" style="width: 200px; padding: 6px 12px; font-size: 13px;" onkeyup="if(event.key==='Enter') loadSavedRecords()">
+            <button class="btn-secondary" onclick="loadSavedRecords()" style="font-size: 13px; padding: 7px 16px;">🔍 தேடு</button>
+          </div>
+        </div>
+
+        <div id="recordsListContainer">
+          <div style="text-align: center; padding: 30px; color: hsl(var(--muted-foreground));">ஆவணங்கள் ஏற்றப்படுகின்றன...</div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal 1: Story-Specific Tamil Memory Dictionary Modal -->
+  <div id="storyDictModalOverlay" class="dict-modal-overlay" onclick="if(event.target===this) closeStoryDictionary()">
+    <div class="dict-modal" role="dialog" aria-modal="true" aria-labelledby="storyDictModalTitle">
+      <div class="dict-modal-header">
+        <div>
+          <h2 id="storyDictModalTitle">📖 தமிழ்ச் சொல் நினைவகம் (Tamil Memory Dictionary)</h2>
+          <div id="storyDictModalSubtitle" style="font-size: 12px; color: hsl(var(--muted-foreground)); margin-top: 3px;">ஆவண விவரங்கள் ஏற்றப்படுகின்றன...</div>
+        </div>
+        <button onclick="closeStoryDictionary()" style="background:none; border:none; color:#fff; font-size:26px; cursor:pointer; padding:2px 8px; line-height:1;" title="மூடுக (Close)">&times;</button>
+      </div>
+
+      <div class="dict-modal-body">
+        <div id="dictModalAlert" class="alert" style="margin-bottom: 15px;"></div>
+
+        <!-- Toolbar: Generate, Add word, Search & Filter -->
+        <div class="dict-toolbar">
+          <button id="btnGenerateDict" class="liquid-glass" style="border-radius: 9999px; padding: 9px 18px; font-size: 13px; font-weight: 500;" onclick="generateStoryDictionary()">
+            <span>📖 சொற்களைப் பிரித்தெடு (Extract Words)</span>
+          </button>
+          <button class="btn-secondary" style="font-size: 13px; padding: 9px 16px;" onclick="toggleAddWordForm()">
+            ➕ புதிய சொல் சேர்
+          </button>
+          <div style="flex: 1; min-width: 170px;">
+            <input type="text" id="dictSearchInput" placeholder="சொல் அல்லது பொருள் தேடுக..." class="form-control" style="padding: 8px 12px; font-size: 13px;" oninput="filterStoryDictionary()">
+          </div>
+          <select id="dictCategoryFilter" class="form-control" style="width: auto; min-width: 130px; padding: 8px 10px; font-size: 13px;" onchange="filterStoryDictionary()">
+            <option value="all">அனைத்துப் பிரிவுகளும்</option>
+          </select>
+          <select id="dictStatusFilter" class="form-control" style="width: auto; min-width: 130px; padding: 8px 10px; font-size: 13px;" onchange="filterStoryDictionary()">
+            <option value="all">அனைத்து நிலைகளும்</option>
+            <option value="verified">✅ சரிபார்க்கப்பட்டது</option>
+            <option value="pending_review">⏳ மதிப்பாய்வு தேவை</option>
+          </select>
+        </div>
+
+        <!-- Collapsible Manual Word Addition Card -->
+        <div id="addWordFormContainer" style="display: none; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 14px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.4);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 8px;">
+            <h3 style="margin:0; font-size:17px; font-weight:400; color: #FFFFFF; font-family: var(--font-display);">➕ புதிய மரபுச் சொல்லைச் சேர்த்தல் (Add Missing Term)</h3>
+            <button type="button" onclick="toggleAddWordForm()" style="background:none; border:none; color: hsl(var(--muted-foreground)); font-size:20px; cursor:pointer;">&times;</button>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="form-group">
+              <label>தமிழ்ச் சொல் (Tamil Word) *</label>
+              <input type="text" id="manualWord" class="form-control" placeholder="எ.கா., முடக்கத்தான்">
+            </div>
+            <div class="form-group">
+              <label>பிரிவு (Category)</label>
+              <select id="manualCategory" class="form-control">
+                <option value="சித்த மருத்துவம் & மூலிகைகள்">சித்த மருத்துவம் & மூலிகைகள்</option>
+                <option value="விவசாயம் & உழவுக் கருவிகள்">விவசாயம் & உழவுக் கருவிகள்</option>
+                <option value="வட்டார வழக்கு & மரபுப் பழமொழி">வட்டார வழக்கு & மரபுப் பழமொழி</option>
+                <option value="பாரம்பரிய உணவு முறை">பாரம்பரிய உணவு முறை</option>
+                <option value="கிராமியக் கலைகள் & சடங்குகள்">கிராமியக் கலைகள் & சடங்குகள்</option>
+                <option value="பாரம்பரிய அறிவு">பாரம்பரிய அறிவு</option>
+              </select>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="form-group">
+              <label>தமிழ் விளக்கம் (Tamil Meaning) *</label>
+              <input type="text" id="manualMeaningTa" class="form-control" placeholder="எ.கா., மூட்டுவலியைப் போக்கும் ஒரு மருத்துவக் கொடி">
+            </div>
+            <div class="form-group">
+              <label>ஆங்கில விளக்கம் (English Meaning) *</label>
+              <input type="text" id="manualMeaningEn" class="form-control" placeholder="e.g., A medicinal climbing herb used to cure joint pain">
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="form-group">
+              <label>சூழல்சார் விளக்கம் (Contextual Meaning in Story)</label>
+              <input type="text" id="manualContextTa" class="form-control" placeholder="எ.கா., தாத்தா மூட்டு வலிக்கு கீரையை விளக்கெண்ணெய் விட்டு வதக்கி சாப்பிட்டதாகக் குறிப்பிடுகிறார்">
+            </div>
+            <div class="form-group">
+              <label>எடுத்துக்காட்டு வாக்கியம் (Example Sentence)</label>
+              <input type="text" id="manualExample" class="form-control" placeholder="எ.கா., முடக்கத்தான் கீரை தோசை உடலுக்கு நல்லது">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>உரை மேற்கோள் (Source Excerpt from Transcript)</label>
+            <input type="text" id="manualExcerpt" class="form-control" placeholder="கதையின் உரையில் இச்சொல் இடம்பெற்ற வாக்கியம்">
+          </div>
+          <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:10px;">
+            <button type="button" class="btn-secondary" onclick="toggleAddWordForm()">ரத்து</button>
+            <button type="button" class="btn-primary" style="margin-top:0; width:auto; padding: 8px 20px;" onclick="submitManualWord()">💾 சேமிக்க (Save Entry)</button>
+          </div>
+        </div>
+
+        <!-- Dictionary Cards Container -->
+        <div id="storyDictCardsContainer">
+          <div style="text-align: center; padding: 40px; color: hsl(var(--muted-foreground));">சொற்கள் ஏற்றப்படுகின்றன...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Global Tamil Memory Dictionary (All Stories) -->
+  <div id="globalDictModalOverlay" class="dict-modal-overlay" onclick="if(event.target===this) closeGlobalDictionary()">
+    <div class="dict-modal" role="dialog" aria-modal="true" aria-labelledby="globalDictModalTitle">
+      <div class="dict-modal-header">
+        <div>
+          <h2 id="globalDictModalTitle">📖 பொதுத் தமிழ்ச் சொல் நினைவகம் (Global Tamil Memory Dictionary)</h2>
+          <div style="font-size: 12px; color: hsl(var(--muted-foreground)); margin-top: 3px;">அனைத்து வாய்மொழி ஆவணங்களிலிருந்தும் பாதுகாக்கப்பட்ட மரபுச் சொற்கள்</div>
+        </div>
+        <button onclick="closeGlobalDictionary()" style="background:none; border:none; color:#fff; font-size:26px; cursor:pointer; padding:2px 8px; line-height:1;" title="மூடுக (Close)">&times;</button>
+      </div>
+
+      <div class="dict-modal-body">
+        <div class="dict-toolbar">
+          <div style="flex: 1; min-width: 180px;">
+            <input type="text" id="globalDictSearchInput" placeholder="அனைத்து சொற்களையும் தேடுக (Search Tamil or English)..." class="form-control" style="padding: 8px 12px; font-size: 13px;" onkeyup="if(event.key==='Enter') searchGlobalDictionary()">
+          </div>
+          <select id="globalDictCategoryFilter" class="form-control" style="width: auto; min-width: 130px; padding: 8px 10px; font-size: 13px;" onchange="searchGlobalDictionary()">
+            <option value="all">அனைத்துப் பிரிவுகளும்</option>
+          </select>
+          <select id="globalDictStatusFilter" class="form-control" style="width: auto; min-width: 130px; padding: 8px 10px; font-size: 13px;" onchange="searchGlobalDictionary()">
+            <option value="all">அனைத்து நிலைகளும்</option>
+            <option value="verified">✅ சரிபார்க்கப்பட்டது</option>
+            <option value="pending_review">⏳ மதிப்பாய்வு தேவை</option>
+          </select>
+          <button class="liquid-glass" style="margin-top:0; border-radius: 9999px; padding: 8px 20px; font-size: 13px; font-weight: 500;" onclick="searchGlobalDictionary()">🔍 தேடு</button>
+        </div>
+
+        <div id="globalDictCardsContainer">
+          <div style="text-align: center; padding: 40px; color: hsl(var(--muted-foreground));">சொற்கள் ஏற்றப்படுகின்றன...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Audio Player for reliable timestamps playback -->
+  <audio id="snippetAudioPlayer" style="display: none;"></audio>
+
+  <script>
+    let activeAudioFile = null;
+    let activeAudioBlob = null;
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let recordInterval = null;
+    let recordSeconds = 0;
+    let lastRegionMetadata = null;
+
+    // Set today's date
+    document.getElementById('recordDate').value = new Date().toISOString().split('T')[0];
+
+    function showAlert(msg, isSuccess = true) {
+      const a = document.getElementById('statusAlert');
+      a.className = isSuccess ? 'alert alert-success' : 'alert alert-danger';
+      a.textContent = msg;
+      a.style.display = 'block';
+      window.scrollTo({ top: a.offsetTop - 20, behavior: 'smooth' });
+      setTimeout(() => { a.style.display = 'none'; }, 6000);
+    }
+
+    function switchAudioTab(tab) {
+      document.getElementById('tabUploadBtn').classList.toggle('active', tab === 'upload');
+      document.getElementById('tabRecordBtn').classList.toggle('active', tab === 'record');
+      document.getElementById('uploadPane').style.display = tab === 'upload' ? 'block' : 'none';
+      document.getElementById('recordPane').style.display = tab === 'record' ? 'block' : 'none';
+    }
+
+    function handleFileSelected(input) {
+      if (input.files && input.files[0]) {
+        activeAudioFile = input.files[0];
+        activeAudioBlob = null;
+        document.getElementById('fileLabel').textContent = "தேர்ந்தெடுக்கப்பட்டது: " + activeAudioFile.name;
+        showAudioPreview(URL.createObjectURL(activeAudioFile));
+        document.getElementById('btnTranscribe').disabled = false;
+      }
+    }
+
+    function showAudioPreview(url) {
+      const container = document.getElementById('audioPreviewContainer');
+      const audio = document.getElementById('audioPreview');
+      audio.src = url;
+      container.style.display = 'block';
+    }
+
+    async function toggleRecording() {
+      const btn = document.getElementById('recordToggleBtn');
+      const status = document.getElementById('recordStatus');
+      const timer = document.getElementById('recordTimer');
+
+      if (!mediaRecorder || mediaRecorder.state === 'inactive') {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          mediaRecorder = new MediaRecorder(stream);
+          audioChunks = [];
+
+          mediaRecorder.ondataavailable = e => { if (e.data.size > 0) audioChunks.push(e.data); };
+          mediaRecorder.onstop = () => {
+            activeAudioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+            activeAudioFile = null;
+            const audioUrl = URL.createObjectURL(activeAudioBlob);
+            showAudioPreview(audioUrl);
+            document.getElementById('btnTranscribe').disabled = false;
+            status.textContent = "பதிவு முடிந்தது! மேலே உள்ள முன்னோட்டத்தைக் கேட்கலாம்.";
+            clearInterval(recordInterval);
+          };
+
+          mediaRecorder.start();
+          btn.classList.add('recording');
+          btn.textContent = '⏹️';
+          status.textContent = "பதிவாகிறது... பேசி முடித்ததும் மீண்டும் அழுத்தவும்.";
+          recordSeconds = 0;
+          timer.textContent = "00:00";
+          recordInterval = setInterval(() => {
+            recordSeconds++;
+            const m = String(Math.floor(recordSeconds / 60)).padStart(2, '0');
+            const s = String(recordSeconds % 60).padStart(2, '0');
+            timer.textContent = `${m}:${s}`;
+          }, 1000);
+        } catch (err) {
+          showAlert("மைக் அனுமதி கிடைக்கவில்லை: " + err.message, false);
+        }
+      } else if (mediaRecorder.state === 'recording') {
+        mediaRecorder.stop();
+        btn.classList.remove('recording');
+        btn.textContent = '🎙️';
+      }
+    }
+
+    async function transcribeAudio() {
+      if (!activeAudioFile && !activeAudioBlob) {
+        showAlert("தயவுசெய்து ஒரு ஒலிக்கோப்பைப் பதிவேற்றவும் அல்லது பதிவு செய்யவும்.", false);
+        return;
+      }
+
+      const btn = document.getElementById('btnTranscribe');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner" style="border-top-color: #041220; border-color: rgba(0,0,0,0.2); width: 14px; height: 14px; margin-right: 6px;"></span> தமிழ் உரையாக மாற்றப்படுகிறது... காத்திருக்கவும்';
+
+      const formData = new FormData();
+      if (activeAudioFile) {
+        formData.append('audio', activeAudioFile);
+      } else {
+        formData.append('audio', activeAudioBlob, 'voice_recording.webm');
+      }
+
+      try {
+        const resp = await fetch('/api/transcribe', {
+          method: 'POST',
+          body: formData
+        });
+        const data = await resp.json();
+
+        if (data.success && data.text) {
+          document.getElementById('transcriptText').value = data.text;
+          showAlert("ஒலி வெற்றிகரமாகத் தமிழ் உரையாக மாற்றப்பட்டது!");
+
+          if (data.extracted_metadata) {
+            applyExtractedMetadata(data.extracted_metadata);
+          }
+          if (data.region_analysis) {
+            displayRegionAnalysis(data.region_analysis);
+          }
+          explainRecordedSpeechWithAI(false);
+        } else {
+          showAlert("உரை மாற்றத்தில் சிக்கல்: " + (data.error || "உரை கிடைக்கவில்லை"), false);
+        }
+      } catch (err) {
+        showAlert("சேவையகத்தை தொடர்பு கொள்வதில் பிழை: " + err.message, false);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<span>🎙️ தமிழ் உரையாக மாற்று (Transcribe Speech)</span>';
+      }
+    }
+
+    async function triggerRegionAnalysis() {
+      const text = document.getElementById('transcriptText').value.trim();
+      if (!text) {
+        showAlert("வட்டாரப் பகுப்பாய்வு செய்ய முதலில் தமிழ் உரையை உள்ளிடவும்.", false);
+        return;
+      }
+      try {
+        const resp = await fetch('/api/analyze-region', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ transcript: text })
+        });
+        const data = await resp.json();
+        if (data.success) {
+          if (data.extracted_metadata) {
+            applyExtractedMetadata(data.extracted_metadata);
+          }
+          if (data.region_data) {
+            displayRegionAnalysis(data.region_data);
+          }
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    // =========================================================================
+    // DIRECT TAMIL WORD MEANINGS (FROM RECORDED TEXT VIA API)
+    // =========================================================================
+    async function explainRecordedSpeechWithAI(showNotify = true) {
+      const text = document.getElementById('transcriptText')?.value.trim();
+      if (!text) {
+        if (showNotify) showAlert("முதலில் ஒலியைப் பதிவு செய்து உரையாக்கவும் அல்லது தமிழ் உரையை உள்ளிடவும்.", false);
+        return;
+      }
+
+      const box = document.getElementById('liveDictionaryBox');
+      const listContainer = document.getElementById('liveWordsListContainer');
+      const btn = document.getElementById('btnExplainSpeech');
+
+      box.style.display = 'block';
+      listContainer.innerHTML = '<div style="text-align: center; padding: 25px; color: hsl(var(--muted-foreground));"><span class="spinner" style="margin-right: 8px;"></span> மரபுச் சொற்களின் பொருள் ஆராயப்படுகிறது... (Finding word meanings...)</div>';
+
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner" style="width:12px; height:12px; margin-right:4px;"></span> பொருள் ஆராய்கிறது...';
+      }
+
+      try {
+        const resp = await fetch('/api/dictionary/explain-text', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text: text })
+        });
+        const data = await resp.json();
+
+        if (data.success && data.entries && data.entries.length > 0) {
+          renderLiveWordCards(data.entries);
+          if (showNotify) showAlert(`🎉 ${data.entries.length} தமிழ்ச் சொற்களின் பொருள் வெற்றிகரமாகக் கண்டறியப்பட்டது!`);
+        } else {
+          listContainer.innerHTML = `
+            <div style="text-align: center; padding: 20px; background: rgba(255,255,255,0.02); border-radius: 10px; border: 1px dashed rgba(255,255,255,0.15); color: hsl(var(--muted-foreground));">
+              இவ்வுரையில் குறிப்பிடத்தக்க பாரம்பரிய அல்லது மூலிகைச் சொற்கள் கண்டறியப்படவில்லை. மேலேயுள்ள கட்டத்தில் குறிப்பிட்ட சொல்லை உள்ளிட்டுத் தேடலாம்.
+            </div>
+          `;
+        }
+      } catch (err) {
+        listContainer.innerHTML = `<div style="color: #fca5a5; text-align: center; padding: 15px;">பிழை: ${err.message}</div>`;
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = '📖 சொல் பொருள் காண்க';
+        }
+      }
+    }
+
+    async function lookupQuickWord() {
+      const input = document.getElementById('quickWordInput');
+      const word = input ? input.value.trim() : '';
+      if (!word) {
+        showAlert("தயவுசெய்து ஒரு தமிழ்ச் சொல்லை உள்ளிடவும்.", false);
+        return;
+      }
+
+      const box = document.getElementById('liveDictionaryBox');
+      const listContainer = document.getElementById('liveWordsListContainer');
+      box.style.display = 'block';
+
+      const tempId = 'temp-' + Date.now();
+      const existingHtml = listContainer.innerHTML;
+      listContainer.innerHTML = `<div id="${tempId}" style="text-align:center; padding:15px; color: hsl(var(--muted-foreground));"><span class="spinner" style="margin-right: 6px;"></span> "${escapeHtml(word)}" சொல்லுக்குப் பொருள் தேடப்படுகிறது... (Finding meaning...)</div>` + existingHtml;
+
+      try {
+        const context = document.getElementById('transcriptText')?.value.trim() || '';
+        const resp = await fetch('/api/dictionary/lookup-word', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ word: word, context: context })
+        });
+        const data = await resp.json();
+
+        const placeholder = document.getElementById(tempId);
+        if (placeholder) placeholder.remove();
+
+        if (data.success && data.entry) {
+          input.value = '';
+          const singleHtml = buildSingleWordCardHtml(data.entry);
+          listContainer.insertAdjacentHTML('afterbegin', singleHtml);
+          showAlert(`🎉 "${escapeHtml(word)}" சொல்லின் பொருள் பெறப்பட்டது!`);
+        } else {
+          showAlert(`பிழை: ${data.error || 'பொருள் கிடைக்கவில்லை'}`, false);
+        }
+      } catch (err) {
+        const placeholder = document.getElementById(tempId);
+        if (placeholder) placeholder.remove();
+        showAlert(`பிழை: ${err.message}`, false);
+      }
+    }
+
+    function renderLiveWordCards(entries) {
+      const container = document.getElementById('liveWordsListContainer');
+      if (!container) return;
+      container.innerHTML = entries.map(e => buildSingleWordCardHtml(e)).join('');
+    }
+
+    function buildSingleWordCardHtml(e) {
+      return `
+        <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 12px; padding: 14px 18px; margin-bottom: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.2);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <h3 style="font-family: var(--font-display); font-size: 21px; font-weight: 400; color: #FFFFFF; margin: 0;">${escapeHtml(e.word)}</h3>
+              <span class="dict-cat-badge">📁 ${escapeHtml(e.category || 'பாரம்பரிய அறிவு')}</span>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px;">
+            <div style="background: rgba(255, 255, 255, 0.03); padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-size: 11px; font-weight: 600; color: #38bdf8;">தமிழ் விளக்கம்:</div>
+              <div style="font-size: 13.5px; color: hsl(var(--foreground)); line-height: 1.6;">${escapeHtml(e.meaning_ta)}</div>
+            </div>
+            <div style="background: rgba(255, 255, 255, 0.03); padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08);">
+              <div style="font-size: 11px; font-weight: 600; color: hsl(var(--muted-foreground));">English Meaning:</div>
+              <div style="font-size: 13.5px; color: hsl(var(--foreground)); line-height: 1.6;">${escapeHtml(e.meaning_en)}</div>
+            </div>
+          </div>
+
+          ${e.contextual_meaning_ta ? `
+            <div style="font-size: 12.5px; color: hsl(var(--muted-foreground)); margin-bottom: 6px;">
+              <strong style="color: rgba(255,255,255,0.85);">சூழல் விளக்கம்:</strong> ${escapeHtml(e.contextual_meaning_ta)}
+            </div>
+          ` : ''}
+
+          ${e.example_sentence ? `
+            <div style="font-size: 12.5px; color: hsl(var(--muted-foreground)); margin-bottom: 6px;">
+              <strong style="color: rgba(255,255,255,0.85);">எடுத்துக்காட்டு:</strong> ${escapeHtml(e.example_sentence)}
+            </div>
+          ` : ''}
+
+          ${e.source_excerpt ? `
+            <div style="font-size: 12px; background: rgba(56, 189, 248, 0.05); border-left: 3px solid rgba(56, 189, 248, 0.8); padding: 6px 12px; border-radius: 4px; font-style: italic; color: #e0f2fe;">
+              "${escapeHtml(e.source_excerpt)}"
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // ORAL STORY SUMMARY (CHAT COMPLETIONS API)
+    // =========================================================================
+    async function generateStorySummary() {
+      const transcript = document.getElementById('transcriptText')?.value.trim();
+      const summaryBox = document.getElementById('storySummaryBox');
+      const loadingEl = document.getElementById('summaryLoadingIndicator');
+      const errorEl = document.getElementById('summaryErrorAlert');
+      const errorMsgEl = document.getElementById('summaryErrorMessage');
+      const contentEl = document.getElementById('summaryContentBody');
+      const btnMain = document.getElementById('btnGenerateSummaryMain');
+      const btnRegen = document.getElementById('btnRegenerateSummary');
+      const btnHeader = document.getElementById('btnSummarizeHeader');
+
+      if (!summaryBox) return;
+
+      if (!transcript) {
+        summaryBox.style.display = 'block';
+        if (loadingEl) loadingEl.style.display = 'none';
+        if (contentEl) contentEl.style.display = 'none';
+        if (errorEl) {
+          errorEl.style.display = 'block';
+          if (errorMsgEl) errorMsgEl.textContent = 'கதைச் சுருக்கம் உருவாக்க முதலில் ஒலியைப் பதிவு செய்து உரையாக்கவும் அல்லது தமிழ் உரையை உள்ளிடவும்.';
+        }
+        showAlert('சுருக்கம் பெற முதலில் தமிழ் உரை தேவைப்படுகிறது.', false);
+        return;
+      }
+
+      summaryBox.style.display = 'block';
+      if (errorEl) errorEl.style.display = 'none';
+      if (contentEl) contentEl.style.display = 'none';
+      if (loadingEl) loadingEl.style.display = 'block';
+
+      if (btnMain) {
+        btnMain.disabled = true;
+        btnMain.innerHTML = '<span><span class="spinner" style="width:14px; height:14px; margin-right:6px;"></span> சுருக்கம் உருவாக்கப்படுகிறது... (Summarizing...)</span>';
+      }
+      if (btnRegen) {
+        btnRegen.disabled = true;
+        btnRegen.innerHTML = '⏳ உருவாக்குகிறது...';
+      }
+      if (btnHeader) {
+        btnHeader.disabled = true;
+      }
+
+      try {
+        const resp = await fetch('/api/summarize', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ transcript: transcript })
+        });
+
+        const data = await resp.json();
+
+        if (resp.ok && data.success) {
+          const taEl = document.getElementById('tamilSummaryText');
+          const enEl = document.getElementById('englishSummaryText');
+          if (taEl) taEl.textContent = data.summary_ta || 'சுருக்கம் கிடைக்கவில்லை.';
+          if (enEl) enEl.textContent = data.summary_en || 'No summary available.';
+
+          const kpBox = document.getElementById('summaryKeyPointsBox');
+          const kpList = document.getElementById('summaryKeyPointsList');
+          if (kpBox && kpList) {
+            if (Array.isArray(data.key_points) && data.key_points.length > 0) {
+              kpList.innerHTML = data.key_points.map(pt => `<li>${escapeHtml(pt)}</li>`).join('');
+              kpBox.style.display = 'block';
+            } else {
+              kpBox.style.display = 'none';
+            }
+          }
+
+          if (loadingEl) loadingEl.style.display = 'none';
+          if (contentEl) contentEl.style.display = 'block';
+          showAlert('📄 கதைச் சுருக்கம் வெற்றிகரமாக உருவாக்கப்பட்டது!');
+        } else {
+          throw new Error(data.error || 'கதைச் சுருக்கம் உருவாக்குவதில் தோல்வி ஏற்பட்டது.');
+        }
+      } catch (err) {
+        if (loadingEl) loadingEl.style.display = 'none';
+        if (errorEl) {
+          errorEl.style.display = 'block';
+          if (errorMsgEl) errorMsgEl.textContent = 'பிழை: ' + err.message;
+        }
+        showAlert('சுருக்கம் உருவாக்குவதில் பிழை: ' + err.message, false);
+      } finally {
+        if (btnMain) {
+          btnMain.disabled = false;
+          btnMain.innerHTML = '<span>📄 கதைச் சுருக்கம் பெறுக (Generate Story Summary)</span>';
+        }
+        if (btnRegen) {
+          btnRegen.disabled = false;
+          btnRegen.innerHTML = '🔄 மீண்டும் உருவாக்கு';
+        }
+        if (btnHeader) {
+          btnHeader.disabled = false;
+        }
+      }
+    }
+
+    function copyStorySummary() {
+      const taSummary = document.getElementById('tamilSummaryText')?.textContent.trim() || '';
+      const enSummary = document.getElementById('englishSummaryText')?.textContent.trim() || '';
+
+      if (!taSummary && !enSummary) {
+        showAlert('நகலெடுக்க சுருக்கம் எதுவும் இல்லை.', false);
+        return;
+      }
+
+      const formatted = `[மொழி நினைவு - வாய்மொழி கதைச் சுருக்கம்]\n\n🇮🇳 தமிழ் சுருக்கம்:\n${taSummary}\n\n🌐 English Summary:\n${enSummary}\n`;
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(formatted).then(() => {
+          showCopyFeedback();
+        }).catch(() => {
+          fallbackCopyText(formatted);
+        });
+      } else {
+        fallbackCopyText(formatted);
+      }
+    }
+
+    function showCopyFeedback() {
+      const btn = document.getElementById('btnCopySummary');
+      if (btn) {
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '✅ நகலெடுக்கப்பட்டது!';
+        btn.style.color = '#86efac';
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.style.color = '';
+        }, 2000);
+      }
+      showAlert('சுருக்கம் கிளிப்போர்டில் நகலெடுக்கப்பட்டது!');
+    }
+
+    function fallbackCopyText(text) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        showCopyFeedback();
+      } catch (e) {
+        showAlert('நகலெடுப்பதில் சிக்கல் ஏற்பட்டது.', false);
+      }
+      document.body.removeChild(textarea);
+    }
+
+    function applySummaryToDescription() {
+      const taSummary = document.getElementById('tamilSummaryText')?.textContent.trim();
+      const descInput = document.getElementById('description');
+      if (taSummary && descInput) {
+        descInput.value = taSummary;
+        showAlert('தமிழ் சுருக்கம் ஆவண விளக்கத்தில் சேர்க்கப்பட்டது!');
+      }
+    }
+
+    // =========================================================================
+    // DIALECT DNA (வட்டார மொழி அடையாளம்) — JAVASCRIPT CONTROLLER
+    // =========================================================================
+    let currentDialectData = null;
+    let lastAnalyzedTranscript = '';
+
+    function onTranscriptChanged() {
+      const current = (document.getElementById('transcriptText')?.value || '').trim();
+      const alertEl = document.getElementById('dialectOutdatedAlert');
+      if (!alertEl) return;
+      if (lastAnalyzedTranscript && current !== lastAnalyzedTranscript) {
+        alertEl.style.display = 'flex';
+      } else {
+        alertEl.style.display = 'none';
+      }
+    }
+
+    async function analyzeDialectDNA() {
+      const transcript = document.getElementById('transcriptText')?.value.trim();
+      const box = document.getElementById('dialectDnaBox');
+      const loadingEl = document.getElementById('dialectLoadingIndicator');
+      const errorEl = document.getElementById('dialectErrorAlert');
+      const errorMsgEl = document.getElementById('dialectErrorMessage');
+      const contentEl = document.getElementById('dialectContentBody');
+      const outdatedEl = document.getElementById('dialectOutdatedAlert');
+      const btnMain = document.getElementById('btnAnalyzeDialectMain');
+      const btnRegen = document.getElementById('btnRegenerateDialect');
+      const btnHeader = document.getElementById('btnDialectHeader');
+
+      if (!box) return;
+
+      if (!transcript) {
+        box.style.display = 'block';
+        if (loadingEl) loadingEl.style.display = 'none';
+        if (contentEl) contentEl.style.display = 'none';
+        if (errorEl) {
+          errorEl.style.display = 'block';
+          if (errorMsgEl) errorMsgEl.textContent = 'வட்டார மொழிப் பகுப்பாய்வு செய்ய முதலில் ஒலியைப் பதிவு செய்து உரையாக்கவும் அல்லது தமிழ் உரையை உள்ளிடவும்.';
+        }
+        showAlert('பகுப்பாய்வு செய்யத் தமிழ் உரை தேவைப்படுகிறது.', false);
+        return;
+      }
+
+      box.style.display = 'block';
+      if (errorEl) errorEl.style.display = 'none';
+      if (contentEl) contentEl.style.display = 'none';
+      if (outdatedEl) outdatedEl.style.display = 'none';
+      if (loadingEl) loadingEl.style.display = 'block';
+
+      if (btnMain) {
+        btnMain.disabled = true;
+        btnMain.innerHTML = '<span><span class="spinner" style="width:14px; height:14px; margin-right:6px; border-top-color:#38bdf8;"></span> ஆராய்கிறது... (Analyzing...)</span>';
+      }
+      if (btnRegen) {
+        btnRegen.disabled = true;
+        btnRegen.innerHTML = '⏳ ஆராய்கிறது...';
+      }
+      if (btnHeader) {
+        btnHeader.disabled = true;
+      }
+
+      try {
+        const resp = await fetch('/api/dialect-dna', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ transcript: transcript })
+        });
+
+        const data = await resp.json();
+
+        if (resp.ok && data.success) {
+          currentDialectData = data;
+          lastAnalyzedTranscript = transcript;
+          renderDialectDNA(data);
+
+          if (loadingEl) loadingEl.style.display = 'none';
+          if (contentEl) contentEl.style.display = 'block';
+          showAlert('🧬 வட்டார மொழி அடையாளம் வெற்றிகரமாகப் பகுப்பாய்வு செய்யப்பட்டது!');
+        } else {
+          throw new Error(data.error || 'வட்டார மொழிப் பகுப்பாய்வில் பிழை ஏற்பட்டது.');
+        }
+      } catch (err) {
+        if (loadingEl) loadingEl.style.display = 'none';
+        if (errorEl) {
+          errorEl.style.display = 'block';
+          if (errorMsgEl) errorMsgEl.textContent = 'பிழை: ' + err.message;
+        }
+        showAlert('பகுப்பாய்வு தோல்வி: ' + err.message, false);
+      } finally {
+        if (btnMain) {
+          btnMain.disabled = false;
+          btnMain.innerHTML = '<span>🧬 வட்டார மொழியை ஆராய்க (Dialect DNA)</span>';
+        }
+        if (btnRegen) {
+          btnRegen.disabled = false;
+          btnRegen.innerHTML = '🔄 மீண்டும் ஆராய்க';
+        }
+        if (btnHeader) {
+          btnHeader.disabled = false;
+        }
+      }
+    }
+
+    function renderDialectDNA(data) {
+      if (!data) return;
+
+      // 1. Stats & Model Metadata
+      const statsEl = document.getElementById('dialectMetaStats');
+      if (statsEl) {
+        const wCount = data.sampleStats?.wordCount || 0;
+        const cCount = data.sampleStats?.characterCount || 0;
+        statsEl.textContent = `மாதிரி: ${wCount} சொற்கள் • ${cCount} எழுத்துகள் | நிலை: ${data.status === 'insufficient_evidence' ? 'குறுகிய மாதிரி (Insufficient Evidence)' : 'சரிபார்க்கப்பட்ட மொழியியல் சான்றுகள்'}`;
+      }
+
+      // 2. Overall Assessment
+      const overallEl = document.getElementById('dialectOverallText');
+      if (overallEl) {
+        overallEl.textContent = data.overallAssessment || 'மொழியியல் மதிப்பீடு எதுவும் பெறப்படவில்லை.';
+      }
+
+      // 3. Render SVG Radar Chart
+      renderRadarSVG(data.radarMetrics || []);
+
+      // 4. Regional Indicators
+      const regListEl = document.getElementById('regionalIndicatorsList');
+      if (regListEl) {
+        if (data.regionalIndicators && data.regionalIndicators.length > 0) {
+          regListEl.innerHTML = data.regionalIndicators.map(ind => {
+            const badgeClass = ind.assessment === 'possible_indicator' 
+              ? 'dialect-badge-possible' 
+              : (ind.assessment === 'shared_feature' ? 'dialect-badge-shared' : 'dialect-badge-insufficient');
+
+            const evidenceHtml = (ind.evidence || []).map(ev => `
+              <div class="dialect-evidence-quote" onclick="highlightInTranscript('${escapeHtml(ev.text).replace(/'/g, "\\'")}')">
+                <div>
+                  <span style="color: #38bdf8; font-weight: 600;">❝</span>
+                  <span style="font-weight: 500;">${escapeHtml(ev.text)}</span>
+                  <span style="color: #38bdf8; font-weight: 600;">❞</span>
+                  <div style="font-size: 11.5px; color: hsl(var(--muted-foreground)); margin-top: 4px;">${escapeHtml(ev.observation)}</div>
+                </div>
+                <span style="font-size: 11px; opacity: 0.7; white-space: nowrap; margin-left: 6px;">📍 உரையில் காண்க &rarr;</span>
+              </div>
+              ${ev.limitations ? `
+                <div style="font-size: 11px; color: #fde68a; margin-top: 4px; padding-left: 8px;">
+                  ⚠️ மாற்று விளக்கம்: ${escapeHtml(ev.limitations)}
+                </div>
+              ` : ''}
+            `).join('');
+
+            return `
+              <div class="dialect-indicator-card">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; flex-wrap: wrap; margin-bottom: 8px;">
+                  <div>
+                    <strong style="font-size: 14.5px; color: #FFFFFF; font-family: var(--font-display);">${escapeHtml(ind.region_ta || ind.region)}</strong>
+                    <span style="font-size: 12px; color: hsl(var(--muted-foreground)); margin-left: 6px;">(${escapeHtml(ind.region)})</span>
+                  </div>
+                  <span class="${badgeClass}">${escapeHtml(ind.confidenceLabel || 'சாத்தியமான அடையாளம்')}</span>
+                </div>
+                <div>${evidenceHtml}</div>
+              </div>
+            `;
+          }).join('');
+        } else {
+          regListEl.innerHTML = `
+            <div style="padding: 12px; background: rgba(255,255,255,0.02); border-radius: 8px; color: hsl(var(--muted-foreground)); font-size: 13px;">
+              குறிப்பிட்ட எந்தவொரு தனித்துவ வட்டார வழக்கையும் அறுதியிடப் போதிய மொழியியல் சான்றுகள் இல்லை. இது பொதுப் பேச்சுத்தமிழ் நடையாக அமையலாம்.
+            </div>
+          `;
+        }
+      }
+
+      // 5. Distinctive Vocabulary
+      const vocabListEl = document.getElementById('distinctiveVocabList');
+      if (vocabListEl) {
+        if (data.distinctiveVocabulary && data.distinctiveVocabulary.length > 0) {
+          vocabListEl.innerHTML = data.distinctiveVocabulary.map(v => `
+            <div class="dialect-vocab-card">
+              <div>
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 6px; margin-bottom: 6px;">
+                  <strong style="font-size: 14.5px; color: #f1f5f9; font-family: var(--font-display);">${escapeHtml(v.word)}</strong>
+                  ${v.regionalAssociation ? `<span class="tag-badge" style="background: rgba(167, 139, 250, 0.15); color: #c084fc; border-color: rgba(167, 139, 250, 0.3); font-size: 10px;">${escapeHtml(v.regionalAssociation)}</span>` : ''}
+                </div>
+                ${v.meaning ? `<div style="font-size: 12px; color: #e2e8f0; margin-bottom: 4px;"><strong>பொருள்:</strong> ${escapeHtml(v.meaning)}</div>` : ''}
+                <div style="font-size: 11.5px; color: hsl(var(--muted-foreground)); margin-bottom: 6px;">${escapeHtml(v.explanation)}</div>
+                ${v.context ? `
+                  <div style="font-size: 11.5px; background: rgba(255,255,255,0.02); border-left: 2px solid #a78bfa; padding: 4px 8px; border-radius: 4px; color: #cbd5e1; cursor: pointer;" onclick="highlightInTranscript('${escapeHtml(v.context).replace(/'/g, "\\'")}')" title="உரையில் காண்க">
+                    "${escapeHtml(v.context)}"
+                  </div>
+                ` : ''}
+              </div>
+              <div style="display: flex; gap: 6px; margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 8px;">
+                <button type="button" class="btn-secondary" style="flex: 1; padding: 3px 6px; font-size: 11px; cursor: pointer;" onclick="quickLookupFromDialect('${escapeHtml(v.word).replace(/'/g, "\\'")}')">
+                  🔍 பொருள் அறி
+                </button>
+                <button type="button" class="btn-secondary" style="padding: 3px 8px; font-size: 11px; cursor: pointer;" onclick="copyTextDirect('${escapeHtml(v.word).replace(/'/g, "\\'")}', 'சொல் நகலெடுக்கப்பட்டது!')">
+                  📋
+                </button>
+              </div>
+            </div>
+          `).join('');
+        } else {
+          vocabListEl.innerHTML = `
+            <div style="grid-column: 1 / -1; padding: 12px; background: rgba(255,255,255,0.02); border-radius: 8px; color: hsl(var(--muted-foreground)); font-size: 13px;">
+              குறிப்பிடத்தக்க அரிய வட்டாரச் சொற்கள் எதுவும் தனித்துப் பிரிக்கப்படவில்லை.
+            </div>
+          `;
+        }
+      }
+
+      // 6. Linguistic Features
+      const featBox = document.getElementById('linguisticFeaturesContainer');
+      const featList = document.getElementById('linguisticFeaturesList');
+      if (featBox && featList) {
+        if (data.linguisticFeatures && data.linguisticFeatures.length > 0) {
+          featList.innerHTML = data.linguisticFeatures.map(f => {
+            const exHtml = (f.examples || []).map(ex => `
+              <span class="dialect-evidence-quote" style="display: inline-flex; margin-top: 4px; margin-right: 6px; padding: 4px 8px; font-size: 12px;" onclick="highlightInTranscript('${escapeHtml(ex.text).replace(/'/g, "\\'")}')">
+                "${escapeHtml(ex.text)}"
+              </span>
+            `).join('');
+
+            return `
+              <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 10px 12px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px;">
+                  <strong style="font-size: 13px; color: #86efac;">${escapeHtml(f.label_ta || f.category)}</strong>
+                </div>
+                <div style="font-size: 12.5px; color: hsl(var(--foreground)); margin-bottom: 6px;">${escapeHtml(f.observation)}</div>
+                <div>${exHtml}</div>
+              </div>
+            `;
+          }).join('');
+          featBox.style.display = 'block';
+        } else {
+          featBox.style.display = 'none';
+        }
+      }
+
+      // 7. Limitations List
+      const limitsEl = document.getElementById('dialectLimitationsList');
+      if (limitsEl) {
+        const limits = data.limitations || [];
+        limitsEl.innerHTML = limits.map(l => `<li>${escapeHtml(l)}</li>`).join('');
+      }
+    }
+
+    function renderRadarSVG(metrics) {
+      const container = document.getElementById('radarChartContainer');
+      const tableBody = document.getElementById('radarTableBody');
+      if (!container) return;
+
+      const cats = [
+        { key: 'colloquial_lexicon', label_ta: 'பேச்சு வழக்குச் சொற்கள்', label_en: 'Colloquial' },
+        { key: 'morphological_markers', label_ta: 'உருபனியல் கூறுகள்', label_en: 'Morphology' },
+        { key: 'discourse_particles', label_ta: 'விளி & உரையாடல்', label_en: 'Discourse' },
+        { key: 'regional_indicators', label_ta: 'வட்டாரத் தனித்துவம்', label_en: 'Regional Lexicon' },
+        { key: 'syntactic_patterns', label_ta: 'தொடரியல் மரபு', label_en: 'Syntax' }
+      ];
+
+      const metricMap = {};
+      metrics.forEach(m => {
+        metricMap[m.category] = m;
+      });
+
+      // Update Accessible Table
+      if (tableBody) {
+        tableBody.innerHTML = cats.map(c => {
+          const m = metricMap[c.key] || { score: 25, evidenceCount: 1 };
+          return `
+            <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.06);">
+              <td style="padding: 6px 8px; color: #FFFFFF;">${escapeHtml(c.label_ta)} (${escapeHtml(c.label_en)})</td>
+              <td style="padding: 6px 8px; color: #38bdf8; font-weight: 600;">${m.score}%</td>
+              <td style="padding: 6px 8px; color: hsl(var(--muted-foreground));">${m.evidenceCount} சான்றுகள்</td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      // SVG Dimensions
+      const width = 360;
+      const height = 320;
+      const cx = width / 2;
+      const cy = height / 2 + 6;
+      const R = 95;
+      const n = 5;
+
+      const angles = [];
+      for (let i = 0; i < n; i++) {
+        angles.push(-Math.PI / 2 + (i * 2 * Math.PI) / n);
+      }
+
+      // Concentric Rings (20%, 40%, 60%, 80%, 100%)
+      const ringLevels = [0.2, 0.4, 0.6, 0.8, 1.0];
+      let ringsSvg = '';
+      ringLevels.forEach(lvl => {
+        const ringPoints = angles.map(a => {
+          const x = cx + R * lvl * Math.cos(a);
+          const y = cy + R * lvl * Math.sin(a);
+          return `${x.toFixed(1)},${y.toFixed(1)}`;
+        }).join(' ');
+        ringsSvg += `<polygon points="${ringPoints}" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1" />`;
+      });
+
+      // Radial Spokes
+      let spokesSvg = '';
+      angles.forEach(a => {
+        const x2 = cx + R * Math.cos(a);
+        const y2 = cy + R * Math.sin(a);
+        spokesSvg += `<line x1="${cx}" y1="${cy}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="rgba(255,255,255,0.12)" stroke-width="1" stroke-dasharray="2 2" />`;
+      });
+
+      // Data Polygon & Points
+      const dataPoints = [];
+      const nodeCircles = [];
+      const labelElements = [];
+
+      cats.forEach((cat, idx) => {
+        const a = angles[idx];
+        const m = metricMap[cat.key] || { score: 25, evidenceCount: 1 };
+        const score = Math.max(10, Math.min(100, m.score));
+        const rVal = R * (score / 100);
+        const px = cx + rVal * Math.cos(a);
+        const py = cy + rVal * Math.sin(a);
+        dataPoints.push(`${px.toFixed(1)},${py.toFixed(1)}`);
+
+        // Node Circle
+        nodeCircles.push(`
+          <circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="4" fill="#38bdf8" stroke="#FFFFFF" stroke-width="1.5">
+            <title>${cat.label_ta}: ${score}% (${m.evidenceCount} சான்றுகள்)</title>
+          </circle>
+        `);
+
+        // Labels
+        const lx = cx + (R + 26) * Math.cos(a);
+        const ly = cy + (R + 26) * Math.sin(a);
+        let anchor = 'middle';
+        if (Math.abs(Math.cos(a)) > 0.3) {
+          anchor = Math.cos(a) > 0 ? 'start' : 'end';
+        }
+
+        labelElements.push(`
+          <text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" text-anchor="${anchor}" fill="#f1f5f9" font-size="11" font-family="var(--font-body)">
+            ${escapeHtml(cat.label_ta)}
+            <tspan x="${lx.toFixed(1)}" dy="13" font-size="10" fill="#38bdf8" font-weight="600">${score}%</tspan>
+          </text>
+        `);
+      });
+
+      const polyPoints = dataPoints.join(' ');
+
+      container.innerHTML = `
+        <svg viewBox="0 0 ${width} ${height}" style="width: 100%; max-width: 380px; height: auto;" role="img" aria-label="Dialect DNA Feature Radar Chart">
+          <defs>
+            <radialGradient id="radarFillGrad" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.38" />
+              <stop offset="100%" stop-color="#0284c7" stop-opacity="0.12" />
+            </radialGradient>
+          </defs>
+          ${ringsSvg}
+          ${spokesSvg}
+          <polygon points="${polyPoints}" fill="url(#radarFillGrad)" stroke="#38bdf8" stroke-width="2" />
+          ${nodeCircles.join('')}
+          ${labelElements.join('')}
+        </svg>
+      `;
+    }
+
+    function toggleRadarAccessibleTable() {
+      const table = document.getElementById('radarAccessibleTable');
+      const btn = document.getElementById('btnToggleRadarTable');
+      if (!table || !btn) return;
+      if (table.style.display === 'none' || table.style.display === '') {
+        table.style.display = 'block';
+        btn.textContent = '❌ அட்டவணையை மறை (Hide Table)';
+      } else {
+        table.style.display = 'none';
+        btn.textContent = '👁️ தரவு அட்டவணை (Table View)';
+      }
+    }
+
+    function highlightInTranscript(phrase) {
+      if (!phrase) return;
+      const textarea = document.getElementById('transcriptText');
+      if (!textarea) return;
+
+      const fullText = textarea.value;
+      const cleanPhrase = phrase.trim();
+      let idx = fullText.indexOf(cleanPhrase);
+
+      if (idx === -1) {
+        idx = fullText.toLowerCase().indexOf(cleanPhrase.toLowerCase());
+      }
+
+      if (idx !== -1) {
+        textarea.focus();
+        textarea.setSelectionRange(idx, idx + cleanPhrase.length);
+        textarea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        showAlert(`மேற்கோள் உரையில் சுட்டிக்காட்டப்பட்டது: "${cleanPhrase}"`);
+      } else {
+        const words = cleanPhrase.split(/\s+/).filter(w => w.length >= 3);
+        let foundWord = false;
+        for (const w of words) {
+          const wIdx = fullText.indexOf(w);
+          if (wIdx !== -1) {
+            textarea.focus();
+            textarea.setSelectionRange(wIdx, wIdx + w.length);
+            textarea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            showAlert(`உரையில் சுட்டிக்காட்டப்பட்டது: "${w}"`);
+            foundWord = true;
+            break;
+          }
+        }
+        if (!foundWord) {
+          showAlert(`மேற்கோள்: "${cleanPhrase}"`);
+        }
+      }
+    }
+
+    function quickLookupFromDialect(word) {
+      const input = document.getElementById('quickWordInput');
+      if (input) {
+        input.value = word;
+      }
+      lookupQuickWord();
+      const liveBox = document.getElementById('liveDictionaryBox');
+      if (liveBox) {
+        liveBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    function copyTextDirect(text, successMsg) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          showAlert(successMsg || 'நகலெடுக்கப்பட்டது!');
+        }).catch(() => {
+          fallbackCopyText(text);
+        });
+      } else {
+        fallbackCopyText(text);
+      }
+    }
+
+    function copyDialectReport() {
+      if (!currentDialectData) {
+        showAlert('நகலெடுக்க அறிக்கை எதுவும் இல்லை.', false);
+        return;
+      }
+
+      const d = currentDialectData;
+      let text = `[மொழி நினைவு (MARAPOLI) — வட்டார மொழி அடையாளம் (Dialect DNA)]\n\n`;
+      text += `ஒட்டுமொத்த மொழியியல் மதிப்பீடு:\n${d.overallAssessment}\n\n`;
+
+      if (d.regionalIndicators && d.regionalIndicators.length > 0) {
+        text += `வட்டார மொழி அடையாளங்கள்:\n`;
+        d.regionalIndicators.forEach(ind => {
+          text += `• ${ind.region_ta || ind.region} (${ind.confidenceLabel || ind.assessment})\n`;
+          (ind.evidence || []).forEach(e => {
+            text += `  - மேற்கோள்: "${e.text}"\n`;
+            text += `  - அவதானிப்பு: ${e.observation}\n`;
+            if (e.limitations) text += `  - மாற்று விளக்கம்: ${e.limitations}\n`;
+          });
+        });
+        text += `\n`;
+      }
+
+      if (d.distinctiveVocabulary && d.distinctiveVocabulary.length > 0) {
+        text += `தனித்துவமான சொற்கள்:\n`;
+        d.distinctiveVocabulary.forEach(v => {
+          text += `• ${v.word}: ${v.meaning || v.explanation} (சூழல்: "${v.context}")\n`;
+        });
+        text += `\n`;
+      }
+
+      if (d.limitations && d.limitations.length > 0) {
+        text += `விளக்க வரம்புகள்:\n`;
+        d.limitations.forEach(l => {
+          text += `• ${l}\n`;
+        });
+      }
+
+      copyTextDirect(text, 'வட்டார மொழி அறிக்கை கிளிப்போர்டில் நகலெடுக்கப்பட்டது!');
+    }
+
+    function applyExtractedMetadata(meta) {
+      if (!meta) return;
+
+      if (meta.title) {
+        document.getElementById('storyTitle').value = meta.title;
+      }
+      if (meta.storyteller) {
+        document.getElementById('storyteller').value = meta.storyteller;
+      }
+      if (meta.region) {
+        document.getElementById('region').value = meta.region;
+      }
+      if (meta.topic) {
+        document.getElementById('topic').value = meta.topic;
+      }
+      if (meta.date) {
+        document.getElementById('recordDate').value = meta.date;
+      }
+      if (meta.description) {
+        document.getElementById('description').value = meta.description;
+      }
+
+      showAlert("தலைப்பு, கூறுபவர், வட்டாரம், தேதி, மற்றும் வகை கண்டறியப்பட்டு நிரப்பப்பட்டன!");
+    }
+
+    function displayRegionAnalysis(regionData) {
+      if (!regionData) return;
+      lastRegionMetadata = regionData;
+      const box = document.getElementById('regionAnalysisBox');
+      box.style.display = 'block';
+
+      const dispName = regionData.formatted_location || regionData.region || regionData.district || "தமிழ்நாடு";
+      const dispDist = regionData.district || regionData.village_or_town || "பொதுவான தமிழ்";
+      const dispConf = regionData.confidence === 'high' ? '95%' : (regionData.confidence === 'medium' ? '75%' : '85%');
+      const dispEvid = regionData._evidence || regionData.evidence_explanation || "வட்டார மொழி மற்றும் வட்டாரச் சொற்கள் பகுப்பாய்வு செய்யப்பட்டன.";
+
+      document.getElementById('displayRegionName').textContent = dispName;
+      document.getElementById('displayDistrict').textContent = dispDist;
+      document.getElementById('displayConfidence').textContent = dispConf;
+      document.getElementById('displayEvidence').textContent = dispEvid;
+
+      const kwContainer = document.getElementById('displayKeywords');
+      kwContainer.innerHTML = '';
+      if (regionData.dialect_markers && regionData.dialect_markers.length > 0) {
+        regionData.dialect_markers.forEach(term => {
+          const span = document.createElement('span');
+          span.className = 'tag-badge';
+          span.textContent = '📍 ' + term;
+          kwContainer.appendChild(span);
+        });
+      }
+    }
+
+    async function saveToArchive() {
+      const title = document.getElementById('storyTitle').value.trim();
+      const transcript = document.getElementById('transcriptText').value.trim();
+      if (!title || !transcript) {
+        showAlert("தயவுசெய்து தலைப்பு மற்றும் தமிழ் உரையை உள்ளிடவும்.", false);
+        return;
+      }
+
+      const btn = document.getElementById('btnSaveArchive');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner" style="border-top-color: #041220; border-color: rgba(0,0,0,0.2); width: 14px; height: 14px; margin-right: 6px;"></span> பெட்டகத்தில் சேமிக்கப்படுகிறது...';
+
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('transcript', transcript);
+      formData.append('source_type', 'audio');
+      formData.append('storyteller', document.getElementById('storyteller').value.trim());
+      formData.append('topic', document.getElementById('topic').value);
+      formData.append('region', document.getElementById('region').value.trim());
+      formData.append('record_date', document.getElementById('recordDate').value);
+      formData.append('description', document.getElementById('description').value.trim());
+
+      if (lastRegionMetadata) {
+        formData.append('ai_suggested_region', lastRegionMetadata.primary_region || '');
+        formData.append('region_metadata', JSON.stringify(lastRegionMetadata));
+      }
+
+      if (activeAudioFile) {
+        formData.append('audio_file', activeAudioFile);
+      } else if (activeAudioBlob) {
+        formData.append('audio_file', activeAudioBlob, 'story_recording.webm');
+      }
+
+      try {
+        const resp = await fetch('/api/stories', {
+          method: 'POST',
+          body: formData
+        });
+        const data = await resp.json();
+        if (data.success) {
+          showAlert("🎉 ஆவணம் வெற்றிகரமாகத் தமிழ் மரபுப் பெட்டகத்தில் சேமிக்கப்பட்டது! (Saved to Archive successfully)");
+          loadSavedRecords();
+        } else {
+          showAlert("சேமிப்பில் பிழை: " + (data.error || "அறியப்படாத பிழை"), false);
+        }
+      } catch (err) {
+        showAlert("சேமிப்பில் பிழை: " + err.message, false);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<span>💾 தமிழ் மரபுப் பெட்டகத்தில் சேமிக்க (Save to Archive)</span>';
+      }
+    }
+
+    async function loadSavedRecords() {
+      const q = document.getElementById('archiveSearchInput') ? document.getElementById('archiveSearchInput').value.trim() : '';
+      const container = document.getElementById('recordsListContainer');
+      if (!container) return;
+
+      try {
+        const resp = await fetch(`/api/library?q=${encodeURIComponent(q)}`);
+        const data = await resp.json();
+
+        if (!data.success || !data.records || data.records.length === 0) {
+          container.innerHTML = `
+            <div style="text-align: center; padding: 40px; background: rgba(255, 255, 255, 0.02); border-radius: 14px; border: 1px dashed rgba(255, 255, 255, 0.15); color: hsl(var(--muted-foreground));">
+              சேமிக்கப்பட்ட ஆவணங்கள் எதுவும் இல்லை. மேலே உள்ள படிவத்தைப் பயன்படுத்தி புதிய ஆவணத்தைப் பதிவு செய்யவும்.
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = data.records.map(r => `
+          <div class="card" style="margin-bottom: 16px; padding: 22px 26px;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 15px; flex-wrap: wrap;">
+              <div>
+                <h3 style="font-family: var(--font-display); font-size: 22px; font-weight: 400; color: #FFFFFF; margin: 0 0 8px 0; letter-spacing: -0.2px;">${escapeHtml(r.title)}</h3>
+                <div style="font-size: 13px; color: hsl(var(--muted-foreground)); display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px;">
+                  ${r.storyteller ? `<span>👤 <strong style="color: #FFFFFF;">${escapeHtml(r.storyteller)}</strong></span>` : ''}
+                  ${r.region ? `<span class="tag-badge" style="background: rgba(56, 189, 248, 0.12); color: #7dd3fc; border-color: rgba(56, 189, 248, 0.3);">📍 ${escapeHtml(r.region)}</span>` : ''}
+                  ${r.topic ? `<span class="tag-badge">📁 ${escapeHtml(r.topic)}</span>` : ''}
+                  ${r.record_date ? `<span>📅 ${escapeHtml(r.record_date)}</span>` : ''}
+                </div>
+              </div>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button onclick="openStoryDictionary(${r.id})" class="liquid-glass" style="border-radius: 9999px; padding: 6px 14px; font-size: 12px; font-weight:500;" title="இக்கதையின் தமிழ்ச் சொல் நினைவகம்">📖 சொல் நினைவகம்</button>
+                <a href="/api/export/${r.id}/txt" class="btn-secondary" style="padding: 6px 12px; font-size: 12px; text-decoration: none;" download>📄 TXT வடிவம்</a>
+                <a href="/api/export/${r.id}/json" class="btn-secondary" style="padding: 6px 12px; font-size: 12px; text-decoration: none;" download>📦 JSON வடிவம்</a>
+              </div>
+            </div>
+            <p style="background: rgba(255, 255, 255, 0.03); border-left: 3px solid rgba(255, 255, 255, 0.3); padding: 12px 16px; border-radius: 6px; font-size: 14px; line-height: 1.7; margin: 8px 0 0 0; color: rgba(255, 255, 255, 0.95);">
+              ${escapeHtml(r.transcript)}
+            </p>
+          </div>
+        `).join('');
+      } catch (err) {
+        container.innerHTML = `<div style="color: #fca5a5; text-align: center; padding: 15px;">பிழை: ${err.message}</div>`;
+      }
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // =========================================================================
+    // TAMIL MEMORY DICTIONARY JAVASCRIPT LOGIC
+    // =========================================================================
+    let currentDictStoryId = null;
+    let currentStoryData = null;
+    let currentDictEntries = [];
+    let activeSnippetInterval = null;
+
+    function showDictAlert(msg, isSuccess = true) {
+      const a = document.getElementById('dictModalAlert');
+      if (!a) return;
+      a.className = isSuccess ? 'alert alert-success' : 'alert alert-danger';
+      a.textContent = msg;
+      a.style.display = 'block';
+      setTimeout(() => { a.style.display = 'none'; }, 6000);
+    }
+
+    async function openStoryDictionary(storyId) {
+      currentDictStoryId = storyId;
+      document.getElementById('storyDictModalOverlay').style.display = 'flex';
+      document.getElementById('storyDictCardsContainer').innerHTML = '<div style="text-align: center; padding: 40px; color: hsl(var(--muted-foreground));"><span class="spinner" style="margin-right: 8px;"></span> சொற்கள் ஏற்றப்படுகின்றன...</div>';
+      document.getElementById('addWordFormContainer').style.display = 'none';
+
+      try {
+        const storyResp = await fetch(`/api/stories/${storyId}`);
+        const storyData = await storyResp.json();
+        if (storyData.success && storyData.record) {
+          currentStoryData = storyData.record;
+          document.getElementById('storyDictModalTitle').textContent = `📖 தமிழ்ச் சொல் நினைவகம் — ${currentStoryData.title}`;
+          document.getElementById('storyDictModalSubtitle').textContent = `கூறுபவர்: ${currentStoryData.storyteller || 'அறியப்படாதவர்'} | ஊர்/வட்டாரம்: ${currentStoryData.region || 'குறிப்பிடப்படவில்லை'}`;
+        }
+
+        await reloadStoryDictionaryEntries();
+      } catch (err) {
+        document.getElementById('storyDictCardsContainer').innerHTML = `<div style="color: #fca5a5; text-align: center; padding: 20px;">பிழை: ${err.message}</div>`;
+      }
+    }
+
+    function closeStoryDictionary() {
+      document.getElementById('storyDictModalOverlay').style.display = 'none';
+      currentDictStoryId = null;
+      stopAudioSnippet();
+    }
+
+    async function reloadStoryDictionaryEntries() {
+      if (!currentDictStoryId) return;
+      const resp = await fetch(`/api/stories/${currentDictStoryId}/dictionary`);
+      const data = await resp.json();
+
+      if (data.success) {
+        currentDictEntries = data.entries || [];
+        populateCategoryFilter('dictCategoryFilter', data.categories || []);
+        filterStoryDictionary();
+      } else {
+        document.getElementById('storyDictCardsContainer').innerHTML = `<div style="color: #fca5a5; text-align: center; padding: 20px;">பிழை: ${data.error || 'அகராதியை ஏற்றுவதில் தோல்வி'}</div>`;
+      }
+    }
+
+    function populateCategoryFilter(selectId, categories) {
+      const select = document.getElementById(selectId);
+      if (!select) return;
+      const curVal = select.value;
+      let html = '<option value="all">அனைத்துப் பிரிவுகளும்</option>';
+      categories.forEach(c => {
+        html += `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`;
+      });
+      select.innerHTML = html;
+      select.value = curVal || 'all';
+    }
+
+    function filterStoryDictionary() {
+      const q = (document.getElementById('dictSearchInput')?.value || '').trim().toLowerCase();
+      const cat = document.getElementById('dictCategoryFilter')?.value || 'all';
+      const status = document.getElementById('dictStatusFilter')?.value || 'all';
+
+      let filtered = currentDictEntries.filter(e => {
+        if (cat !== 'all' && e.category !== cat) return false;
+        if (status !== 'all' && e.review_status !== status) return false;
+        if (q) {
+          const matchWord = (e.word || '').toLowerCase().includes(q);
+          const matchTa = (e.meaning_ta || '').toLowerCase().includes(q);
+          const matchEn = (e.meaning_en || '').toLowerCase().includes(q);
+          const matchCtx = (e.contextual_meaning_ta || '').toLowerCase().includes(q);
+          const matchEx = (e.example_sentence || '').toLowerCase().includes(q);
+          return matchWord || matchTa || matchEn || matchCtx || matchEx;
+        }
+        return true;
+      });
+
+      renderStoryDictionaryCards(filtered);
+    }
+
+    function renderStoryDictionaryCards(entries) {
+      const container = document.getElementById('storyDictCardsContainer');
+      if (!container) return;
+
+      if (!entries || entries.length === 0) {
+        container.innerHTML = `
+          <div style="text-align: center; padding: 40px 20px; background: rgba(255,255,255,0.02); border-radius: 14px; border: 1px dashed rgba(255,255,255,0.15); color: hsl(var(--muted-foreground));">
+            <div style="font-size: 36px; margin-bottom: 10px;">📖</div>
+            <div style="font-size: 18px; font-family: var(--font-display); color: #FFFFFF; margin-bottom: 6px;">சொல் நினைவகப் பதிவுகள் எதுவும் இல்லை</div>
+            <p style="font-size: 13.5px; max-width: 500px; margin: 0 auto 16px auto; line-height: 1.7; color: hsl(var(--muted-foreground));">
+              மேலே உள்ள <strong>"📖 சொற்களைப் பிரித்தெடு"</strong> பொத்தானைச் சொடுக்கி இக்கதையின் உரையிலிருந்து பாரம்பரியச் சொற்களைப் பிரித்தெடுக்கவும், அல்லது <strong>"➕ புதிய சொல் சேர்"</strong> மூலம் நீங்களே சேர்க்கவும்.
+            </p>
+            <button class="liquid-glass" style="border-radius: 9999px; width: auto; padding: 9px 22px; font-size: 13px;" onclick="generateStoryDictionary()">
+              📖 சொற்களை இப்போது பிரித்தெடு
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = entries.map(e => `
+        <div class="dict-card" id="dictCard-${e.id}">
+          <!-- Display View -->
+          <div id="dictCardView-${e.id}">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; margin-bottom: 8px;">
+              <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                <h3 class="dict-word-title">${escapeHtml(e.word)}</h3>
+                <span class="dict-cat-badge">📁 ${escapeHtml(e.category || 'பாரம்பரிய அறிவு')}</span>
+                ${e.review_status === 'verified' 
+                  ? '<span class="dict-status-badge dict-status-verified">✅ சரிபார்க்கப்பட்டது (Verified)</span>' 
+                  : '<span class="dict-status-badge dict-status-pending">⏳ மதிப்பாய்வு தேவை (Pending)</span>'}
+              </div>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                ${e.review_status !== 'verified' 
+                  ? `<button class="btn-icon btn-verify" onclick="verifyDictionaryEntry(${e.id})" title="சரிபார்க்கப்பட்டதாகக் குறி">✅ சரிபார்</button>` 
+                  : ''}
+                <button class="btn-icon btn-edit" onclick="startEditDictionaryEntry(${e.id})" title="விளக்கத்தைத் திருத்து">✏️ திருத்து</button>
+                <button class="btn-icon btn-del" onclick="deleteDictionaryEntry(${e.id})" title="அகராதியிலிருந்து நீக்கு">🗑️ நீக்கு</button>
+              </div>
+            </div>
+
+            <div class="dict-meaning-grid">
+              <div>
+                <div class="dict-label">தமிழ் விளக்கம் (Tamil Meaning)</div>
+                <div class="dict-val">${escapeHtml(e.meaning_ta)}</div>
+              </div>
+              <div>
+                <div class="dict-label">ஆங்கில விளக்கம் (English Meaning)</div>
+                <div class="dict-val">${escapeHtml(e.meaning_en)}</div>
+              </div>
+            </div>
+
+            ${e.contextual_meaning_ta ? `
+              <div style="margin-bottom: 8px;">
+                <div class="dict-label">சூழல்சார் விளக்கம் (Contextual Nuance in Story)</div>
+                <div class="dict-val" style="color: hsl(var(--muted-foreground));">${escapeHtml(e.contextual_meaning_ta)}</div>
+              </div>
+            ` : ''}
+
+            ${e.example_sentence ? `
+              <div style="margin-bottom: 8px;">
+                <div class="dict-label">எடுத்துக்காட்டு வாக்கியம் (Example Usage)</div>
+                <div class="dict-val" style="color: hsl(var(--muted-foreground));">${escapeHtml(e.example_sentence)}</div>
+              </div>
+            ` : ''}
+
+            ${e.source_excerpt ? `
+              <div class="dict-excerpt-box">
+                <span style="font-weight: 600; color: #FFFFFF;">வாக்கிய மேற்கோள்:</span> "${escapeHtml(e.source_excerpt)}"
+              </div>
+            ` : ''}
+
+            <!-- Audio snippet playback -->
+            <div style="margin-top: 10px; display: flex; align-items: center; justify-content: space-between; font-size: 12px; color: hsl(var(--muted-foreground)); flex-wrap: wrap; gap: 8px;">
+              <div>
+                ${(e.start_seconds !== null && e.end_seconds !== null && currentStoryData && currentStoryData.audio_path)
+                  ? `<button class="btn-secondary" style="padding: 4px 10px; font-size: 12px; cursor: pointer;" onclick="playAudioSnippet('${currentStoryData.audio_path}', ${e.start_seconds}, ${e.end_seconds})">▶️ ஒலித்துண்டு கேட்க (${e.start_seconds}s - ${e.end_seconds}s)</button>`
+                  : `<span style="color: #38bdf8;">📍 உரை மேற்கோள் மூலம் உறுதிப்படுத்தப்பட்டது</span>`}
+              </div>
+              <div style="font-size: 11px; opacity: 0.7;">
+                பதிவு ID: #${e.id}
+              </div>
+            </div>
+          </div>
+
+          <!-- Edit View -->
+          <div id="dictCardEdit-${e.id}" style="display: none; padding-top: 10px; border-top: 1px dashed rgba(255, 255, 255, 0.15);">
+            <div style="font-weight: 500; color: #38bdf8; margin-bottom: 12px; font-size: 14px;">✏️ சொல் விவரங்களைத் திருத்துதல்</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div class="form-group">
+                <label>தமிழ்ச் சொல்</label>
+                <input type="text" id="editWord-${e.id}" class="form-control" value="${escapeHtml(e.word)}">
+              </div>
+              <div class="form-group">
+                <label>பிரிவு</label>
+                <input type="text" id="editCategory-${e.id}" class="form-control" value="${escapeHtml(e.category || 'பாரம்பரிய அறிவு')}">
+              </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <div class="form-group">
+                <label>தமிழ் விளக்கம்</label>
+                <textarea id="editMeaningTa-${e.id}" class="form-control" style="min-height: 70px;">${escapeHtml(e.meaning_ta)}</textarea>
+              </div>
+              <div class="form-group">
+                <label>ஆங்கில விளக்கம்</label>
+                <textarea id="editMeaningEn-${e.id}" class="form-control" style="min-height: 70px;">${escapeHtml(e.meaning_en)}</textarea>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>சூழல்சார் விளக்கம்</label>
+              <input type="text" id="editContextTa-${e.id}" class="form-control" value="${escapeHtml(e.contextual_meaning_ta || '')}">
+            </div>
+            <div class="form-group">
+              <label>எடுத்துக்காட்டு வாக்கியம்</label>
+              <input type="text" id="editExample-${e.id}" class="form-control" value="${escapeHtml(e.example_sentence || '')}">
+            </div>
+            <div class="form-group">
+              <label>மதிப்பாய்வு நிலை</label>
+              <select id="editStatus-${e.id}" class="form-control">
+                <option value="verified" ${e.review_status === 'verified' ? 'selected' : ''}>✅ சரிபார்க்கப்பட்டது (Verified)</option>
+                <option value="pending_review" ${e.review_status === 'pending_review' ? 'selected' : ''}>⏳ மதிப்பாய்வு தேவை (Pending)</option>
+              </select>
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px;">
+              <button class="btn-secondary" style="padding: 6px 14px; font-size: 13px;" onclick="cancelEditDictionaryEntry(${e.id})">ரத்து</button>
+              <button class="btn-primary" style="margin-top:0; width:auto; padding: 6px 18px; font-size: 13px;" onclick="saveEditedDictionaryEntry(${e.id})">💾 சேமிக்க</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function generateStoryDictionary() {
+      if (!currentDictStoryId) return;
+      const btn = document.getElementById('btnGenerateDict');
+      btn.disabled = true;
+      const originalHtml = btn.innerHTML;
+      btn.innerHTML = '<span class="spinner" style="width: 14px; height: 14px; margin-right: 6px;"></span> சொற்கள் பிரித்தெடுக்கப்படுகின்றன... (Extracting words...)';
+
+      try {
+        const resp = await fetch(`/api/stories/${currentDictStoryId}/dictionary/generate`, {
+          method: 'POST'
+        });
+        const data = await resp.json();
+
+        if (data.success) {
+          showDictAlert(`🎉 ${data.message || 'சொற்கள் வெற்றிகரமாக உருவாக்கப்பட்டன!'}`);
+          await reloadStoryDictionaryEntries();
+        } else {
+          showDictAlert(`அகராதி உருவாக்கத்தில் பிழை: ${data.error || 'தெரியாத பிழை'}`, false);
+        }
+      } catch (err) {
+        showDictAlert(`சேவையகப் பிழை: ${err.message}`, false);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalHtml;
+      }
+    }
+
+    function toggleAddWordForm() {
+      const container = document.getElementById('addWordFormContainer');
+      if (!container) return;
+      const isVisible = container.style.display !== 'none';
+      container.style.display = isVisible ? 'none' : 'block';
+      if (!isVisible) {
+        document.getElementById('manualWord')?.focus();
+      }
+    }
+
+    async function submitManualWord() {
+      if (!currentDictStoryId) return;
+      const word = document.getElementById('manualWord')?.value.trim();
+      const meaningTa = document.getElementById('manualMeaningTa')?.value.trim();
+      const meaningEn = document.getElementById('manualMeaningEn')?.value.trim();
+
+      if (!word) {
+        showDictAlert("தயவுசெய்து தமிழ்ச் சொல்லை உள்ளிடவும்.", false);
+        return;
+      }
+      if (!meaningTa && !meaningEn) {
+        showDictAlert("தயவுசெய்து தமிழ் அல்லது ஆங்கில விளக்கத்தை உள்ளிடவும்.", false);
+        return;
+      }
+
+      const payload = {
+        word: word,
+        category: document.getElementById('manualCategory')?.value.trim() || 'பாரம்பரிய அறிவு',
+        meaning_ta: meaningTa,
+        meaning_en: meaningEn,
+        contextual_meaning_ta: document.getElementById('manualContextTa')?.value.trim() || '',
+        example_sentence: document.getElementById('manualExample')?.value.trim() || '',
+        source_excerpt: document.getElementById('manualExcerpt')?.value.trim() || '',
+        review_status: 'verified'
+      };
+
+      try {
+        const resp = await fetch(`/api/stories/${currentDictStoryId}/dictionary/entries`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await resp.json();
+
+        if (data.success) {
+          showDictAlert("🎉 சொல் வெற்றிகரமாக நினைவகத்தில் சேர்க்கப்பட்டது!");
+          document.getElementById('manualWord').value = '';
+          document.getElementById('manualMeaningTa').value = '';
+          document.getElementById('manualMeaningEn').value = '';
+          document.getElementById('manualContextTa').value = '';
+          document.getElementById('manualExample').value = '';
+          document.getElementById('manualExcerpt').value = '';
+          toggleAddWordForm();
+          await reloadStoryDictionaryEntries();
+        } else {
+          showDictAlert(`பிழை: ${data.error || 'சேமிக்க முடியவில்லை'}`, false);
+        }
+      } catch (err) {
+        showDictAlert(`பிழை: ${err.message}`, false);
+      }
+    }
+
+    async function verifyDictionaryEntry(entryId) {
+      try {
+        const resp = await fetch(`/api/dictionary/entries/${entryId}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ review_status: 'verified' })
+        });
+        const data = await resp.json();
+        if (data.success) {
+          showDictAlert("✅ சொல் சரிபார்க்கப்பட்டதாகக் குறிக்கப்பட்டது!");
+          await reloadStoryDictionaryEntries();
+        } else {
+          showDictAlert(`பிழை: ${data.error}`, false);
+        }
+      } catch (err) {
+        showDictAlert(`பிழை: ${err.message}`, false);
+      }
+    }
+
+    function startEditDictionaryEntry(entryId) {
+      const view = document.getElementById(`dictCardView-${entryId}`);
+      const edit = document.getElementById(`dictCardEdit-${entryId}`);
+      if (view) view.style.display = 'none';
+      if (edit) edit.style.display = 'block';
+    }
+
+    function cancelEditDictionaryEntry(entryId) {
+      const view = document.getElementById(`dictCardView-${entryId}`);
+      const edit = document.getElementById(`dictCardEdit-${entryId}`);
+      if (view) view.style.display = 'block';
+      if (edit) edit.style.display = 'none';
+    }
+
+    async function saveEditedDictionaryEntry(entryId) {
+      const word = document.getElementById(`editWord-${entryId}`)?.value.trim();
+      const meaningTa = document.getElementById(`editMeaningTa-${entryId}`)?.value.trim();
+      const meaningEn = document.getElementById(`editMeaningEn-${entryId}`)?.value.trim();
+      const cat = document.getElementById(`editCategory-${entryId}`)?.value.trim();
+      const ctx = document.getElementById(`editContextTa-${entryId}`)?.value.trim();
+      const ex = document.getElementById(`editExample-${entryId}`)?.value.trim();
+      const status = document.getElementById(`editStatus-${entryId}`)?.value;
+
+      if (!word) {
+        showDictAlert("தமிழ்ச் சொல் அவசியம்.", false);
+        return;
+      }
+
+      const payload = {
+        word: word,
+        meaning_ta: meaningTa,
+        meaning_en: meaningEn,
+        category: cat,
+        contextual_meaning_ta: ctx,
+        example_sentence: ex,
+        review_status: status
+      };
+
+      try {
+        const resp = await fetch(`/api/dictionary/entries/${entryId}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await resp.json();
+        if (data.success) {
+          showDictAlert("சொல் விவரங்கள் வெற்றிகரமாகப் புதுப்பிக்கப்பட்டன!");
+          await reloadStoryDictionaryEntries();
+        } else {
+          showDictAlert(`பிழை: ${data.error}`, false);
+        }
+      } catch (err) {
+        showDictAlert(`பிழை: ${err.message}`, false);
+      }
+    }
+
+    async function deleteDictionaryEntry(entryId) {
+      if (!confirm("நிச்சயமாக இந்தச் சொல்லை நினைவகத்திலிருந்து நீக்க வேண்டுமா?")) {
+        return;
+      }
+      try {
+        const resp = await fetch(`/api/dictionary/entries/${entryId}`, {
+          method: 'DELETE'
+        });
+        const data = await resp.json();
+        if (data.success) {
+          showDictAlert("சொல் நீக்கப்பட்டது.");
+          await reloadStoryDictionaryEntries();
+        } else {
+          showDictAlert(`பிழை: ${data.error}`, false);
+        }
+      } catch (err) {
+        showDictAlert(`பிழை: ${err.message}`, false);
+      }
+    }
+
+    function playAudioSnippet(audioUrl, startSec, endSec) {
+      const player = document.getElementById('snippetAudioPlayer');
+      if (!player) return;
+      stopAudioSnippet();
+
+      player.src = audioUrl;
+      player.currentTime = Math.max(0, startSec);
+      player.play().catch(e => console.warn("Snippet play prevented:", e));
+
+      activeSnippetInterval = setInterval(() => {
+        if (player.currentTime >= endSec || player.paused || player.ended) {
+          stopAudioSnippet();
+        }
+      }, 250);
+    }
+
+    function stopAudioSnippet() {
+      const player = document.getElementById('snippetAudioPlayer');
+      if (player) {
+        player.pause();
+      }
+      if (activeSnippetInterval) {
+        clearInterval(activeSnippetInterval);
+        activeSnippetInterval = null;
+      }
+    }
+
+    // =========================================================================
+    // GLOBAL DICTIONARY FUNCTIONS
+    // =========================================================================
+    async function openGlobalDictionary() {
+      document.getElementById('globalDictModalOverlay').style.display = 'flex';
+      await searchGlobalDictionary();
+    }
+
+    function closeGlobalDictionary() {
+      document.getElementById('globalDictModalOverlay').style.display = 'none';
+      stopAudioSnippet();
+    }
+
+    async function searchGlobalDictionary() {
+      const container = document.getElementById('globalDictCardsContainer');
+      if (!container) return;
+      container.innerHTML = '<div style="text-align: center; padding: 40px; color: hsl(var(--muted-foreground));"><span class="spinner" style="margin-right: 8px;"></span> தேடப்படுகிறது...</div>';
+
+      const q = (document.getElementById('globalDictSearchInput')?.value || '').trim();
+      const cat = document.getElementById('globalDictCategoryFilter')?.value || 'all';
+      const status = document.getElementById('globalDictStatusFilter')?.value || 'all';
+
+      let url = `/api/dictionary/search?q=${encodeURIComponent(q)}&category=${encodeURIComponent(cat)}&status=${encodeURIComponent(status)}`;
+      try {
+        const resp = await fetch(url);
+        const data = await resp.json();
+
+        if (data.success) {
+          populateCategoryFilter('globalDictCategoryFilter', data.categories || []);
+          renderGlobalDictionaryCards(data.entries || []);
+        } else {
+          container.innerHTML = `<div style="color: #fca5a5; text-align: center; padding: 20px;">பிழை: ${data.error}</div>`;
+        }
+      } catch (err) {
+        container.innerHTML = `<div style="color: #fca5a5; text-align: center; padding: 20px;">பிழை: ${err.message}</div>`;
+      }
+    }
+
+    function renderGlobalDictionaryCards(entries) {
+      const container = document.getElementById('globalDictCardsContainer');
+      if (!container) return;
+
+      if (!entries || entries.length === 0) {
+        container.innerHTML = `
+          <div style="text-align: center; padding: 40px 20px; background: rgba(255,255,255,0.02); border-radius: 14px; border: 1px dashed rgba(255,255,255,0.15); color: hsl(var(--muted-foreground));">
+            <div style="font-size: 32px; margin-bottom: 8px;">🔍</div>
+            <div style="font-size: 16px; font-family: var(--font-display); color: #FFFFFF;">பொருத்தமான சொற்கள் எதுவும் கிடைக்கவில்லை</div>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = entries.map(e => `
+        <div class="dict-card">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; margin-bottom: 8px;">
+            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+              <h3 class="dict-word-title">${escapeHtml(e.word)}</h3>
+              <span class="dict-cat-badge">📁 ${escapeHtml(e.category || 'பாரம்பரிய அறிவு')}</span>
+              ${e.review_status === 'verified' 
+                ? '<span class="dict-status-badge dict-status-verified">✅ சரிபார்க்கப்பட்டது</span>' 
+                : '<span class="dict-status-badge dict-status-pending">⏳ மதிப்பாய்வு தேவை</span>'}
+            </div>
+            <div>
+              <button class="liquid-glass" style="border-radius: 9999px; padding: 5px 14px; font-size: 12px;" onclick="closeGlobalDictionary(); openStoryDictionary(${e.story_id});">
+                📖 மூலக் கதைக்குச் செல் &rarr;
+              </button>
+            </div>
+          </div>
+
+          <div style="font-size: 13px; color: hsl(var(--muted-foreground)); margin-bottom: 8px;">
+            மூலக் கதை: <strong style="color: #FFFFFF;">${escapeHtml(e.story_title)}</strong>
+            ${e.storyteller ? ` | கூறுபவர்: <strong style="color: #FFFFFF;">${escapeHtml(e.storyteller)}</strong>` : ''}
+            ${e.story_region ? ` | ஊர்: <span class="tag-badge" style="background: rgba(56,189,248,0.12); color:#7dd3fc; border-color:rgba(56,189,248,0.3);">📍 ${escapeHtml(e.story_region)}</span>` : ''}
+          </div>
+
+          <div class="dict-meaning-grid">
+            <div>
+              <div class="dict-label">தமிழ் விளக்கம்</div>
+              <div class="dict-val">${escapeHtml(e.meaning_ta)}</div>
+            </div>
+            <div>
+              <div class="dict-label">English Meaning</div>
+              <div class="dict-val">${escapeHtml(e.meaning_en)}</div>
+            </div>
+          </div>
+
+          ${e.contextual_meaning_ta ? `
+            <div style="margin-bottom: 6px;">
+              <div class="dict-label">சூழல்சார் விளக்கம்</div>
+              <div class="dict-val" style="color: hsl(var(--muted-foreground));">${escapeHtml(e.contextual_meaning_ta)}</div>
+            </div>
+          ` : ''}
+
+          ${e.source_excerpt ? `
+            <div class="dict-excerpt-box">
+              <span style="font-weight: 600; color: #FFFFFF;">வாக்கிய மேற்கோள்:</span> "${escapeHtml(e.source_excerpt)}"
+            </div>
+          ` : ''}
+        </div>
+      `).join('');
+    }
+
+    // Load records initially
+    loadSavedRecords();
+  </script>
+</body>
+</html>

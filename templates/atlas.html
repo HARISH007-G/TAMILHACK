@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voice-to-Village Atlas • குரல் வரைபடம் — Velorah® • MARAPOLI</title>
+  <link rel="icon" href="{{ url_for('static', filename='img/leaves-svgrepo-com 1.png') }}">
+
+  <!-- Google Fonts: Instrument Serif, Inter, Noto Serif Tamil, Noto Sans Tamil -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=Noto+Serif+Tamil:wght@400;600;700&family=Noto+Sans+Tamil:wght@400;500;600;700&display=swap">
+
+  <style>
+    /* ================================================================
+       THEME SPECIFICATIONS (DARK NAVY BLUE & LIQUID GLASS)
+       ================================================================ */
+    :root {
+      --background: 201 90% 16%;
+      --foreground: 0 0% 100%;
+      --muted-foreground: 240 6% 74%;
+      --primary: 0 0% 100%;
+      --border: 0 0% 22%;
+
+      --font-display: 'Instrument Serif', 'Noto Serif Tamil', serif;
+      --font-body: 'Inter', 'Noto Sans Tamil', -apple-system, BlinkMacSystemFont, sans-serif;
+
+      --color-bg: hsl(var(--background));
+      --color-fg: hsl(var(--foreground));
+      --color-card-bg: rgba(10, 34, 62, 0.55);
+      --color-card-border: rgba(255, 255, 255, 0.16);
+      --color-accent-sky: #38bdf8;
+      --color-accent-gold: #f4c430;
+      --color-accent-green: #86efac;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: hsl(var(--background));
+      color: hsl(var(--foreground));
+      font-family: var(--font-body);
+      min-height: 100vh;
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Fullscreen Video Background */
+    .video-bg-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .video-bg-container video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(1.24) contrast(1.06) saturate(1.15);
+      z-index: 0;
+    }
+
+    .video-bg-scrim {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 50% 15%, rgba(56, 189, 248, 0.15) 0%, transparent 68%),
+        linear-gradient(
+          180deg,
+          rgba(0, 24, 48, 0.20) 0%,
+          rgba(0, 26, 50, 0.40) 45%,
+          rgba(0, 18, 36, 0.65) 100%
+        );
+      z-index: 1;
+    }
+
+    .site-content {
+      position: relative;
+      z-index: 10;
+    }
+
+    /* Liquid Glass */
+    .liquid-glass {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15), 0 8px 32px rgba(0, 0, 0, 0.35);
+      border-radius: 12px;
+      color: #FFFFFF;
+      transition: all 0.2s ease;
+    }
+    .liquid-glass:hover {
+      background: rgba(255, 255, 255, 0.09);
+      border-color: rgba(56, 189, 248, 0.4);
+    }
+
+    /* Navigation Bar */
+    .nav-bar-container {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 20px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 20;
+    }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 28px;
+      color: #FFFFFF;
+      text-decoration: none;
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+    }
+
+    .nav-logo-sub {
+      font-size: 11px;
+      font-family: var(--font-body);
+      color: hsl(var(--muted-foreground));
+      margin-left: 10px;
+      padding-left: 10px;
+      border-left: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .nav-links {
+      display: none;
+      gap: 24px;
+      align-items: center;
+    }
+
+    @media (min-width: 860px) {
+      .nav-links { display: flex; }
+    }
+
+    .nav-link {
+      font-size: 13.5px;
+      font-weight: 500;
+      color: hsl(var(--muted-foreground));
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .nav-link:hover, .nav-link.active {
+      color: #FFFFFF;
+    }
+
+    /* Header Banner */
+    .atlas-hero-banner {
+      max-width: 1360px;
+      margin: 0 auto 20px;
+      padding: 0 28px;
+    }
+
+    .atlas-header-card {
+      background: rgba(10, 34, 62, 0.6);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 16px;
+      padding: 24px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    .atlas-title-h1 {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 400;
+      margin: 0 0 6px 0;
+      color: #FFFFFF;
+      letter-spacing: -0.8px;
+      line-height: 1.1;
+      text-shadow: 0 2px 16px rgba(0, 14, 30, 0.7);
+    }
+
+    .atlas-tagline {
+      font-size: 14.5px;
+      color: #7dd3fc;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .atlas-desc {
+      font-size: 13.5px;
+      color: #cbd5e1;
+      margin: 0;
+      max-width: 720px;
+      line-height: 1.6;
+    }
+
+    .atlas-stats-strip {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .kpi-pill {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 8px 14px;
+      text-align: center;
+      min-width: 85px;
+    }
+    .kpi-num {
+      font-size: 20px;
+      font-weight: 700;
+      color: #38bdf8;
+      font-family: var(--font-display);
+      line-height: 1;
+    }
+    .kpi-lbl {
+      font-size: 10.5px;
+      color: hsl(var(--muted-foreground));
+      margin-top: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* 3-Panel Main Atlas Layout */
+    .atlas-main-grid {
+      max-width: 1360px;
+      margin: 0 auto 60px;
+      padding: 0 28px;
+      display: grid;
+      grid-template-columns: 340px 1fr 400px;
+      gap: 20px;
+      height: calc(100vh - 220px);
+      min-height: 640px;
+    }
+
+    @media (max-width: 1200px) {
+      .atlas-main-grid {
+        grid-template-columns: 320px 1fr;
+        height: auto;
+      }
+      .right-voices-panel {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media (max-width: 860px) {
+      .atlas-main-grid {
+        grid-template-columns: 1fr;
+        height: auto;
+      }
+    }
+
+    /* Panel Card Containers */
+    .atlas-panel {
+      background: var(--color-card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--color-card-border);
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      height: 100%;
+    }
+
+    .panel-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .panel-title {
+      font-family: var(--font-display);
+      font-size: 19px;
+      font-weight: 400;
+      color: #FFFFFF;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .panel-body-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+    }
+
+    /* Form Inputs */
+    .form-input {
+      width: 100%;
+      background: rgba(0, 18, 36, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 13px;
+      color: #FFFFFF;
+      outline: none;
+      font-family: var(--font-body);
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .form-input:focus {
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25);
+    }
+
+    /* Location Cards in Left Panel */
+    .village-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .village-card:hover {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: rgba(56, 189, 248, 0.4);
+      transform: translateY(-1px);
+    }
+    .village-card.selected {
+      background: rgba(56, 189, 248, 0.14);
+      border-color: #38bdf8;
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.25);
+    }
+
+    .village-name {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 400;
+      color: #FFFFFF;
+      margin: 0 0 4px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .badge-count {
+      background: rgba(56, 189, 248, 0.2);
+      color: #7dd3fc;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 9999px;
+    }
+
+    .village-meta {
+      font-size: 12px;
+      color: hsl(var(--muted-foreground));
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    /* Category Filter Chips */
+    .filter-chips-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 10px 0;
+    }
+
+    .chip-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 9999px;
+      padding: 4px 10px;
+      font-size: 11.5px;
+      color: hsl(var(--muted-foreground));
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .chip-btn:hover {
+      color: #FFFFFF;
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+    .chip-btn.active {
+      background: rgba(56, 189, 248, 0.18);
+      border-color: #38bdf8;
+      color: #FFFFFF;
+      font-weight: 600;
+    }
+
+    /* Map Center Panel */
+    .map-wrapper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 540px;
+    }
+
+    #atlasMapContainer {
+      width: 100%;
+      height: 100%;
+      background: #021427;
+    }
+
+    /* Map Controls Toolbar */
+    .map-controls-toolbar {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      right: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .map-btn {
+      pointer-events: auto;
+      background: rgba(0, 18, 36, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 8px;
+      padding: 7px 14px;
+      font-size: 12.5px;
+      color: #FFFFFF;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .map-btn:hover {
+      background: rgba(0, 24, 48, 0.95);
+      border-color: #38bdf8;
+    }
+
+    /* Right Panel: Story Cards */
+    .story-card-item {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 14px;
+      transition: border-color 0.2s ease;
+    }
+    .story-card-item:hover {
+      border-color: rgba(255, 255, 255, 0.22);
+    }
+
+    .story-title {
+      font-family: var(--font-display);
+      font-size: 17.5px;
+      color: #FFFFFF;
+      margin: 0 0 6px 0;
+      line-height: 1.3;
+    }
+
+    /* Custom Audio Player in Card */
+    .audio-player-box {
+      background: rgba(0, 18, 36, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin: 12px 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn-play-pause {
+      background: #38bdf8;
+      color: #021427;
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 14px;
+      transition: transform 0.15s ease, background 0.15s ease;
+      flex-shrink: 0;
+    }
+    .btn-play-pause:hover {
+      transform: scale(1.06);
+      background: #7dd3fc;
+    }
+
+    .scrubber-track {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .scrubber-bar {
+      width: 100%;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 3px;
+      position: relative;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .scrubber-progress {
+      height: 100%;
+      background: #38bdf8;
+      width: 0%;
+      border-radius: 3px;
+    }
+
+    .time-display {
+      font-size: 11px;
+      color: hsl(var(--muted-foreground));
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* Actions Drawer Tabs */
+    .story-action-tabs {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .tab-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 6px;
+      padding: 4px 10px;
+      font-size: 11.5px;
+      color: #e2e8f0;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .tab-btn:hover {
+      background: rgba(255, 255, 255, 0.09);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+    .tab-btn.active {
+      background: rgba(56, 189, 248, 0.18);
+      border-color: #38bdf8;
+      color: #FFFFFF;
+    }
+
+    /* Constellation Related Links */
+    .constellation-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px dashed rgba(56, 189, 248, 0.3);
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-top: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .constellation-card:hover {
+      background: rgba(56, 189, 248, 0.08);
+      border-color: #38bdf8;
+    }
+
+    /* Accessible List View Container */
+    #accessibleListView {
+      display: none;
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      padding: 20px;
+      background: rgba(0, 18, 36, 0.85);
+    }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: rgba(0, 18, 36, 0.4); }
+    ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.18); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.3); }
+
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #38bdf8;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Fullscreen Video Background -->
+  <div class="video-bg-container">
+    <video autoplay loop muted playsinline class="video-bg">
+      <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260314_131748_f2ca2a28-fed7-44c8-b9a9-bd9acdd5ec31.mp4" type="video/mp4">
+    </video>
+    <div class="video-bg-scrim"></div>
+  </div>
+
+  <div class="site-content">
+    <!-- Navigation Bar -->
+    <header class="nav-bar-container">
+      <a href="/" class="nav-logo">
+        Velorah<sup style="font-size: 11px;">®</sup>
+        <span class="nav-logo-sub">மரபொலி • மொழி நினைவு</span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="/" class="nav-link">Home (முகப்பு)</a>
+        <a href="/atlas" class="nav-link active" style="color: #38bdf8; font-weight: 600;">🗺️ Voice Atlas (குரல் வரைபடம்)</a>
+        <a href="/#audioStudioSection" class="nav-link">Studio (அரங்கம்)</a>
+        <a href="javascript:void(0)" onclick="window.location.href='/#savedArchivesSection'" class="nav-link">Archive (பெட்டகம்)</a>
+      </nav>
+
+      <a href="/#audioStudioSection" class="liquid-glass" style="padding: 9px 20px; font-size: 13.5px; text-decoration: none; border-radius: 9999px;">
+        🎙️ புதிய குரல் பதிவு
+      </a>
+    </header>
+
+    <!-- Header Banner & Stats -->
+    <section class="atlas-hero-banner">
+      <div class="atlas-header-card">
+        <div>
+          <div class="atlas-tagline">ஒவ்வொரு ஊருக்கும் ஒரு குரல் • Voice-to-Village Atlas</div>
+          <h1 class="atlas-title-h1">தமிழ் ஊர்களின் வாய்மொழி வரைபடம்</h1>
+          <p class="atlas-desc">
+            தமிழ்நாட்டின் கிராமங்கள், தொன்மையான நகரங்கள் மற்றும் பண்பாட்டு நிலவெளிகளை அங்கு வாழ்ந்த மக்களின் நேரடிக் குரல்கள், நினைவுகள், நாட்டுப்புறக் கதைகள் மற்றும் வட்டார வழக்கின் வழியாக ஆராயுங்கள்.
+          </p>
+        </div>
+
+        <div class="atlas-stats-strip">
+          <div class="kpi-pill">
+            <div class="kpi-num" id="statVillageCount">-</div>
+            <div class="kpi-lbl">ஊர்கள் (Villages)</div>
+          </div>
+          <div class="kpi-pill">
+            <div class="kpi-num" id="statStoriesCount">-</div>
+            <div class="kpi-lbl">குரல் பதிவுகள்</div>
+          </div>
+          <div class="kpi-pill">
+            <div class="kpi-num" id="statDistrictsCount">-</div>
+            <div class="kpi-lbl">மாவட்டங்கள்</div>
+          </div>
+          <div class="kpi-pill">
+            <div class="kpi-num" id="statVocabCount">151+</div>
+            <div class="kpi-lbl">அரிய சொற்கள்</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main 3-Part Interactive Atlas Layout -->
+    <main class="atlas-main-grid">
+      <!-- 1. Left Panel: Explore Places & Filters -->
+      <section class="atlas-panel">
+        <div class="panel-header">
+          <h2 class="panel-title">
+            <span>📍</span> ஊர்களைக் காண்க
+          </h2>
+          <span style="font-size: 11.5px; color: #7dd3fc;" id="locationsFoundBadge">ஏற்றப்படுகிறது...</span>
+        </div>
+
+        <div style="padding: 12px 16px 0;">
+          <!-- Search input -->
+          <input type="text" id="atlasSearchInput" class="form-input" placeholder="ஊர் அல்லது மாவட்டத்தைத் தேடுக..." oninput="onFilterChanged()">
+
+          <!-- District selector dropdown -->
+          <div style="margin-top: 8px;">
+            <select id="districtFilterSelect" class="form-input" onchange="onFilterChanged()">
+              <option value="all">அனைத்து மாவட்டங்களும் (All Districts)</option>
+            </select>
+          </div>
+
+          <!-- Category filter chips -->
+          <div class="filter-chips-container" id="categoryChipsContainer">
+            <button type="button" class="chip-btn active" data-category="all" onclick="setCategoryFilter('all')">அனைத்தும்</button>
+          </div>
+        </div>
+
+        <!-- Scrollable Village Cards List -->
+        <div class="panel-body-scroll" id="villagesListContainer">
+          <div style="text-align: center; padding: 40px; color: hsl(var(--muted-foreground));">
+            <span class="spinner" style="margin-right: 6px;"></span> ஊர் விவரங்கள் பெறப்படுகின்றன...
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. Center Panel: Interactive Google Map -->
+      <section class="atlas-panel">
+        <div class="map-wrapper">
+          <!-- Floating Controls Toolbar -->
+          <div class="map-controls-toolbar">
+            <button type="button" class="map-btn" onclick="resetMapCenter()" title="தமிழ்நாடு முழுமைக்கும் பொருத்து">
+              <span>🎯</span> தமிழ்நாடு மையம்
+            </button>
+            <button type="button" class="map-btn" id="btnToggleViewMode" onclick="toggleAccessibleView()">
+              <span>📋</span> பட்டியல் காட்சி (List View)
+            </button>
+          </div>
+
+          <!-- Google Map Element -->
+          <div id="atlasMapContainer"></div>
+
+          <!-- Accessible List View Alternative -->
+          <div id="accessibleListView">
+            <h3 style="font-family: var(--font-display); font-size: 22px; color: #FFFFFF; margin-top: 0;">
+              தமிழ்நாடு ஊர்களின் வாய்மொழிப் பட்டியல் (Accessible Locations Archive)
+            </h3>
+            <p style="font-size: 13px; color: #cbd5e1;">
+              வரைபடம் பயன்படுத்த இயலாத அல்லது பட்டியல் முறையை விரும்பும் பார்வையாளர்களுக்கான நேரடித் தரவுப் பார்வை:
+            </p>
+            <div id="accessibleLocationsGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 14px; margin-top: 16px;"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Right Panel: Voices of This Place -->
+      <section class="atlas-panel right-voices-panel">
+        <div class="panel-header">
+          <h2 class="panel-title" id="selectedPlaceTitle">
+            <span>🎧</span> இவ்வூரின் குரல்கள்
+          </h2>
+          <span class="badge-count" id="selectedStoriesBadge" style="display: none;">0 பதிவுகள்</span>
+        </div>
+
+        <div class="panel-body-scroll" id="voicesPanelBody">
+          <!-- Initial Empty Placeholder -->
+          <div id="voicesPlaceholder" style="text-align: center; padding: 60px 20px; color: hsl(var(--muted-foreground));">
+            <div style="font-size: 48px; margin-bottom: 12px; opacity: 0.8;">🗺️</div>
+            <h3 style="font-family: var(--font-display); font-size: 20px; color: #FFFFFF; margin: 0 0 8px 0;">
+              ஓர் ஊரைத் தேர்ந்தெடுக்கவும்
+            </h3>
+            <p style="font-size: 13px; line-height: 1.6; margin: 0 auto; max-width: 280px;">
+              வரைபடத்தில் உள்ள ஊரின் குறியீட்டையோ அல்லது இடதுபுறப் பட்டியலையோ சொடுக்கி, அந்த நிலப்பரப்பின் வாய்மொழிக் கதைகளைக் கேளுங்கள்.
+            </p>
+          </div>
+
+          <!-- Selected Location Details & Stories List Container -->
+          <div id="locationDetailsContainer" style="display: none;">
+            <!-- Location Meta Banner -->
+            <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 12px; padding: 14px 16px; margin-bottom: 16px;">
+              <div style="font-size: 11.5px; color: #38bdf8; font-weight: 600; text-transform: uppercase; margin-bottom: 4px;" id="dispRegionDistrict">
+                மதுரை மாவட்டம் • பாண்டி நாடு
+              </div>
+              <h3 style="font-family: var(--font-display); font-size: 24px; color: #FFFFFF; margin: 0 0 6px 0;" id="dispLocationName">
+                அழகர்கோவில்
+              </h3>
+              <p style="font-size: 12.5px; color: #cbd5e1; line-height: 1.6; margin: 0;" id="dispLocationDesc">
+                வரலாற்றுத் தலம்.
+              </p>
+            </div>
+
+            <!-- List of Story Cards -->
+            <div id="storiesListContainer"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Global Audio Player Instance for Atlas -->
+  <audio id="atlasAudioPlayer" style="display: none;"></audio>
+
+  <!-- Google Maps JavaScript API with Graceful Fallback -->
+  <script>
+    // Global Atlas State
+    let atlasMap = null;
+    let markersArray = [];
+    let allLocations = [];
+    let selectedLocationId = null;
+    let activeCategory = 'all';
+    let currentlyPlayingStoryId = null;
+    const defaultCenter = { lat: 10.8505, lng: 78.6856 }; // Center of Tamil Nadu
+    const defaultZoom = 7.4;
+
+    // Google Maps Dark Navy Theme Styling
+    const darkMapStyle = [
+      { elementType: 'geometry', stylers: [{ color: '#04182b' }] },
+      { elementType: 'labels.text.stroke', stylers: [{ color: '#021427' }] },
+      { elementType: 'labels.text.fill', stylers: [{ color: '#cbd5e1' }] },
+      {
+        featureType: 'administrative.locality',
+        elementType: 'labels.text.fill',
+        stylers: [{ color: '#7dd3fc' }]
+      },
+      {
+        featureType: 'poi',
+        elementType: 'labels.text.fill',
+        stylers: [{ color: '#94a3b8' }]
+      },
+      {
+        featureType: 'poi.park',
+        elementType: 'geometry',
+        stylers: [{ color: '#07243e' }]
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry',
+        stylers: [{ color: '#0c2e4e' }]
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry.stroke',
+        stylers: [{ color: '#061b2e' }]
+      },
+      {
+        featureType: 'road.highway',
+        elementType: 'geometry',
+        stylers: [{ color: '#134068' }]
+      },
+      {
+        featureType: 'water',
+        elementType: 'geometry',
+        stylers: [{ color: '#010c18' }]
+      },
+      {
+        featureType: 'water',
+        elementType: 'labels.text.fill',
+        stylers: [{ color: '#38bdf8' }]
+      }
+    ];
+
+    // Initialize Atlas Map
+    function initAtlasMap() {
+      const mapEl = document.getElementById('atlasMapContainer');
+      if (!mapEl) return;
+
+      try {
+        atlasMap = new google.maps.Map(mapEl, {
+          center: defaultCenter,
+          zoom: defaultZoom,
+          minZoom: 6,
+          maxZoom: 15,
+          styles: darkMapStyle,
+          disableDefaultUI: false,
+          zoomControl: true,
+          mapTypeControl: false,
+          streetViewControl: false,
+          fullscreenControl: false
+        });
+
+        loadAtlasData();
+      } catch (err) {
+        console.warn("Google Maps init issue, switching to accessible mode:", err);
+        activateAccessibleFallback();
+      }
+    }
+
+    // Google Maps authentication failure handler
+    window.gm_authFailure = function() {
+      console.warn("Google Maps authentication notice. Enabling accessible list view.");
+      activateAccessibleFallback();
+    };
+
+    function activateAccessibleFallback() {
+      const accessibleView = document.getElementById('accessibleListView');
+      const mapContainer = document.getElementById('atlasMapContainer');
+      const toggleBtn = document.getElementById('btnToggleViewMode');
+      if (accessibleView) accessibleView.style.display = 'block';
+      if (mapContainer) mapContainer.style.display = 'none';
+      if (toggleBtn) toggleBtn.innerHTML = '<span>🗺️</span> வரைபடம் (Map)';
+      loadAtlasData();
+    }
+
+    // Fetch Locations & Statistics from API
+    async function loadAtlasData() {
+      const q = document.getElementById('atlasSearchInput')?.value.trim() || '';
+      const dist = document.getElementById('districtFilterSelect')?.value || 'all';
+
+      let url = `/api/atlas/locations?q=${encodeURIComponent(q)}&district=${encodeURIComponent(dist)}&category=${encodeURIComponent(activeCategory)}`;
+
+      try {
+        const resp = await fetch(url);
+        const data = await resp.json();
+
+        if (data.success) {
+          allLocations = data.locations || [];
+          updateKPIs(data);
+          populateDistrictsDropdown(data.districts || []);
+          populateCategoryChips(data.categories || []);
+          renderVillagesList(allLocations);
+          renderMapMarkers(allLocations);
+          renderAccessibleGrid(allLocations);
+
+          // Auto-select first location with stories if none selected
+          if (!selectedLocationId && allLocations.length > 0) {
+            const firstWithStory = allLocations.find(l => l.story_count > 0) || allLocations[0];
+            selectLocation(firstWithStory.id, false);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load atlas locations:", err);
+      }
+    }
+
+    function updateKPIs(data) {
+      const locs = data.locations || [];
+      const totalStories = locs.reduce((acc, l) => acc + (l.story_count || 0), 0);
+      const activeVillages = locs.filter(l => l.story_count > 0).length;
+
+      document.getElementById('statVillageCount').textContent = activeVillages || locs.length;
+      document.getElementById('statStoriesCount').textContent = totalStories;
+      document.getElementById('statDistrictsCount').textContent = (data.districts || []).length;
+      document.getElementById('locationsFoundBadge').textContent = `${locs.length} ஊர்கள்`;
+    }
+
+    function populateDistrictsDropdown(districts) {
+      const select = document.getElementById('districtFilterSelect');
+      if (!select || select.options.length > 1) return;
+
+      districts.forEach(d => {
+        const opt = document.createElement('option');
+        opt.value = d;
+        opt.textContent = `${d} மாவட்டம்`;
+        select.appendChild(opt);
+      });
+    }
+
+    function populateCategoryChips(categories) {
+      const container = document.getElementById('categoryChipsContainer');
+      if (!container || container.children.length > 1) return;
+
+      categories.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'chip-btn';
+        btn.setAttribute('data-category', cat);
+        btn.textContent = cat;
+        btn.onclick = () => setCategoryFilter(cat);
+        container.appendChild(btn);
+      });
+    }
+
+    function setCategoryFilter(cat) {
+      activeCategory = cat;
+      const chips = document.querySelectorAll('#categoryChipsContainer .chip-btn');
+      chips.forEach(c => {
+        if (c.getAttribute('data-category') === cat) {
+          c.classList.add('active');
+        } else {
+          c.classList.remove('active');
+        }
+      });
+      loadAtlasData();
+    }
+
+    function onFilterChanged() {
+      loadAtlasData();
+    }
+
+    // Render Left Panel Cards
+    function renderVillagesList(locations) {
+      const container = document.getElementById('villagesListContainer');
+      if (!container) return;
+
+      if (!locations || locations.length === 0) {
+        container.innerHTML = `
+          <div style="text-align: center; padding: 40px 10px; color: hsl(var(--muted-foreground));">
+            <div style="font-size: 32px; margin-bottom: 8px;">🔍</div>
+            <div style="color: #FFFFFF; font-size: 15px;">பொருத்தமான ஊர்கள் கிடைக்கவில்லை</div>
+            <div style="font-size: 12px; margin-top: 4px;">வேறு சொல் அல்லது மாவட்டத்தைத் தேர்வு செய்யவும்.</div>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = locations.map(loc => {
+        const isSel = loc.id === selectedLocationId ? 'selected' : '';
+        return `
+          <div class="village-card ${isSel}" id="villageCard-${loc.id}" onclick="selectLocation(${loc.id}, true)">
+            <div class="village-name">
+              <span>${escapeHtml(loc.name)}</span>
+              <span class="badge-count">${loc.story_count} பதிவு</span>
+            </div>
+            <div class="village-meta">
+              <span>📍 ${escapeHtml(loc.district)} மாவட்டம்</span>
+              <span>•</span>
+              <span style="color: #38bdf8;">${escapeHtml(loc.cultural_region || 'தமிழ்நாடு')}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Render Markers on Google Maps
+    function renderMapMarkers(locations) {
+      if (!atlasMap || typeof google === 'undefined' || !google.maps) return;
+
+      // Clear existing markers
+      markersArray.forEach(m => m.setMap(null));
+      markersArray = [];
+
+      locations.forEach(loc => {
+        const hasStories = loc.story_count > 0;
+        const isSelected = loc.id === selectedLocationId;
+
+        // Custom styled SVG Pin
+        const markerSvg = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="36" height="44" viewBox="0 0 36 44">
+            <defs>
+              <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                <feDropShadow dx="0" dy="3" stdDeviation="3" flood-color="#000" flood-opacity="0.5"/>
+              </filter>
+            </defs>
+            <path d="M18 0 C8.06 0 0 8.06 0 18 C0 31.5 18 44 18 44 C18 44 36 31.5 36 18 C36 8.06 27.94 0 18 0 Z" 
+                  fill="${isSelected ? '#38bdf8' : (hasStories ? '#0284c7' : '#1e293b')}" 
+                  stroke="${isSelected ? '#FFFFFF' : '#38bdf8'}" stroke-width="${isSelected ? '2.5' : '1.5'}" filter="url(#shadow)"/>
+            <circle cx="18" cy="18" r="11" fill="${isSelected ? '#021427' : '#04182b'}"/>
+            <text x="18" y="22" font-size="11" font-weight="700" fill="${isSelected ? '#38bdf8' : '#FFFFFF'}" text-anchor="middle" font-family="sans-serif">${loc.story_count}</text>
+          </svg>
+        `;
+
+        const marker = new google.maps.Marker({
+          position: { lat: loc.latitude, lng: loc.longitude },
+          map: atlasMap,
+          title: `${loc.name} (${loc.story_count} கதைகள்)`,
+          icon: {
+            url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(markerSvg),
+            scaledSize: new google.maps.Size(36, 44),
+            anchor: new google.maps.Point(18, 44)
+          }
+        });
+
+        marker.addListener('click', () => {
+          selectLocation(loc.id, true);
+        });
+
+        markersArray.push(marker);
+      });
+    }
+
+    // Select Location & Load Stories into Right Panel
+    async function selectLocation(locationId, panTo = true) {
+      selectedLocationId = locationId;
+
+      // Update card highlighting
+      document.querySelectorAll('.village-card').forEach(c => c.classList.remove('selected'));
+      const activeCard = document.getElementById(`villageCard-${locationId}`);
+      if (activeCard) {
+        activeCard.classList.add('selected');
+        activeCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+
+      // Re-render markers to update selected highlight
+      renderMapMarkers(allLocations);
+
+      // Find location info
+      const loc = allLocations.find(l => l.id === locationId);
+      if (loc && panTo && atlasMap) {
+        atlasMap.panTo({ lat: loc.latitude, lng: loc.longitude });
+        if (atlasMap.getZoom() < 10) {
+          atlasMap.setZoom(10);
+        }
+      }
+
+      // Fetch stories for this location
+      const placeholder = document.getElementById('voicesPlaceholder');
+      const detailsContainer = document.getElementById('locationDetailsContainer');
+      const storiesContainer = document.getElementById('storiesListContainer');
+      const badge = document.getElementById('selectedStoriesBadge');
+
+      if (placeholder) placeholder.style.display = 'none';
+      if (detailsContainer) detailsContainer.style.display = 'block';
+      if (storiesContainer) {
+        storiesContainer.innerHTML = '<div style="text-align: center; padding: 30px;"><span class="spinner" style="margin-right:6px;"></span> கதைகள் பெறப்படுகின்றன...</div>';
+      }
+
+      try {
+        const resp = await fetch(`/api/atlas/locations/${locationId}/stories?category=${encodeURIComponent(activeCategory)}`);
+        const data = await resp.json();
+
+        if (data.success) {
+          const lInfo = data.location;
+          document.getElementById('dispLocationName').textContent = `${lInfo.name} ${lInfo.name_en ? '• ' + lInfo.name_en : ''}`;
+          document.getElementById('dispRegionDistrict').textContent = `${lInfo.district} மாவட்டம் • ${lInfo.cultural_region || 'தமிழ்நாடு'}`;
+          document.getElementById('dispLocationDesc').textContent = lInfo.description || 'வாய்மொழி வரலாற்றுத் தலம்.';
+
+          if (badge) {
+            badge.style.display = 'inline-block';
+            badge.textContent = `${data.count} பதிவுகள்`;
+          }
+
+          renderStoriesList(data.stories || []);
+        }
+      } catch (err) {
+        if (storiesContainer) {
+          storiesContainer.innerHTML = `<div style="color: #fca5a5; padding: 20px;">பிழை: ${err.message}</div>`;
+        }
+      }
+    }
+
+    // Render Story Cards in Right Panel
+    function renderStoriesList(stories) {
+      const container = document.getElementById('storiesListContainer');
+      if (!container) return;
+
+      if (!stories || stories.length === 0) {
+        container.innerHTML = `
+          <div style="text-align: center; padding: 30px 10px; background: rgba(255,255,255,0.02); border-radius: 10px; color: hsl(var(--muted-foreground));">
+            <div style="font-size: 28px; margin-bottom: 6px;">🎙️</div>
+            <div style="color: #FFFFFF; font-size: 14px;">இவ்வூருக்கான கதைகள் இன்னும் பதிவேற்றப்படவில்லை</div>
+            <div style="font-size: 12px; margin-top: 4px;">உங்கள் ஊரின் வரலாற்றைப் பதிவு செய்ய முகப்பு அரங்கம் செல்லவும்.</div>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = stories.map(s => `
+        <div class="story-card-item" id="storyItem-${s.id}">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
+            <h4 class="story-title">${escapeHtml(s.title)}</h4>
+            <span class="badge-count" style="background: rgba(167, 139, 250, 0.15); color: #c084fc; border-color: rgba(167, 139, 250, 0.3);">
+              ${escapeHtml(s.topic || 'வாய்மொழி வரலாறு')}
+            </span>
+          </div>
+
+          <div style="font-size: 12px; color: hsl(var(--muted-foreground)); margin-bottom: 8px;">
+            கூறுபவர்: <strong style="color: #FFFFFF;">${escapeHtml(s.storyteller)}</strong>
+            ${s.record_date ? ` • தேதி: ${escapeHtml(s.record_date)}` : ''}
+          </div>
+
+          <!-- Audio Player Component -->
+          ${s.audio_path ? `
+            <div class="audio-player-box" id="playerBox-${s.id}">
+              <button type="button" class="btn-play-pause" id="btnPlay-${s.id}" onclick="togglePlayStory(${s.id}, '${escapeHtml(s.audio_path)}')">
+                ▶
+              </button>
+              <div class="scrubber-track">
+                <div class="scrubber-bar" onclick="seekAudio(event, ${s.id})">
+                  <div class="scrubber-progress" id="progress-${s.id}"></div>
+                </div>
+                <div class="time-display">
+                  <span id="curTime-${s.id}">0:00</span>
+                  <span id="durTime-${s.id}">--:--</span>
+                </div>
+              </div>
+            </div>
+          ` : `
+            <div style="font-size: 12px; color: hsl(var(--muted-foreground)); padding: 6px 0;">
+              🎧 ஒலிப்பதிவு ஆவணக் கோப்பில் சேர்க்கப்பட்டு வருகிறது.
+            </div>
+          `}
+
+          <!-- Snippet -->
+          <div style="font-size: 12.5px; color: #cbd5e1; line-height: 1.6; margin-bottom: 8px;">
+            ${escapeHtml(s.transcript_snippet)}
+          </div>
+
+          <!-- Story Action Tabs -->
+          <div class="story-action-tabs">
+            <button type="button" class="tab-btn" onclick="toggleTranscriptDrawer(${s.id})">
+              📄 முழு உரை (Transcript)
+            </button>
+            <button type="button" class="tab-btn" onclick="loadStorySummary(${s.id})">
+              📄 சுருக்கம் (Summary)
+            </button>
+            <button type="button" class="tab-btn" onclick="loadStoryVocabulary(${s.id})">
+              📖 சொற்கள் (${s.vocab_count})
+            </button>
+            <button type="button" class="tab-btn" onclick="loadRelatedStories(${s.id})">
+              ✨ தொடர்புடையவை
+            </button>
+          </div>
+
+          <!-- Drawer Containers -->
+          <div id="drawerTranscript-${s.id}" style="display: none; margin-top: 10px; padding: 12px; background: rgba(0, 18, 36, 0.6); border-radius: 8px; font-size: 13px; line-height: 1.7; border: 1px solid rgba(255, 255, 255, 0.1);">
+            <div style="font-weight: 600; color: #7dd3fc; margin-bottom: 6px;">முழு வாய்மொழி உரை:</div>
+            <div style="white-space: pre-line;">${escapeHtml(s.transcript)}</div>
+          </div>
+
+          <div id="drawerSummary-${s.id}" style="display: none; margin-top: 10px; padding: 12px; background: rgba(0, 18, 36, 0.6); border-radius: 8px; font-size: 12.5px; border: 1px solid rgba(168, 85, 247, 0.3);">
+            <div id="summaryContent-${s.id}">சுருக்கம் ஏற்றப்படுகிறது...</div>
+          </div>
+
+          <div id="drawerVocab-${s.id}" style="display: none; margin-top: 10px; padding: 12px; background: rgba(0, 18, 36, 0.6); border-radius: 8px; font-size: 12.5px; border: 1px solid rgba(56, 189, 248, 0.3);">
+            <div id="vocabContent-${s.id}">சொற்கள் ஏற்றப்படுகின்றன...</div>
+          </div>
+
+          <div id="drawerRelated-${s.id}" style="display: none; margin-top: 10px; padding: 12px; background: rgba(0, 18, 36, 0.6); border-radius: 8px; font-size: 12.5px; border: 1px solid rgba(244, 196, 48, 0.3);">
+            <div id="relatedContent-${s.id}">தொடர்புடைய கதைகள் ஏற்றப்படுகின்றன...</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Audio Player Controls
+    function togglePlayStory(storyId, audioUrl) {
+      const audio = document.getElementById('atlasAudioPlayer');
+      const btn = document.getElementById(`btnPlay-${storyId}`);
+      if (!audio || !btn) return;
+
+      if (currentlyPlayingStoryId === storyId && !audio.paused) {
+        audio.pause();
+        btn.textContent = '▶';
+        currentlyPlayingStoryId = null;
+        return;
+      }
+
+      // Stop previous
+      if (currentlyPlayingStoryId && currentlyPlayingStoryId !== storyId) {
+        const prevBtn = document.getElementById(`btnPlay-${currentlyPlayingStoryId}`);
+        if (prevBtn) prevBtn.textContent = '▶';
+      }
+
+      audio.src = audioUrl;
+      audio.play().then(() => {
+        btn.textContent = '⏸';
+        currentlyPlayingStoryId = storyId;
+      }).catch(err => {
+        console.warn("Playback prevented:", err);
+      });
+
+      audio.ontimeupdate = () => {
+        const cur = audio.currentTime;
+        const dur = audio.duration;
+        const progressEl = document.getElementById(`progress-${storyId}`);
+        const curTimeEl = document.getElementById(`curTime-${storyId}`);
+        const durTimeEl = document.getElementById(`durTime-${storyId}`);
+
+        if (progressEl && dur) {
+          progressEl.style.width = `${(cur / dur) * 100}%`;
+        }
+        if (curTimeEl) curTimeEl.textContent = formatTime(cur);
+        if (durTimeEl && dur) durTimeEl.textContent = formatTime(dur);
+      };
+
+      audio.onended = () => {
+        btn.textContent = '▶';
+        currentlyPlayingStoryId = null;
+      };
+    }
+
+    function seekAudio(e, storyId) {
+      const audio = document.getElementById('atlasAudioPlayer');
+      if (!audio || currentlyPlayingStoryId !== storyId || !audio.duration) return;
+      const rect = e.currentTarget.getBoundingClientRect();
+      const pos = (e.clientX - rect.left) / rect.width;
+      audio.currentTime = pos * audio.duration;
+    }
+
+    function formatTime(sec) {
+      if (!sec || isNaN(sec)) return '0:00';
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${m}:${s < 10 ? '0' : ''}${s}`;
+    }
+
+    // Drawers Toggles
+    function toggleTranscriptDrawer(storyId) {
+      const drawer = document.getElementById(`drawerTranscript-${storyId}`);
+      if (!drawer) return;
+      drawer.style.display = drawer.style.display === 'none' ? 'block' : 'none';
+    }
+
+    async function loadStorySummary(storyId) {
+      const drawer = document.getElementById(`drawerSummary-${storyId}`);
+      const content = document.getElementById(`summaryContent-${storyId}`);
+      if (!drawer || !content) return;
+
+      if (drawer.style.display === 'block') {
+        drawer.style.display = 'none';
+        return;
+      }
+
+      drawer.style.display = 'block';
+      content.innerHTML = '<span class="spinner" style="margin-right:6px;"></span> கதைச் சுருக்கம் பெறப்படுகிறது...';
+
+      try {
+        const resp = await fetch(`/api/atlas/stories/${storyId}`);
+        const data = await resp.json();
+        if (data.success && data.story) {
+          const s = data.story;
+          content.innerHTML = `
+            <div style="margin-bottom: 6px;">
+              <strong style="color: #d8b4fe;">தமிழ் சுருக்கம்:</strong>
+              <p style="margin: 4px 0 8px 0; color: #f1f5f9; line-height: 1.6;">${escapeHtml(s.description || 'சுருக்கம் கிடைக்கவில்லை.')}</p>
+            </div>
+            <div>
+              <strong style="color: #d8b4fe;">English Summary:</strong>
+              <p style="margin: 4px 0 0 0; color: #cbd5e1; line-height: 1.6;">${escapeHtml(s.description || 'Oral history recorded in ' + (s.location.name_en || s.location.name))}</p>
+            </div>
+          `;
+        }
+      } catch (err) {
+        content.innerHTML = `<span style="color:#fca5a5;">பிழை: ${err.message}</span>`;
+      }
+    }
+
+    async function loadStoryVocabulary(storyId) {
+      const drawer = document.getElementById(`drawerVocab-${storyId}`);
+      const content = document.getElementById(`vocabContent-${storyId}`);
+      if (!drawer || !content) return;
+
+      if (drawer.style.display === 'block') {
+        drawer.style.display = 'none';
+        return;
+      }
+
+      drawer.style.display = 'block';
+      content.innerHTML = '<span class="spinner" style="margin-right:6px;"></span> சொற்கள் பெறப்படுகின்றன...';
+
+      try {
+        const resp = await fetch(`/api/atlas/stories/${storyId}`);
+        const data = await resp.json();
+        if (data.success && data.story) {
+          const words = data.story.vocabulary || [];
+          if (words.length === 0) {
+            content.innerHTML = '<span style="color: hsl(var(--muted-foreground));">இக்கதைக்குரிய தனித்துவச் சொற்கள் இன்னும் குறிக்கப்படவில்லை.</span>';
+            return;
+          }
+          content.innerHTML = words.map(w => `
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 6px 10px; margin-bottom: 6px;">
+              <div style="display: flex; justify-content: space-between;">
+                <strong style="color: #7dd3fc;">${escapeHtml(w.word)}</strong>
+                <span style="font-size: 10px; color: #a78bfa;">${escapeHtml(w.category)}</span>
+              </div>
+              <div style="color: #f1f5f9; font-size: 11.5px; margin-top: 2px;">${escapeHtml(w.meaning_ta)}</div>
+            </div>
+          `).join('');
+        }
+      } catch (err) {
+        content.innerHTML = `<span style="color:#fca5a5;">பிழை: ${err.message}</span>`;
+      }
+    }
+
+    async function loadRelatedStories(storyId) {
+      const drawer = document.getElementById(`drawerRelated-${storyId}`);
+      const content = document.getElementById(`relatedContent-${storyId}`);
+      if (!drawer || !content) return;
+
+      if (drawer.style.display === 'block') {
+        drawer.style.display = 'none';
+        return;
+      }
+
+      drawer.style.display = 'block';
+      content.innerHTML = '<span class="spinner" style="margin-right:6px;"></span> தொடர்புடைய நினைவுகள் தேடப்படுகின்றன...';
+
+      try {
+        const resp = await fetch(`/api/atlas/stories/${storyId}/related`);
+        const data = await resp.json();
+        if (data.success) {
+          const list = data.related || [];
+          if (list.length === 0) {
+            content.innerHTML = '<span style="color: hsl(var(--muted-foreground));">நேரடித் தொடர்புடைய கதைகள் கண்டறியப்படவில்லை.</span>';
+            return;
+          }
+          content.innerHTML = list.map(rel => `
+            <div class="constellation-card" onclick="jumpToStory(${rel.id})">
+              <div style="font-weight: 600; color: #fde68a;">${escapeHtml(rel.title)}</div>
+              <div style="font-size: 11px; color: hsl(var(--muted-foreground)); margin: 2px 0;">
+                📍 ${escapeHtml(rel.location_name)} (${escapeHtml(rel.district)})
+              </div>
+              <div style="font-size: 11px; color: #86efac;">
+                🔗 ${escapeHtml(rel.evidence)}
+              </div>
+            </div>
+          `).join('');
+        }
+      } catch (err) {
+        content.innerHTML = `<span style="color:#fca5a5;">பிழை: ${err.message}</span>`;
+      }
+    }
+
+    // Jump to another story directly
+    async function jumpToStory(targetStoryId) {
+      try {
+        const resp = await fetch(`/api/atlas/stories/${targetStoryId}`);
+        const data = await resp.json();
+        if (data.success && data.story && data.story.location.id) {
+          selectLocation(data.story.location.id, true);
+        }
+      } catch (e) {
+        console.warn("Could not jump to story:", e);
+      }
+    }
+
+    // Accessible Grid Rendering
+    function renderAccessibleGrid(locations) {
+      const grid = document.getElementById('accessibleLocationsGrid');
+      if (!grid) return;
+
+      grid.innerHTML = locations.map(loc => `
+        <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 16px;">
+          <h4 style="font-family: var(--font-display); font-size: 18px; color: #FFFFFF; margin: 0 0 4px 0;">
+            ${escapeHtml(loc.name)} <span style="font-size: 13px; color: #7dd3fc;">(${escapeHtml(loc.name_en)})</span>
+          </h4>
+          <div style="font-size: 12px; color: hsl(var(--muted-foreground)); margin-bottom: 8px;">
+            ${escapeHtml(loc.district)} மாவட்டம் • ${loc.story_count} பதிவுகள்
+          </div>
+          <p style="font-size: 12px; color: #cbd5e1; line-height: 1.5; margin-bottom: 12px;">
+            ${escapeHtml(loc.description)}
+          </p>
+          <button type="button" class="liquid-glass" style="width: 100%; padding: 6px 12px; font-size: 12px; cursor: pointer;" onclick="selectLocation(${loc.id}, true)">
+            🎧 கதைகளைக் கேள் (${loc.story_count})
+          </button>
+        </div>
+      `).join('');
+    }
+
+    function toggleAccessibleView() {
+      const accessibleView = document.getElementById('accessibleListView');
+      const mapContainer = document.getElementById('atlasMapContainer');
+      const btn = document.getElementById('btnToggleViewMode');
+      if (!accessibleView || !mapContainer || !btn) return;
+
+      if (accessibleView.style.display === 'none' || accessibleView.style.display === '') {
+        accessibleView.style.display = 'block';
+        mapContainer.style.display = 'none';
+        btn.innerHTML = '<span>🗺️</span> வரைபடம் (Map)';
+      } else {
+        accessibleView.style.display = 'none';
+        mapContainer.style.display = 'block';
+        btn.innerHTML = '<span>📋</span> பட்டியல் காட்சி (List View)';
+        if (atlasMap) {
+          google.maps.event.trigger(atlasMap, 'resize');
+        }
+      }
+    }
+
+    function resetMapCenter() {
+      if (atlasMap) {
+        atlasMap.panTo(defaultCenter);
+        atlasMap.setZoom(defaultZoom);
+      }
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Auto-load on DOM ready
+    document.addEventListener('DOMContentLoaded', () => {
+      // If Google Maps is not loading or key is absent, load data directly
+      if (typeof google === 'undefined' || !google.maps) {
+        setTimeout(loadAtlasData, 500);
+      }
+    });
+  </script>
+
+  {% if google_maps_api_key %}
+  <!-- Google Maps JavaScript API -->
+  <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initAtlasMap&libraries=places" async defer onerror="activateAccessibleFallback()"></script>
+  {% else %}
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      activateAccessibleFallback();
+    });
+  </script>
+  {% endif %}
+</body>
+</html>
