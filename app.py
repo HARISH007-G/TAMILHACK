@@ -706,6 +706,66 @@ def api_add_dictionary_entry(story_id):
     }), 201
 
 
+@app.route('/api/dictionary/entries', methods=['POST'])
+def api_add_global_dictionary_entry():
+    """Add a new dictionary entry to the global Tamil Memory Dictionary."""
+    data = request.get_json(silent=True) or request.form.to_dict() or {}
+    word = (data.get('word') or '').strip()
+    meaning_ta = (data.get('meaning_ta') or '').strip()
+    meaning_en = (data.get('meaning_en') or '').strip()
+    story_id = data.get('story_id')
+    if not story_id:
+        try:
+            conn = database.get_db_connection()
+            cur = conn.cursor()
+            cur.execute("SELECT id FROM heritage_records ORDER BY id ASC LIMIT 1")
+            row = cur.fetchone()
+            conn.close()
+            if row:
+                story_id = row[0]
+            else:
+                story_id = 1
+        except Exception:
+            story_id = 1
+
+    if not word:
+        return jsonify({"success": False, "error": "தமிழ்ச் சொல் அவசியம் (Word is required)."}), 400
+    if not meaning_ta and not meaning_en:
+        return jsonify({"success": False, "error": "பொருள் விளக்கம் அவசியம் (Meaning in Tamil or English is required)."}), 400
+
+    start_sec = data.get('start_seconds')
+    end_sec = data.get('end_seconds')
+    try:
+        start_sec = float(start_sec) if start_sec is not None and str(start_sec).strip() != '' else None
+        end_sec = float(end_sec) if end_sec is not None and str(end_sec).strip() != '' else None
+    except (ValueError, TypeError):
+        start_sec = None
+        end_sec = None
+
+    entry_id = database.insert_dictionary_entry(
+        story_id=story_id,
+        word=word,
+        meaning_ta=meaning_ta or f"{word} என்பதன் விளக்கம்.",
+        meaning_en=meaning_en or f"Definition of {word}.",
+        contextual_meaning_ta=(data.get('contextual_meaning_ta') or '').strip(),
+        example_sentence=(data.get('example_sentence') or '').strip(),
+        category=(data.get('category') or 'பாரம்பரிய அறிவு').strip(),
+        source_excerpt=(data.get('source_excerpt') or '').strip(),
+        start_seconds=start_sec,
+        end_seconds=end_sec,
+        confidence=float(data.get('confidence', 1.0)),
+        review_status=data.get('review_status', 'verified')
+    )
+
+    new_entry = database.get_dictionary_entry(entry_id)
+    return jsonify({
+        "success": True,
+        "id": entry_id,
+        "entry": new_entry,
+        "message": "புதிய சொல் தமிழ்ச் சொல் நினைவகத்தில் சேர்க்கப்பட்டது."
+    }), 201
+
+
 @app.route('/api/dictionary/search', methods=['GET'])
 def api_search_dictionary():
     """Global or story-scoped search across all dictionary entries and stories."""

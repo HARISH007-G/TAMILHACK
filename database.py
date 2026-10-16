@@ -386,9 +386,13 @@ def search_dictionary_entries(query=None, story_id=None, category=None, review_s
     cursor = conn.cursor()
 
     sql = '''
-        SELECT d.*, h.title as story_title, h.storyteller, h.region as story_region, h.audio_path
+        SELECT d.*, 
+               COALESCE(h.title, 'மரபு ஆவணம்') as story_title, 
+               COALESCE(h.storyteller, 'பாரம்பரிய அறிஞர்') as storyteller, 
+               COALESCE(h.region, 'தமிழ்நாடு') as story_region, 
+               COALESCE(h.audio_path, '') as audio_path
         FROM dictionary_entries d
-        JOIN heritage_records h ON d.story_id = h.id
+        LEFT JOIN heritage_records h ON d.story_id = h.id
         WHERE 1=1
     '''
     params = []
@@ -414,7 +418,7 @@ def search_dictionary_entries(query=None, story_id=None, category=None, review_s
             d.meaning_en LIKE ? OR
             d.contextual_meaning_ta LIKE ? OR
             d.example_sentence LIKE ? OR
-            h.title LIKE ?
+            COALESCE(h.title, '') LIKE ?
         )'''
         params.extend([q_term, q_term, q_term, q_term, q_term, q_term, q_term])
 

@@ -958,6 +958,43 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.4);
     }
 
+    /* AI Memory Dictionary Section Styling */
+    .dict-filter-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: hsl(var(--muted-foreground));
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 12.5px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: var(--font-body);
+      white-space: nowrap;
+    }
+    .dict-filter-pill:hover, .dict-filter-pill.active {
+      background: rgba(56, 189, 248, 0.18);
+      border-color: rgba(56, 189, 248, 0.5);
+      color: #7dd3fc;
+      font-weight: 600;
+    }
+    .dict-hero-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    }
+    .dict-hero-card:hover {
+      background: rgba(255, 255, 255, 0.055);
+      border-color: rgba(56, 189, 248, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+
     /* Scrollbar */
     ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-track { background: rgba(0, 18, 36, 0.6); }
@@ -995,7 +1032,7 @@
         <a href="/" class="nav-link active">முகப்பு</a>
         <a href="/atlas" class="nav-link" style="color: #38bdf8; font-weight: 600;">🗺️ குரல் வரைபடம்</a>
         <a href="#audioStudioSection" class="nav-link">குரல் அரங்கம்</a>
-        <a href="javascript:void(0)" onclick="openGlobalDictionary()" class="nav-link">சொல் நினைவகம்</a>
+        <a href="#dictionarySection" class="nav-link" style="color: #38bdf8; font-weight: 600;">📖 சொல் நினைவகம்</a>
         <a href="#savedArchivesSection" class="nav-link">ஆவணப் பெட்டகம்</a>
         <a href="#audioStudioSection" class="nav-link">தொடர்புக்கு</a>
       </nav>
@@ -1030,9 +1067,9 @@
           <p>முதியவர்களின் கதைகள் மற்றும் கிராமத்து நினைவுகளை ஒலியில் இருந்து தமிழ் உரையாக மாற்றிப் பாதுகாக்கவும்.</p>
         </div>
         <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-          <button onclick="openGlobalDictionary()" class="liquid-glass" style="border-radius: 9999px; padding: 8px 18px; font-size: 13px;">
-            📖 சொல் நினைவகம்
-          </button>
+          <a href="#dictionarySection" class="liquid-glass" style="border-radius: 9999px; padding: 8px 18px; font-size: 13px; text-decoration: none; color: #7dd3fc; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+            <span>📖 சொல் நினைவகம் &darr;</span>
+          </a>
           <a href="#savedArchivesSection" class="liquid-glass" style="border-radius: 9999px; padding: 8px 18px; font-size: 13px; text-decoration: none;">
             📚 ஆவணப் பெட்டகம் &darr;
           </a>
@@ -1101,23 +1138,38 @@
           </div>
 
           <!-- Live Tamil Word Meanings Directly From Recorded Text -->
-          <div id="liveDictionaryBox" class="card" style="display: none; border-left: 3px solid #38bdf8;">
+          <div id="liveDictionaryBox" class="card" style="display: block; border-left: 3px solid #38bdf8; margin-top: 16px;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 8px;">
-              <h2 class="card-title" style="color: #FFFFFF; margin: 0; border-bottom: none; padding-bottom: 0;">📖 தமிழ்ச் சொல் விளக்கம்</h2>
-              <span style="font-size: 11px; background: rgba(56, 189, 248, 0.15); color: #7dd3fc; border: 1px solid rgba(56, 189, 248, 0.3); padding: 3px 8px; border-radius: 9999px; font-weight: 600;">நேரடி விளக்கம்</span>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <h2 class="card-title" style="color: #FFFFFF; margin: 0; border-bottom: none; padding-bottom: 0;">📖 தமிழ்ச் சொல் விளக்கம் &amp; AI அகராதி</h2>
+                <span style="font-size: 11px; background: rgba(56, 189, 248, 0.15); color: #7dd3fc; border: 1px solid rgba(56, 189, 248, 0.3); padding: 3px 8px; border-radius: 9999px; font-weight: 600;">NVIDIA AI</span>
+              </div>
+              <a href="#dictionarySection" style="font-size: 12px; color: #38bdf8; text-decoration: none;">முழுக் களஞ்சியம் &darr;</a>
             </div>
-            <p style="font-size: 13px; color: hsl(var(--muted-foreground)); margin-top: 0; margin-bottom: 14px; line-height: 1.6;">
-              பதிவு செய்யப்பட்ட தமிழ்ப் பேச்சிலிருந்து பாரம்பரிய, மூலிகை மற்றும் வட்டாரச் சொற்களின் பொருள் நேரடியாகக் கண்டறியப்படுகிறது:
+            <p style="font-size: 13px; color: hsl(var(--muted-foreground)); margin-top: 0; margin-bottom: 12px; line-height: 1.6;">
+              பதிவு செய்யப்பட்ட தமிழ்ப் பேச்சிலிருந்தோ அல்லது நீங்கள் அறிய விரும்பும் அரிய தமிழ்ச் சொல்லையோ உள்ளிட்டு உடனடியாக AI மூலம் பொருள் அறியலாம்:
             </p>
 
             <!-- Quick single-word lookup bar -->
-            <div style="display: flex; gap: 8px; margin-bottom: 15px;">
+            <div style="display: flex; gap: 8px; margin-bottom: 12px;">
               <input type="text" id="quickWordInput" placeholder="குறிப்பிட்ட சொல்லின் பொருள் அறிய (எ.கா: முடக்கத்தான்)..." class="form-control" style="font-size: 13px;" onkeyup="if(event.key==='Enter') lookupQuickWord()">
               <button type="button" class="liquid-glass" style="border-radius: 10px; padding: 7px 16px; font-size: 13px; font-weight: 600; white-space: nowrap; cursor: pointer;" onclick="lookupQuickWord()">🔍 பொருள் அறி</button>
             </div>
 
+            <!-- Quick pre-set pill suggestions -->
+            <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px;">
+              <button type="button" onclick="quickStudioWord('முடக்கத்தான்')" style="font-size: 11.5px; padding: 3px 9px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 9999px; color: #7dd3fc; cursor: pointer;">🌿 முடக்கத்தான்</button>
+              <button type="button" onclick="quickStudioWord('களத்துமேடு')" style="font-size: 11.5px; padding: 3px 9px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 9999px; color: #7dd3fc; cursor: pointer;">🌾 களத்துமேடு</button>
+              <button type="button" onclick="quickStudioWord('ஏர்க்கலப்பை')" style="font-size: 11.5px; padding: 3px 9px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 9999px; color: #7dd3fc; cursor: pointer;">🚜 ஏர்க்கலப்பை</button>
+              <button type="button" onclick="quickStudioWord('கச்சாயம்')" style="font-size: 11.5px; padding: 3px 9px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 9999px; color: #7dd3fc; cursor: pointer;">🍯 கச்சாயம்</button>
+            </div>
+
             <!-- Container where direct word cards appear -->
-            <div id="liveWordsListContainer"></div>
+            <div id="liveWordsListContainer">
+              <div style="text-align: center; padding: 18px 12px; background: rgba(255,255,255,0.02); border-radius: 10px; border: 1px dashed rgba(255,255,255,0.12); color: hsl(var(--muted-foreground)); font-size: 12.5px;">
+                💡 உரை ஆக்கம் செய்தவுடன் சொற்கள் தானாக இங்கே விளக்கப்படும். அல்லது மேலே உள்ள சொற்களில் ஒன்றைச் சொடுக்கவும்.
+              </div>
+            </div>
           </div>
         </div>
 
@@ -1373,6 +1425,113 @@
           </div>
         </div>
       </div>
+
+      <!-- Dedicated AI-Powered Tamil Memory Dictionary Showcase Section -->
+      <section id="dictionarySection" style="margin-top: 56px; padding-top: 36px; border-top: 1px solid rgba(56, 189, 248, 0.25);">
+        <div style="background: linear-gradient(180deg, rgba(56, 189, 248, 0.07) 0%, rgba(0, 18, 36, 0.45) 100%); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 20px; padding: 28px 24px; box-shadow: 0 16px 40px rgba(0,0,0,0.45);">
+          
+          <!-- Section Header with Badges & Navigation -->
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 22px; flex-wrap: wrap; gap: 14px;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 8px;">
+                <h2 style="font-family: var(--font-display); font-size: 28px; font-weight: 400; color: #FFFFFF; margin: 0;">📖 தமிழ்ச்சொல் நினைவகம்</h2>
+                <span style="font-size: 11px; background: rgba(56, 189, 248, 0.18); color: #7dd3fc; border: 1px solid rgba(56, 189, 248, 0.35); padding: 4px 10px; border-radius: 9999px; font-weight: 600;">⚡ NVIDIA AI (Llama-3.2)</span>
+                <span id="dictWordCountBadge" style="font-size: 11px; background: rgba(34, 197, 94, 0.15); color: #86efac; border: 1px solid rgba(34, 197, 94, 0.3); padding: 4px 10px; border-radius: 9999px; font-weight: 600;">240+ மரபுச் சொற்கள்</span>
+              </div>
+              <p style="font-size: 13.5px; color: hsl(var(--muted-foreground)); margin: 0; max-width: 850px; line-height: 1.6;">
+                வாய்மொழி வரலாற்றுப் பதிவுகள், சித்த மருத்துவம், நாட்டுப்புறக் கதைகள் மற்றும் வட்டார மரபிலிருந்து NVIDIA Hosted AI மூலம் மீட்டெடுக்கப்பட்ட அரிய தமிழ்ச் சொற்கள் மற்றும் பண்பாட்டு விளக்கங்களின் களஞ்சியம்.
+              </p>
+            </div>
+            
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <button type="button" class="liquid-glass" style="border-radius: 9999px; padding: 8px 18px; font-size: 13px; font-weight: 600; cursor: pointer;" onclick="openGlobalDictionary()">
+                🗂️ விரிவான அட்டவணை முறை &rarr;
+              </button>
+            </div>
+          </div>
+
+          <!-- Interactive AI Search & Word Lookup Bar -->
+          <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: 14px; padding: 18px; margin-bottom: 22px;">
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <div style="flex: 1; min-width: 260px;">
+                <input type="text" id="mainDictSearchInput" placeholder="சொல் அல்லது பொருள் தேடுக... அல்லது புதிய சொல்லின் AI பொருள் அறிய உள்ளிடவும் (எ.கா: முடக்கத்தான், ஏர்க்கலப்பை, கச்சாயம்)..." class="form-control" style="font-size: 14px; padding: 11px 16px; background: rgba(0, 15, 30, 0.6); border: 1px solid rgba(56, 189, 248, 0.3);" oninput="onMainDictSearchInput(this.value)" onkeyup="if(event.key==='Enter') lookupWordInMainSection()">
+              </div>
+              <button type="button" class="btn-primary" style="padding: 11px 22px; font-size: 13.5px; white-space: nowrap; cursor: pointer; display: flex; align-items: center; gap: 8px;" onclick="lookupWordInMainSection()">
+                <span>⚡ AI பொருள் அறி</span>
+              </button>
+              <button type="button" class="btn-secondary" style="padding: 11px 18px; font-size: 13.5px; white-space: nowrap; cursor: pointer;" onclick="toggleAddWordFormInMain()">
+                <span>➕ புதிய சொல் சேர்</span>
+              </button>
+            </div>
+
+            <!-- Suggested Quick Words Row -->
+            <div style="display: flex; align-items: center; gap: 8px; margin-top: 12px; flex-wrap: wrap;">
+              <span style="font-size: 12px; color: hsl(var(--muted-foreground));">அடிக்கடி தேடப்படும் பாரம்பரியச் சொற்கள்:</span>
+              <button type="button" class="tag-badge" style="cursor: pointer; background: rgba(255,255,255,0.06); color: #e0f2fe; border: 1px solid rgba(255,255,255,0.15); padding: 3px 10px; border-radius: 9999px;" onclick="quickSelectMainDict('முடக்கத்தான்')">🌿 முடக்கத்தான்</button>
+              <button type="button" class="tag-badge" style="cursor: pointer; background: rgba(255,255,255,0.06); color: #e0f2fe; border: 1px solid rgba(255,255,255,0.15); padding: 3px 10px; border-radius: 9999px;" onclick="quickSelectMainDict('களத்துமேடு')">🌾 களத்துமேடு</button>
+              <button type="button" class="tag-badge" style="cursor: pointer; background: rgba(255,255,255,0.06); color: #e0f2fe; border: 1px solid rgba(255,255,255,0.15); padding: 3px 10px; border-radius: 9999px;" onclick="quickSelectMainDict('ஏர்க்கலப்பை')">🚜 ஏர்க்கலப்பை</button>
+              <button type="button" class="tag-badge" style="cursor: pointer; background: rgba(255,255,255,0.06); color: #e0f2fe; border: 1px solid rgba(255,255,255,0.15); padding: 3px 10px; border-radius: 9999px;" onclick="quickSelectMainDict('கச்சாயம்')">🍯 கச்சாயம்</button>
+              <button type="button" class="tag-badge" style="cursor: pointer; background: rgba(255,255,255,0.06); color: #e0f2fe; border: 1px solid rgba(255,255,255,0.15); padding: 3px 10px; border-radius: 9999px;" onclick="quickSelectMainDict('ஆழிப்பேரலை')">🌊 ஆழிப்பேரலை</button>
+            </div>
+
+            <!-- Collapsible In-Section Word Add Form -->
+            <div id="mainAddWordContainer" style="display: none; margin-top: 16px; padding: 18px; background: rgba(0, 18, 36, 0.75); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 12px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 8px;">
+                <h4 style="margin:0; font-size:16px; font-weight:400; color: #FFFFFF; font-family: var(--font-display);">➕ நினைவகத்தில் புதிய மரபுச் சொல் சேர்த்தல்</h4>
+                <button type="button" onclick="toggleAddWordFormInMain()" style="background:none; border:none; color: hsl(var(--muted-foreground)); font-size:20px; cursor:pointer;">&times;</button>
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 10px;">
+                <div>
+                  <label style="font-size:12px; color:hsl(var(--muted-foreground));">தமிழ்ச் சொல் *</label>
+                  <input type="text" id="mainNewWord" class="form-control" placeholder="எ.கா., முடக்கத்தான்">
+                </div>
+                <div>
+                  <label style="font-size:12px; color:hsl(var(--muted-foreground));">பிரிவு</label>
+                  <select id="mainNewCategory" class="form-control">
+                    <option value="சித்த மருத்துவம் & மூலிகைகள்">சித்த மருத்துவம் & மூலிகைகள்</option>
+                    <option value="விவசாயம் & உழவுக் கருவிகள்">விவசாயம் & உழவுக் கருவிகள்</option>
+                    <option value="வட்டார வழக்கு">வட்டார வழக்கு</option>
+                    <option value="பாரம்பரிய உணவு முறை">பாரம்பரிய உணவு முறை</option>
+                    <option value="கிராமியக் கலைகள் & சடங்குகள்">கிராமியக் கலைகள் & சடங்குகள்</option>
+                    <option value="பாரம்பரிய அறிவு">பாரம்பரிய அறிவு</option>
+                  </select>
+                </div>
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+                <div>
+                  <label style="font-size:12px; color:hsl(var(--muted-foreground));">தமிழ் விளக்கம் *</label>
+                  <input type="text" id="mainNewMeaningTa" class="form-control" placeholder="எ.கா., மூட்டுவலியைப் போக்கும் ஒரு மருத்துவக் கொடி">
+                </div>
+                <div>
+                  <label style="font-size:12px; color:hsl(var(--muted-foreground));">ஆங்கில விளக்கம்</label>
+                  <input type="text" id="mainNewMeaningEn" class="form-control" placeholder="எ.கா., Balloon vine herb used for joint ache">
+                </div>
+              </div>
+              <div style="display: flex; justify-content: flex-end; gap: 8px;">
+                <button type="button" class="btn-secondary" onclick="toggleAddWordFormInMain()">ரத்து செய்க</button>
+                <button type="button" class="btn-primary" onclick="saveManualWordInMain()">💾 நினைவகத்தில் சேமி</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Category Filter Pills -->
+          <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; align-items: center;" id="mainDictCategoryPills">
+            <button type="button" class="dict-filter-pill active" onclick="filterMainDictCategory('all', this)">அனைத்துப் பிரிவுகளும்</button>
+            <button type="button" class="dict-filter-pill" onclick="filterMainDictCategory('சித்த மருத்துவம்', this)">🌿 சித்த மருத்துவம்</button>
+            <button type="button" class="dict-filter-pill" onclick="filterMainDictCategory('விவசாயம்', this)">🌾 பாரம்பரிய விவசாயம்</button>
+            <button type="button" class="dict-filter-pill" onclick="filterMainDictCategory('வட்டார வழக்கு', this)">🗣️ வட்டார வழக்கு</button>
+            <button type="button" class="dict-filter-pill" onclick="filterMainDictCategory('பாரம்பரிய அறிவு', this)">🏛️ பாரம்பரிய மரபு அறிவு</button>
+          </div>
+
+          <!-- Live Words Grid Container -->
+          <div id="mainDictCardsGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px;">
+            <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: hsl(var(--muted-foreground));">
+              <span class="spinner" style="margin-right: 8px;"></span> தமிழ்ச் சொல் நினைவகம் ஏற்றப்படுகிறது...
+            </div>
+          </div>
+
+        </div>
+      </section>
 
       <!-- Preserved Heritage Records Section -->
       <section id="savedArchivesSection" style="margin-top: 56px; padding-top: 32px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
@@ -3333,8 +3492,250 @@
       `).join('');
     }
 
-    // Load records initially
+    // =========================================================================
+    // MAIN SHOWCASE DICTIONARY SECTION FUNCTIONS
+    // =========================================================================
+    let allMainDictEntries = [];
+    let currentMainDictCategory = 'all';
+
+    async function loadMainDictionarySection() {
+      const grid = document.getElementById('mainDictCardsGrid');
+      const badge = document.getElementById('dictWordCountBadge');
+      if (!grid) return;
+
+      try {
+        const resp = await fetch('/api/dictionary/search?limit=100');
+        const data = await resp.json();
+
+        if (data.success && data.entries && data.entries.length > 0) {
+          allMainDictEntries = data.entries;
+          if (badge) {
+            badge.textContent = `${data.entries.length}+ மரபுச் சொற்கள்`;
+          }
+          renderMainDictCards(allMainDictEntries);
+        } else {
+          grid.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 30px; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px dashed rgba(255,255,255,0.15); color: hsl(var(--muted-foreground));">
+              நினைவகத்தில் சொற்கள் இல்லை. மேலே உள்ள தேடல் பட்டியில் ஒரு சொல்லை உள்ளிட்டு AI மூலம் கண்டறியலாம்.
+            </div>
+          `;
+        }
+      } catch (err) {
+        console.error('Failed to load main dictionary:', err);
+        grid.innerHTML = `<div style="grid-column: 1 / -1; color: #fca5a5; text-align: center; padding: 20px;">அகராதி தரவு ஏற்றுவதில் பிழை: ${err.message}</div>`;
+      }
+    }
+
+    function renderMainDictCards(entries) {
+      const grid = document.getElementById('mainDictCardsGrid');
+      if (!grid) return;
+
+      if (!entries || entries.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 40px 20px; background: rgba(255,255,255,0.02); border-radius: 14px; border: 1px dashed rgba(255,255,255,0.15); color: hsl(var(--muted-foreground));">
+            <div style="font-size: 28px; margin-bottom: 8px;">🔍</div>
+            <div style="font-size: 15px; color: #FFFFFF; font-family: var(--font-display);">பொருத்தமான சொற்கள் எதுவும் கிடைக்கவில்லை</div>
+            <div style="font-size: 12.5px; margin-top: 6px; color: hsl(var(--muted-foreground));">"⚡ AI பொருள் அறி" பொத்தானை அழுத்தி புதிய சொல்லின் பொருளை உடனே பெறலாம்.</div>
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = entries.map(e => `
+        <div class="dict-hero-card" id="mainDictCard-${e.id || 'ai'}">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; flex-wrap: wrap; margin-bottom: 8px;">
+              <h3 style="font-family: var(--font-display); font-size: 22px; font-weight: 400; color: #FFFFFF; margin: 0;">${escapeHtml(e.word)}</h3>
+              <div style="display: flex; gap: 4px; align-items: center; flex-wrap: wrap;">
+                <span class="dict-cat-badge" style="font-size: 11px; padding: 2px 8px;">📁 ${escapeHtml(e.category || 'பாரம்பரிய அறிவு')}</span>
+                ${e.is_new_ai ? '<span class="dict-status-badge" style="background: rgba(56,189,248,0.2); color:#7dd3fc; border:1px solid rgba(56,189,248,0.4); font-size: 10.5px;">✨ புதிய AI சொல்</span>' : ''}
+              </div>
+            </div>
+
+            <div style="background: rgba(56, 189, 248, 0.05); border: 1px solid rgba(56, 189, 248, 0.15); border-radius: 8px; padding: 10px 12px; margin-bottom: 10px;">
+              <div style="font-size: 10.5px; font-weight: 600; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px;">தமிழ் விளக்கம்:</div>
+              <div style="font-size: 13.5px; color: #f8fafc; line-height: 1.55;">${escapeHtml(e.meaning_ta)}</div>
+            </div>
+
+            ${e.meaning_en ? `
+              <div style="font-size: 12.5px; color: hsl(var(--muted-foreground)); margin-bottom: 8px; line-height: 1.5;">
+                <strong style="color: rgba(255,255,255,0.7);">English:</strong> ${escapeHtml(e.meaning_en)}
+              </div>
+            ` : ''}
+
+            ${e.contextual_meaning_ta ? `
+              <div style="font-size: 12px; color: #94a3b8; margin-bottom: 6px; font-style: italic;">
+                "${escapeHtml(e.contextual_meaning_ta)}"
+              </div>
+            ` : ''}
+          </div>
+
+          <div style="border-top: 1px solid rgba(255,255,255,0.08); padding-top: 8px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; color: hsl(var(--muted-foreground));">
+            <span>📍 ${escapeHtml(e.story_region || 'தமிழ்நாடு')}</span>
+            <button type="button" class="liquid-glass" style="border-radius: 9999px; padding: 3px 10px; font-size: 11px; cursor: pointer;" onclick="quickStudioWord('${escapeHtml(e.word)}')">
+              🔍 ஆய்வு &rarr;
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterMainDictCategory(cat, btnEl) {
+      currentMainDictCategory = cat;
+      const pills = document.querySelectorAll('#mainDictCategoryPills .dict-filter-pill');
+      pills.forEach(p => p.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+
+      applyMainDictFilters();
+    }
+
+    function onMainDictSearchInput(query) {
+      applyMainDictFilters();
+    }
+
+    function applyMainDictFilters() {
+      const q = (document.getElementById('mainDictSearchInput')?.value || '').trim().toLowerCase();
+      let filtered = allMainDictEntries;
+
+      if (currentMainDictCategory && currentMainDictCategory !== 'all') {
+        filtered = filtered.filter(e => (e.category || '').toLowerCase().includes(currentMainDictCategory.toLowerCase()));
+      }
+
+      if (q) {
+        filtered = filtered.filter(e => 
+          (e.word || '').toLowerCase().includes(q) ||
+          (e.meaning_ta || '').toLowerCase().includes(q) ||
+          (e.meaning_en || '').toLowerCase().includes(q) ||
+          (e.category || '').toLowerCase().includes(q)
+        );
+      }
+
+      renderMainDictCards(filtered);
+    }
+
+    async function lookupWordInMainSection() {
+      const input = document.getElementById('mainDictSearchInput');
+      const word = input ? input.value.trim() : '';
+      if (!word) {
+        showAlert("தயவுசெய்து ஒரு தமிழ்ச் சொல்லை உள்ளிடவும்.", false);
+        return;
+      }
+
+      const grid = document.getElementById('mainDictCardsGrid');
+      const tempId = 'main-temp-' + Date.now();
+      const existingHtml = grid.innerHTML;
+      grid.innerHTML = `
+        <div id="${tempId}" style="grid-column: 1 / -1; text-align:center; padding:25px; background: rgba(56,189,248,0.06); border: 1px dashed rgba(56,189,248,0.3); border-radius:14px; color: #7dd3fc;">
+          <span class="spinner" style="margin-right: 8px;"></span>
+          NVIDIA AI மூலம் "<strong>${escapeHtml(word)}</strong>" சொல்லுக்குப் பொருள் ஆராயப்படுகிறது...
+        </div>
+      ` + existingHtml;
+
+      try {
+        const resp = await fetch('/api/dictionary/lookup-word', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ word: word })
+        });
+        const data = await safeParseResponse(resp, 'சொல் பொருள் தேடலில் பிழை');
+
+        const tempEl = document.getElementById(tempId);
+        if (tempEl) tempEl.remove();
+
+        if (data.success && data.entry) {
+          const entry = data.entry;
+          entry.is_new_ai = true;
+          allMainDictEntries.unshift(entry);
+          renderMainDictCards(allMainDictEntries);
+          showAlert(`🎉 "${escapeHtml(word)}" சொல்லின் AI விளக்கம் பெறப்பட்டது!`);
+          
+          const card = document.getElementById('mainDictCard-ai') || document.getElementById('dictionarySection');
+          if (card) card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        } else {
+          showAlert(`பிழை: ${data.error || 'பொருள் கிடைக்கவில்லை'}`, false);
+          renderMainDictCards(allMainDictEntries);
+        }
+      } catch (err) {
+        const tempEl = document.getElementById(tempId);
+        if (tempEl) tempEl.remove();
+        showAlert(`பிழை: ${err.message}`, false);
+        renderMainDictCards(allMainDictEntries);
+      }
+    }
+
+    function quickSelectMainDict(word) {
+      const input = document.getElementById('mainDictSearchInput');
+      if (input) input.value = word;
+      const exists = allMainDictEntries.some(e => e.word === word);
+      if (exists) {
+        applyMainDictFilters();
+        const section = document.getElementById('dictionarySection');
+        if (section) section.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        lookupWordInMainSection();
+      }
+    }
+
+    function quickStudioWord(word) {
+      const input = document.getElementById('quickWordInput');
+      if (input) input.value = word;
+      lookupQuickWord();
+      const studioBox = document.getElementById('liveDictionaryBox');
+      if (studioBox) studioBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function toggleAddWordFormInMain() {
+      const container = document.getElementById('mainAddWordContainer');
+      if (!container) return;
+      container.style.display = (container.style.display === 'none' || container.style.display === '') ? 'block' : 'none';
+    }
+
+    async function saveManualWordInMain() {
+      const word = document.getElementById('mainNewWord')?.value.trim();
+      const cat = document.getElementById('mainNewCategory')?.value;
+      const meaningTa = document.getElementById('mainNewMeaningTa')?.value.trim();
+      const meaningEn = document.getElementById('mainNewMeaningEn')?.value.trim();
+
+      if (!word) {
+        showAlert("தயவுசெய்து தமிழ்ச் சொல்லை உள்ளிடவும்.", false);
+        return;
+      }
+      if (!meaningTa && !meaningEn) {
+        showAlert("குறைந்தது தமிழ் அல்லது ஆங்கில விளக்கம் அவசியம்.", false);
+        return;
+      }
+
+      try {
+        const resp = await fetch('/api/dictionary/entries', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            word: word,
+            category: cat,
+            meaning_ta: meaningTa,
+            meaning_en: meaningEn
+          })
+        });
+        const data = await safeParseResponse(resp, 'சொல் சேர்ப்பதில் பிழை');
+        if (data.success && data.entry) {
+          showAlert(`🎉 "${escapeHtml(word)}" சொல் தமிழ்ச் சொல் நினைவகத்தில் வெற்றிகரமாகச் சேர்க்கப்பட்டது!`);
+          document.getElementById('mainNewWord').value = '';
+          document.getElementById('mainNewMeaningTa').value = '';
+          document.getElementById('mainNewMeaningEn').value = '';
+          toggleAddWordFormInMain();
+          allMainDictEntries.unshift(data.entry);
+          renderMainDictCards(allMainDictEntries);
+        } else {
+          showAlert(`பிழை: ${data.error || 'சேமிக்க முடியவில்லை'}`, false);
+        }
+      } catch (err) {
+        showAlert(`பிழை: ${err.message}`, false);
+      }
+    }
+
+    // Load records and Tamil Memory Dictionary initially
     loadSavedRecords();
+    loadMainDictionarySection();
   </script>
 </body>
 </html>
