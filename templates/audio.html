@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Velorah® — மரபொலி (MARAPOLI) • Tamil Oral History &amp; Speech Studio</title>
+  <title>மரபொலி • தமிழ் வாய்மொழி வரலாறு &amp; ஒலி அரங்கம்</title>
   <link rel="icon" href="{{ url_for('static', filename='img/leaves-svgrepo-com 1.png') }}">
 
   <!-- Google Fonts: Instrument Serif, Inter, Noto Serif Tamil, Noto Sans Tamil -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=Noto+Serif+Tamil:wght@400;600;700&family=Noto+Sans+Tamil:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=Noto+Serif+Tamil:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@400;500;600;700&display=swap">
 
   <style>
     /* ================================================================
@@ -27,8 +27,8 @@
       --border: 0 0% 22%;
       --input: 0 0% 22%;
 
-      --font-display: 'Instrument Serif', 'Noto Serif Tamil', serif;
-      --font-body: 'Inter', 'Noto Sans Tamil', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-display: 'Noto Serif Tamil', 'Instrument Serif', serif;
+      --font-body: 'Noto Sans Tamil', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 
       /* Color references */
       --color-bg: hsl(var(--background));
@@ -264,12 +264,12 @@
     }
 
     .hero-h1 {
-      font-family: 'Instrument Serif', 'Noto Serif Tamil', serif;
-      font-size: clamp(48px, 8vw, 96px);
-      line-height: 0.95;
-      letter-spacing: -2.46px;
+      font-family: 'Noto Serif Tamil', 'Instrument Serif', serif;
+      font-size: clamp(38px, 6vw, 76px);
+      line-height: 1.28;
+      letter-spacing: -0.5px;
       max-width: 1280px;
-      font-weight: 400;
+      font-weight: 500;
       margin: 0 auto;
       color: hsl(var(--foreground));
       text-shadow: 0 4px 28px rgba(0, 14, 30, 0.7);
@@ -282,18 +282,11 @@
 
     .hero-subtext {
       color: #d1d5db;
-      font-size: clamp(16px, 2vw, 18px);
-      max-width: 672px;
-      margin-top: 32px;
-      line-height: 1.7;
+      font-size: clamp(16px, 1.8vw, 19px);
+      max-width: 800px;
+      margin-top: 28px;
+      line-height: 1.8;
       text-shadow: 0 2px 14px rgba(0, 14, 30, 0.65);
-    }
-
-    .hero-subtext-ta {
-      font-size: 14.5px;
-      margin-top: 10px;
-      color: rgba(255, 255, 255, 0.88);
-      text-shadow: 0 2px 12px rgba(0, 14, 30, 0.65);
     }
 
     .hero-cta-btn {
@@ -993,41 +986,37 @@
   <div class="site-content">
     <!-- Glassmorphic Navigation Bar (Exact User Spec) -->
     <header class="nav-bar-container">
-      <a href="#" class="nav-logo">
-        Velorah<sup class="text-xs">®</sup>
-        <span class="nav-logo-sub">மரபொலி • மொழி நினைவு</span>
+      <a href="/" class="nav-logo">
+        மரபொலி<sup class="text-xs" style="font-size: 13px;">®</sup>
+        <span class="nav-logo-sub">மொழி நினைவு • தமிழ் அரங்கம்</span>
       </a>
 
       <nav class="nav-links">
-        <a href="/" class="nav-link active">Home</a>
-        <a href="/atlas" class="nav-link" style="color: #38bdf8; font-weight: 600;">🗺️ Voice Atlas (குரல் வரைபடம்)</a>
-        <a href="#audioStudioSection" class="nav-link">Studio (அரங்கம்)</a>
-        <a href="javascript:void(0)" onclick="openGlobalDictionary()" class="nav-link">Journal (சொல் நினைவகம்)</a>
-        <a href="#savedArchivesSection" class="nav-link">Archive (ஆவணப் பெட்டகம்)</a>
-        <a href="#audioStudioSection" class="nav-link">Reach Us</a>
+        <a href="/" class="nav-link active">முகப்பு</a>
+        <a href="/atlas" class="nav-link" style="color: #38bdf8; font-weight: 600;">🗺️ குரல் வரைபடம்</a>
+        <a href="#audioStudioSection" class="nav-link">குரல் அரங்கம்</a>
+        <a href="javascript:void(0)" onclick="openGlobalDictionary()" class="nav-link">சொல் நினைவகம்</a>
+        <a href="#savedArchivesSection" class="nav-link">ஆவணப் பெட்டகம்</a>
+        <a href="#audioStudioSection" class="nav-link">தொடர்புக்கு</a>
       </nav>
 
       <button onclick="document.getElementById('audioStudioSection').scrollIntoView({ behavior: 'smooth' })" class="liquid-glass nav-cta-btn">
-        Begin Journey
+        பயணத்தைத் தொடங்குக
       </button>
     </header>
 
     <!-- Cinematic Hero Section (Exact User Spec) -->
     <section class="hero-section">
       <h1 class="hero-h1 animate-fade-rise">
-        Where <em class="not-italic text-muted-foreground">dreams</em> rise <em class="not-italic text-muted-foreground">through the silence.</em>
+        மௌனத்தைக் கடந்து <em class="not-italic text-muted-foreground">எழும் குரல்கள்,</em> தலைமுறை பேசும் <em class="not-italic text-muted-foreground">தமிழ் மரபொலி.</em>
       </h1>
 
       <p class="hero-subtext animate-fade-rise-delay">
-        We're designing tools for deep thinkers, bold creators, and quiet rebels. Amid the chaos, we build digital spaces for sharp focus and inspired work.
+        ஆழ்ந்து சிந்திப்பவர்களுக்கும், மரபை நேசிப்பவர்களுக்கும், பண்பாட்டை அடுத்த தலைமுறைக்குக் கொண்டு செல்லும் படைப்பாளர்களுக்கும் உன்னதமான தளம். காலப் பெருவெளியில் மறையாமல், தமிழ் வாய்மொழி வரலாறு, பாரம்பரியக் கதைகள் மற்றும் வட்டார மரபு அறிவை அழியாமல் பாதுகாக்கும் டிஜிட்டல் நினைவகம்.
       </p>
 
-      <div class="hero-subtext-ta animate-fade-rise-delay">
-        தமிழ் வாய்மொழி வரலாறு, பாரம்பரியக் கதைகள் மற்றும் வட்டார மரபு அறிவை அழியாமல் பாதுகாக்கும் டிஜிட்டல் நினைவகம்.
-      </div>
-
       <button onclick="document.getElementById('audioStudioSection').scrollIntoView({ behavior: 'smooth' })" class="liquid-glass hero-cta-btn animate-fade-rise-delay-2">
-        <span>Begin Journey • குரலைப் பதிவு செய்க</span>
+        <span>பயணத்தைத் தொடங்குக • குரலைப் பதிவு செய்க</span>
         <span style="font-size: 18px;">&darr;</span>
       </button>
     </section>
@@ -1037,7 +1026,7 @@
       <!-- Section Banner -->
       <div class="section-header-banner">
         <div>
-          <h2>தமிழ் வாய்மொழி அரங்கம் (Audio Speech Studio)</h2>
+          <h2>தமிழ் வாய்மொழி அரங்கம்</h2>
           <p>முதியவர்களின் கதைகள் மற்றும் கிராமத்து நினைவுகளை ஒலியில் இருந்து தமிழ் உரையாக மாற்றிப் பாதுகாக்கவும்.</p>
         </div>
         <div style="display: flex; gap: 10px; flex-wrap: wrap;">
@@ -1059,8 +1048,8 @@
             <h2 class="card-title">1. ஒலிக்கோப்பைப் பதிவு செய்க அல்லது பதிவேற்றுக</h2>
             
             <div class="audio-input-toggle">
-              <button class="toggle-btn active" id="tabUploadBtn" onclick="switchAudioTab('upload')">📁 கோப்புப் பதிவேற்றம் (Upload)</button>
-              <button class="toggle-btn" id="tabRecordBtn" onclick="switchAudioTab('record')">🎙️ நேரலைப் பதிவு (Record Mic)</button>
+              <button class="toggle-btn active" id="tabUploadBtn" onclick="switchAudioTab('upload')">📁 கோப்புப் பதிவேற்றம்</button>
+              <button class="toggle-btn" id="tabRecordBtn" onclick="switchAudioTab('record')">🎙️ நேரலை ஒலிப்பதிவு</button>
             </div>
 
             <!-- File Upload Zone -->
@@ -1080,7 +1069,7 @@
                 <div id="recordStatus" style="font-size: 14px; font-weight: 500; color: hsl(var(--muted-foreground)); margin-top: 14px;">மைக் பதிவு செய்யத் தொடங்குங்கள்</div>
                 <div id="recordTimer" style="font-size: 26px; font-weight: 700; color: #f87171; margin-top: 6px; font-family: var(--font-display);">00:00</div>
                 <div id="recordLivePreview" style="display: none; margin-top: 14px; padding: 12px 16px; background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 10px; font-size: 13.5px; color: #bae6fd; text-align: left; max-height: 120px; overflow-y: auto; line-height: 1.6;">
-                  <div style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #38bdf8; margin-bottom: 4px;">நேரலை எழுத்தாக்கம் (Live Speech Recognition):</div>
+                  <div style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #38bdf8; margin-bottom: 4px;">நேரலை உரை எழுத்தாக்கம்:</div>
                   <span id="recordLiveText"></span>
                 </div>
               </div>
@@ -1088,13 +1077,13 @@
 
             <!-- Audio Preview Player -->
             <div id="audioPreviewContainer" style="margin-top: 18px; display: none;">
-              <label style="font-size: 13px; font-weight: 500; color: hsl(var(--muted-foreground));">ஒலி முன்னோட்டம் (Preview):</label>
+              <label style="font-size: 13px; font-weight: 500; color: hsl(var(--muted-foreground));">ஒலி முன்னோட்டம்:</label>
               <audio id="audioPreview" controls style="width: 100%; margin-top: 6px;"></audio>
             </div>
 
             <!-- Transcribe Button -->
             <button id="btnTranscribe" class="btn-primary" onclick="transcribeAudio()" disabled>
-              <span>🎙️ தமிழ் உரையாக மாற்று (Transcribe Speech)</span>
+              <span>🎙️ தமிழ் உரையாக மாற்று</span>
             </button>
           </div>
 
@@ -1114,7 +1103,7 @@
           <!-- Live Tamil Word Meanings Directly From Recorded Text -->
           <div id="liveDictionaryBox" class="card" style="display: none; border-left: 3px solid #38bdf8;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 8px;">
-              <h2 class="card-title" style="color: #FFFFFF; margin: 0; border-bottom: none; padding-bottom: 0;">📖 தமிழ்ச் சொல் விளக்கம் (Tamil Word Meanings)</h2>
+              <h2 class="card-title" style="color: #FFFFFF; margin: 0; border-bottom: none; padding-bottom: 0;">📖 தமிழ்ச் சொல் விளக்கம்</h2>
               <span style="font-size: 11px; background: rgba(56, 189, 248, 0.15); color: #7dd3fc; border: 1px solid rgba(56, 189, 248, 0.3); padding: 3px 8px; border-radius: 9999px; font-weight: 600;">நேரடி விளக்கம்</span>
             </div>
             <p style="font-size: 13px; color: hsl(var(--muted-foreground)); margin-top: 0; margin-bottom: 14px; line-height: 1.6;">
@@ -1138,13 +1127,13 @@
             <h2 class="card-title">3. தமிழ் உரை &amp; ஆவணக் குறிப்புகள்</h2>
 
             <div class="form-group">
-              <label for="storyTitle">ஆவணத்தின் தலைப்பு (Title) *</label>
+              <label for="storyTitle">ஆவணத்தின் தலைப்பு *</label>
               <input type="text" id="storyTitle" class="form-control" placeholder="எ.கா., எங்கள் ஊர் தைப்பொங்கல் கொண்டாட்ட நினைவுகள்" required>
             </div>
 
             <div class="form-group">
               <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 6px;">
-                <label for="transcriptText" style="margin-bottom: 0;">தமிழ் உரை (Tamil Transcript) *</label>
+                <label for="transcriptText" style="margin-bottom: 0;">தமிழ் உரை *</label>
                 <div style="display: flex; gap: 6px; flex-wrap: wrap;">
                   <button type="button" class="btn-secondary" style="padding: 4px 10px; font-size: 12px; cursor: pointer;" onclick="triggerRegionAnalysis()">📍 வட்டாரத்தை மீண்டும் சோதி</button>
                   <button type="button" id="btnExplainSpeech" class="btn-secondary" style="padding: 4px 12px; font-size: 12px; font-weight:600; cursor: pointer;" onclick="explainRecordedSpeechWithAI()">📖 சொல் பொருள் காண்க</button>
@@ -1158,10 +1147,10 @@
             <!-- Action Buttons: Generate Summary & Dialect DNA -->
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: -6px; margin-bottom: 14px;">
               <button type="button" id="btnGenerateSummaryMain" class="liquid-glass" style="width: 100%; border-radius: 10px; font-weight: 600; padding: 12px 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px; font-family: var(--font-body);" onclick="generateStorySummary()">
-                <span>📄 கதைச் சுருக்கம் (Summary)</span>
+                <span>📄 கதைச் சுருக்கம்</span>
               </button>
               <button type="button" id="btnAnalyzeDialectMain" class="liquid-glass" style="width: 100%; border-radius: 10px; font-weight: 600; padding: 12px 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 13px; font-family: var(--font-body); border-color: rgba(56, 189, 248, 0.35); color: #7dd3fc;" onclick="analyzeDialectDNA()">
-                <span>🧬 வட்டார மொழியை ஆராய்க (Dialect DNA)</span>
+                <span>🧬 வட்டார மொழி அடையாளம்</span>
               </button>
             </div>
 
@@ -1170,7 +1159,7 @@
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; flex-wrap: wrap; gap: 8px; border-bottom: 1px solid rgba(255, 255, 255, 0.08); padding-bottom: 8px;">
                 <div style="display: flex; align-items: center; gap: 8px;">
                   <span style="font-size: 18px;">📄</span>
-                  <strong style="font-size: 15px; color: #FFFFFF; font-family: var(--font-display);">கதைச் சுருக்கம் (Story Summary)</strong>
+                  <strong style="font-size: 15px; color: #FFFFFF; font-family: var(--font-display);">கதைச் சுருக்கம்</strong>
                 </div>
                 <div style="display: flex; gap: 6px; align-items: center;">
                   <button type="button" id="btnRegenerateSummary" class="btn-secondary" style="padding: 4px 10px; font-size: 12px;" onclick="generateStorySummary()">🔄 மீண்டும் உருவாக்கு</button>
@@ -1181,7 +1170,7 @@
               <!-- Loading State -->
               <div id="summaryLoadingIndicator" style="display: none; padding: 16px; text-align: center; color: rgba(255, 255, 255, 0.85); font-size: 13.5px;">
                 <span class="spinner" style="margin-right: 8px;"></span>
-                கதைச் சுருக்கம் உருவாக்கப்படுகிறது... தயவுசெய்து காத்திருக்கவும்... (Summarizing...)
+                கதைச் சுருக்கம் உருவாக்கப்படுகிறது... தயவுசெய்து காத்திருக்கவும்...
               </div>
 
               <!-- Error State -->
@@ -1197,7 +1186,7 @@
                 <!-- Tamil Summary Box -->
                 <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 12px 14px; margin-bottom: 10px;">
                   <div style="font-size: 12px; font-weight: 600; color: #d8b4fe; margin-bottom: 5px; display: flex; align-items: center; gap: 6px;">
-                    <span>🇮🇳</span> தமிழ் சுருக்கம் (Tamil Summary)
+                    <span>🇮🇳</span> தமிழ் சுருக்கம்
                   </div>
                   <div id="tamilSummaryText" style="font-size: 13.5px; line-height: 1.7; color: hsl(var(--foreground)); white-space: pre-line;"></div>
                 </div>
@@ -1205,21 +1194,21 @@
                 <!-- English Summary Box -->
                 <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 12px 14px; margin-bottom: 8px;">
                   <div style="font-size: 12px; font-weight: 600; color: #d8b4fe; margin-bottom: 5px; display: flex; align-items: center; gap: 6px;">
-                    <span>🌐</span> English Summary
+                    <span>🌐</span> ஆங்கிலச் சுருக்கம்
                   </div>
                   <div id="englishSummaryText" style="font-size: 13.5px; line-height: 1.7; color: hsl(var(--foreground)); white-space: pre-line;"></div>
                 </div>
 
                 <!-- Key points container if present -->
                 <div id="summaryKeyPointsBox" style="display: none; background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; padding: 10px 14px; margin-bottom: 8px;">
-                  <div style="font-size: 11.5px; font-weight: 600; color: #c084fc; margin-bottom: 4px;">📌 முக்கியக் குறிப்புகள் (Key Points)</div>
+                  <div style="font-size: 11.5px; font-weight: 600; color: #c084fc; margin-bottom: 4px;">📌 முக்கியக் குறிப்புகள்</div>
                   <ul id="summaryKeyPointsList" style="margin: 0; padding-left: 20px; font-size: 12.5px; color: hsl(var(--muted-foreground)); line-height: 1.6;"></ul>
                 </div>
 
                 <!-- Option to apply to description -->
                 <div style="text-align: right; margin-top: 6px;">
                   <button type="button" class="btn-secondary" style="padding: 4px 10px; font-size: 11.5px; background: transparent; border: 1px dashed rgba(255, 255, 255, 0.25); cursor: pointer;" onclick="applySummaryToDescription()">
-                    📝 இந்தச் சுருக்கத்தை ஆவண விளக்கத்தில் சேர்க்க (Use as Description)
+                    📝 இந்தச் சுருக்கத்தை ஆவண விளக்கத்தில் சேர்க்க
                   </button>
                 </div>
               </div>
@@ -1232,7 +1221,7 @@
                 <div style="display: flex; align-items: center; gap: 10px;">
                   <span style="font-size: 22px;">🧬</span>
                   <div>
-                    <strong style="font-size: 16px; color: #FFFFFF; font-family: var(--font-display); letter-spacing: -0.2px;">வட்டார மொழி அடையாளம் (Dialect DNA)</strong>
+                    <strong style="font-size: 16px; color: #FFFFFF; font-family: var(--font-display); letter-spacing: -0.2px;">வட்டார மொழி அடையாளம்</strong>
                     <div style="font-size: 11.5px; color: hsl(var(--muted-foreground));" id="dialectMetaStats">சான்று அடிப்படையிலான தமிழ் மொழியியல் பகுப்பாய்வு</div>
                   </div>
                 </div>
@@ -1254,7 +1243,7 @@
               <!-- Loading State -->
               <div id="dialectLoadingIndicator" style="display: none; padding: 26px 16px; text-align: center; color: rgba(255, 255, 255, 0.85); font-size: 13.5px;">
                 <span class="spinner" style="margin-right: 8px; border-top-color: #38bdf8;"></span>
-                வட்டார மொழியியல் மரபணு ஆராயப்படுகிறது... தயவுசெய்து காத்திருக்கவும்... (Analyzing Linguistic DNA...)
+                வட்டார மொழியியல் கூறுகள் ஆராயப்படுகின்றன... தயவுசெய்து காத்திருக்கவும்...
               </div>
 
               <!-- Error State -->
@@ -1273,7 +1262,7 @@
                 <!-- 1. Overall Assessment -->
                 <div style="background: rgba(255, 255, 255, 0.025); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 12px 14px; margin-bottom: 14px;">
                   <div style="font-size: 12px; font-weight: 600; color: #7dd3fc; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
-                    <span>🔍</span> ஒட்டுமொத்த மொழியியல் மதிப்பீடு (Linguistic Assessment)
+                    <span>🔍</span> ஒட்டுமொத்த மொழியியல் மதிப்பீடு
                   </div>
                   <p id="dialectOverallText" style="margin: 0; font-size: 13.5px; line-height: 1.7; color: hsl(var(--foreground));"></p>
                 </div>
@@ -1282,10 +1271,10 @@
                 <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 10px; padding: 14px; margin-bottom: 14px;">
                   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 6px;">
                     <div style="font-size: 12px; font-weight: 600; color: #38bdf8; display: flex; align-items: center; gap: 6px;">
-                      <span>📊</span> மொழியியல் கூறுகள் விநியோகம் (Dialect Feature Radar)
+                      <span>📊</span> மொழியியல் கூறுகளின் வரைபடம்
                     </div>
                     <button type="button" id="btnToggleRadarTable" class="btn-secondary" style="padding: 2px 8px; font-size: 11px; cursor: pointer;" onclick="toggleRadarAccessibleTable()">
-                      👁️ தரவு அட்டவணை (Table View)
+                      👁️ தரவு அட்டவணை
                     </button>
                   </div>
                   <div style="font-size: 11.5px; color: hsl(var(--muted-foreground)); margin-bottom: 12px;">
@@ -1300,9 +1289,9 @@
                     <table style="width: 100%; font-size: 12px; border-collapse: collapse; text-align: left;" role="table" aria-label="மொழியியல் கூறுகளின் பகிர்வு அட்டவணை">
                       <thead>
                         <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.15); color: #7dd3fc;">
-                          <th style="padding: 6px 8px;">கூறு (Category)</th>
-                          <th style="padding: 6px 8px;">அடர்த்தி (Score)</th>
-                          <th style="padding: 6px 8px;">சான்றுகள் (Evidence Count)</th>
+                          <th style="padding: 6px 8px;">கூறு</th>
+                          <th style="padding: 6px 8px;">அடர்த்தி வீதம்</th>
+                          <th style="padding: 6px 8px;">சான்றுகளின் எண்ணிக்கை</th>
                         </tr>
                       </thead>
                       <tbody id="radarTableBody"></tbody>
@@ -1313,7 +1302,7 @@
                 <!-- 3. Regional Dialect Indicators -->
                 <div style="margin-bottom: 14px;">
                   <div style="font-size: 12.5px; font-weight: 600; color: #f4c430; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
-                    <span>📍</span> வட்டார மொழி அடையாளங்கள் &amp; சான்றுகள் (Regional Indicators)
+                    <span>📍</span> வட்டார மொழி அடையாளங்கள் &amp; சான்றுகள்
                   </div>
                   <div id="regionalIndicatorsList" style="display: flex; flex-direction: column; gap: 10px;"></div>
                 </div>
@@ -1321,7 +1310,7 @@
                 <!-- 4. Distinctive Vocabulary -->
                 <div style="margin-bottom: 14px;">
                   <div style="font-size: 12.5px; font-weight: 600; color: #a78bfa; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
-                    <span>📖</span> தனித்துவமான சொற்கள் (Distinctive Spoken Lexicon)
+                    <span>📖</span> தனித்துவமான வட்டாரச் சொற்கள்
                   </div>
                   <div id="distinctiveVocabList" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px;"></div>
                 </div>
@@ -1329,7 +1318,7 @@
                 <!-- 5. Linguistic Features & Morphological Patterns -->
                 <div id="linguisticFeaturesContainer" style="margin-bottom: 14px; display: none;">
                   <div style="font-size: 12.5px; font-weight: 600; color: #86efac; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;">
-                    <span>📐</span> உருபனியல் &amp; வாக்கிய அமைப்பு (Morphological &amp; Syntactic Markers)
+                    <span>📐</span> உருபனியல் &amp; வாக்கிய அமைப்பு
                   </div>
                   <div id="linguisticFeaturesList" style="display: flex; flex-direction: column; gap: 8px;"></div>
                 </div>
@@ -1337,7 +1326,7 @@
                 <!-- 6. Limitations Note -->
                 <div style="background: rgba(255, 255, 255, 0.02); border: 1px dashed rgba(255, 255, 255, 0.15); border-radius: 10px; padding: 12px 14px; margin-top: 10px;">
                   <div style="font-size: 11.5px; font-weight: 600; color: hsl(var(--muted-foreground)); margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
-                    <span>ℹ️</span> விளக்க வரம்புகள் &amp; ஆய்வு நெறிமுறைகள் (Linguistic Caveats &amp; Limitations)
+                    <span>ℹ️</span> விளக்க வரம்புகள் &amp; ஆய்வு நெறிமுறைகள்
                   </div>
                   <ul id="dialectLimitationsList" style="margin: 0; padding-left: 18px; font-size: 12px; color: hsl(var(--muted-foreground)); line-height: 1.6;"></ul>
                 </div>
@@ -1346,40 +1335,40 @@
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
               <div class="form-group">
-                <label for="storyteller">கூறுபவர் பெயர் (Storyteller)</label>
+                <label for="storyteller">கூறுபவர் பெயர்</label>
                 <input type="text" id="storyteller" class="form-control" placeholder="எ.கா., பொன்னுசாமி (வயது 78)">
               </div>
               <div class="form-group">
-                <label for="topic">வகை (Category / Topic)</label>
+                <label for="topic">வகைப்பாடு</label>
                 <select id="topic" class="form-control">
-                  <option value="வாய்மொழி வரலாறு">வாய்மொழி வரலாறு (Oral History)</option>
-                  <option value="நாட்டுப்புறக் கதைகள்">நாட்டுப்புறக் கதைகள் (Folk Tales)</option>
-                  <option value="பாரம்பரிய விவசாயம்">பாரம்பரிய விவசாயம் (Agriculture)</option>
-                  <option value="சித்த மருத்துவம்">சித்த மருத்துவம் (Siddha Medicine)</option>
-                  <option value="கிராமத்துக் கலைகள்">கிராமத்துக் கலைகள் (Rural Arts)</option>
-                  <option value="பண்டைய சடங்குகள்">பண்டைய சடங்குகள் (Customs)</option>
+                  <option value="வாய்மொழி வரலாறு">வாய்மொழி வரலாறு</option>
+                  <option value="நாட்டுப்புறக் கதைகள்">நாட்டுப்புறக் கதைகள்</option>
+                  <option value="பாரம்பரிய விவசாயம்">பாரம்பரிய விவசாயம்</option>
+                  <option value="சித்த மருத்துவம்">சித்த மருத்துவம்</option>
+                  <option value="கிராமத்துக் கலைகள்">கிராமத்துக் கலைகள்</option>
+                  <option value="பண்டைய சடங்குகள்">பண்டைய சடங்குகள்</option>
                 </select>
               </div>
             </div>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
               <div class="form-group">
-                <label for="region">ஊர் / மாவட்டம் (Region / District)</label>
+                <label for="region">ஊர் / மாவட்டம்</label>
                 <input type="text" id="region" class="form-control" placeholder="எ.கா., மதுரை / கொங்கு நாடு">
               </div>
               <div class="form-group">
-                <label for="recordDate">பதிவு தேதி (Recording Date)</label>
+                <label for="recordDate">பதிவு செய்யப்பட்ட தேதி</label>
                 <input type="date" id="recordDate" class="form-control">
               </div>
             </div>
 
             <div class="form-group">
-              <label for="description">விளக்கம் / சிறப்புக் குறிப்பு (Description)</label>
+              <label for="description">விளக்கம் / சிறப்புக் குறிப்பு</label>
               <input type="text" id="description" class="form-control" placeholder="எ.கா., பழைய தலைமுறையின் நீர்ப்பாசன முறைகள் பற்றிய பகிர்வு">
             </div>
 
             <button id="btnSaveArchive" class="btn-primary" onclick="saveToArchive()">
-              <span>💾 தமிழ் மரபுப் பெட்டகத்தில் சேமிக்க (Save to Archive)</span>
+              <span>💾 தமிழ் மரபுப் பெட்டகத்தில் சேமிக்க</span>
             </button>
           </div>
         </div>
@@ -1389,7 +1378,7 @@
       <section id="savedArchivesSection" style="margin-top: 56px; padding-top: 32px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
           <div>
-            <h2 style="font-family: var(--font-display); font-size: 26px; font-weight: 400; color: hsl(var(--foreground)); margin: 0 0 6px 0;">📚 சேமிக்கப்பட்ட தமிழ் மரபு ஆவணங்கள் (Preserved Heritage Archive)</h2>
+            <h2 style="font-family: var(--font-display); font-size: 26px; font-weight: 400; color: hsl(var(--foreground)); margin: 0 0 6px 0;">📚 சேமிக்கப்பட்ட தமிழ் மரபு ஆவணங்கள்</h2>
             <div style="font-size: 13px; color: hsl(var(--muted-foreground));">இந்தத் தளத்தில் பதிவு செய்யப்பட்டுப் பாதுகாக்கப்பட்ட வாய்மொழி வரலாறுகள் மற்றும் குறிப்புகள்.</div>
           </div>
           <div style="display: flex; gap: 10px; flex-wrap: wrap;">
@@ -1411,10 +1400,10 @@
     <div class="dict-modal" role="dialog" aria-modal="true" aria-labelledby="storyDictModalTitle">
       <div class="dict-modal-header">
         <div>
-          <h2 id="storyDictModalTitle">📖 தமிழ்ச் சொல் நினைவகம் (Tamil Memory Dictionary)</h2>
+          <h2 id="storyDictModalTitle">📖 தமிழ்ச் சொல் நினைவகம்</h2>
           <div id="storyDictModalSubtitle" style="font-size: 12px; color: hsl(var(--muted-foreground)); margin-top: 3px;">ஆவண விவரங்கள் ஏற்றப்படுகின்றன...</div>
         </div>
-        <button onclick="closeStoryDictionary()" style="background:none; border:none; color:#fff; font-size:26px; cursor:pointer; padding:2px 8px; line-height:1;" title="மூடுக (Close)">&times;</button>
+        <button onclick="closeStoryDictionary()" style="background:none; border:none; color:#fff; font-size:26px; cursor:pointer; padding:2px 8px; line-height:1;" title="மூடுக">&times;</button>
       </div>
 
       <div class="dict-modal-body">
@@ -1423,7 +1412,7 @@
         <!-- Toolbar: Generate, Add word, Search & Filter -->
         <div class="dict-toolbar">
           <button id="btnGenerateDict" class="liquid-glass" style="border-radius: 9999px; padding: 9px 18px; font-size: 13px; font-weight: 500;" onclick="generateStoryDictionary()">
-            <span>📖 சொற்களைப் பிரித்தெடு (Extract Words)</span>
+            <span>📖 மரபுச் சொற்களைப் பிரித்தெடு</span>
           </button>
           <button class="btn-secondary" style="font-size: 13px; padding: 9px 16px;" onclick="toggleAddWordForm()">
             ➕ புதிய சொல் சேர்
@@ -1444,16 +1433,16 @@
         <!-- Collapsible Manual Word Addition Card -->
         <div id="addWordFormContainer" style="display: none; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 14px; padding: 20px; margin-bottom: 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.4);">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 8px;">
-            <h3 style="margin:0; font-size:17px; font-weight:400; color: #FFFFFF; font-family: var(--font-display);">➕ புதிய மரபுச் சொல்லைச் சேர்த்தல் (Add Missing Term)</h3>
+            <h3 style="margin:0; font-size:17px; font-weight:400; color: #FFFFFF; font-family: var(--font-display);">➕ புதிய மரபுச் சொல்லைச் சேர்த்தல்</h3>
             <button type="button" onclick="toggleAddWordForm()" style="background:none; border:none; color: hsl(var(--muted-foreground)); font-size:20px; cursor:pointer;">&times;</button>
           </div>
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
             <div class="form-group">
-              <label>தமிழ்ச் சொல் (Tamil Word) *</label>
+              <label>தமிழ்ச் சொல் *</label>
               <input type="text" id="manualWord" class="form-control" placeholder="எ.கா., முடக்கத்தான்">
             </div>
             <div class="form-group">
-              <label>பிரிவு (Category)</label>
+              <label>பிரிவு</label>
               <select id="manualCategory" class="form-control">
                 <option value="சித்த மருத்துவம் & மூலிகைகள்">சித்த மருத்துவம் & மூலிகைகள்</option>
                 <option value="விவசாயம் & உழவுக் கருவிகள்">விவசாயம் & உழவுக் கருவிகள்</option>
@@ -1466,31 +1455,31 @@
           </div>
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
             <div class="form-group">
-              <label>தமிழ் விளக்கம் (Tamil Meaning) *</label>
+              <label>தமிழ் விளக்கம் *</label>
               <input type="text" id="manualMeaningTa" class="form-control" placeholder="எ.கா., மூட்டுவலியைப் போக்கும் ஒரு மருத்துவக் கொடி">
             </div>
             <div class="form-group">
-              <label>ஆங்கில விளக்கம் (English Meaning) *</label>
-              <input type="text" id="manualMeaningEn" class="form-control" placeholder="e.g., A medicinal climbing herb used to cure joint pain">
+              <label>ஆங்கில விளக்கம்</label>
+              <input type="text" id="manualMeaningEn" class="form-control" placeholder="எ.கா., A medicinal climbing herb used to relieve joint pain">
             </div>
           </div>
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
             <div class="form-group">
-              <label>சூழல்சார் விளக்கம் (Contextual Meaning in Story)</label>
+              <label>கதையில் சூழல்சார் விளக்கம்</label>
               <input type="text" id="manualContextTa" class="form-control" placeholder="எ.கா., தாத்தா மூட்டு வலிக்கு கீரையை விளக்கெண்ணெய் விட்டு வதக்கி சாப்பிட்டதாகக் குறிப்பிடுகிறார்">
             </div>
             <div class="form-group">
-              <label>எடுத்துக்காட்டு வாக்கியம் (Example Sentence)</label>
+              <label>எடுத்துக்காட்டு வாக்கியம்</label>
               <input type="text" id="manualExample" class="form-control" placeholder="எ.கா., முடக்கத்தான் கீரை தோசை உடலுக்கு நல்லது">
             </div>
           </div>
           <div class="form-group">
-            <label>உரை மேற்கோள் (Source Excerpt from Transcript)</label>
+            <label>உரையில் பதிவான மேற்கோள்</label>
             <input type="text" id="manualExcerpt" class="form-control" placeholder="கதையின் உரையில் இச்சொல் இடம்பெற்ற வாக்கியம்">
           </div>
           <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:10px;">
             <button type="button" class="btn-secondary" onclick="toggleAddWordForm()">ரத்து</button>
-            <button type="button" class="btn-primary" style="margin-top:0; width:auto; padding: 8px 20px;" onclick="submitManualWord()">💾 சேமிக்க (Save Entry)</button>
+            <button type="button" class="btn-primary" style="margin-top:0; width:auto; padding: 8px 20px;" onclick="submitManualWord()">💾 சேமிக்க</button>
           </div>
         </div>
 
@@ -1507,16 +1496,16 @@
     <div class="dict-modal" role="dialog" aria-modal="true" aria-labelledby="globalDictModalTitle">
       <div class="dict-modal-header">
         <div>
-          <h2 id="globalDictModalTitle">📖 பொதுத் தமிழ்ச் சொல் நினைவகம் (Global Tamil Memory Dictionary)</h2>
+          <h2 id="globalDictModalTitle">📖 பொதுத் தமிழ்ச் சொல் நினைவகம்</h2>
           <div style="font-size: 12px; color: hsl(var(--muted-foreground)); margin-top: 3px;">அனைத்து வாய்மொழி ஆவணங்களிலிருந்தும் பாதுகாக்கப்பட்ட மரபுச் சொற்கள்</div>
         </div>
-        <button onclick="closeGlobalDictionary()" style="background:none; border:none; color:#fff; font-size:26px; cursor:pointer; padding:2px 8px; line-height:1;" title="மூடுக (Close)">&times;</button>
+        <button onclick="closeGlobalDictionary()" style="background:none; border:none; color:#fff; font-size:26px; cursor:pointer; padding:2px 8px; line-height:1;" title="மூடுக">&times;</button>
       </div>
 
       <div class="dict-modal-body">
         <div class="dict-toolbar">
           <div style="flex: 1; min-width: 180px;">
-            <input type="text" id="globalDictSearchInput" placeholder="அனைத்து சொற்களையும் தேடுக (Search Tamil or English)..." class="form-control" style="padding: 8px 12px; font-size: 13px;" onkeyup="if(event.key==='Enter') searchGlobalDictionary()">
+            <input type="text" id="globalDictSearchInput" placeholder="அனைத்துச் சொற்களையும் இங்கே தேடுக..." class="form-control" style="padding: 8px 12px; font-size: 13px;" onkeyup="if(event.key==='Enter') searchGlobalDictionary()">
           </div>
           <select id="globalDictCategoryFilter" class="form-control" style="width: auto; min-width: 130px; padding: 8px 10px; font-size: 13px;" onchange="searchGlobalDictionary()">
             <option value="all">அனைத்துப் பிரிவுகளும்</option>
@@ -1612,7 +1601,7 @@
               liveSpeechRecognizer.continuous = true;
               liveSpeechRecognizer.interimResults = true;
               if (liveBox) liveBox.style.display = 'block';
-              if (liveText) liveText.textContent = 'குரலைக் கேட்கிறது... பேசத் தொடங்குங்கள் (Listening...)';
+              if (liveText) liveText.textContent = 'குரலைக் கேட்கிறது... பேசத் தொடங்குங்கள்...';
 
               liveSpeechRecognizer.onresult = (e) => {
                 let interim = '';
@@ -1832,7 +1821,7 @@
       } finally {
         btn.dataset.processing = 'false';
         btn.disabled = false;
-        btn.innerHTML = '<span>🎙️ தமிழ் உரையாக மாற்று (Transcribe Speech)</span>';
+        btn.innerHTML = '<span>🎙️ தமிழ் உரையாக மாற்று</span>';
       }
     }
 
@@ -1877,7 +1866,7 @@
       const btn = document.getElementById('btnExplainSpeech');
 
       box.style.display = 'block';
-      listContainer.innerHTML = '<div style="text-align: center; padding: 25px; color: hsl(var(--muted-foreground));"><span class="spinner" style="margin-right: 8px;"></span> மரபுச் சொற்களின் பொருள் ஆராயப்படுகிறது... (Finding word meanings...)</div>';
+      listContainer.innerHTML = '<div style="text-align: center; padding: 25px; color: hsl(var(--muted-foreground));"><span class="spinner" style="margin-right: 8px;"></span> மரபுச் சொற்களின் பொருள் ஆராயப்படுகிறது...</div>';
 
       if (btn) {
         btn.disabled = true;
@@ -1926,7 +1915,7 @@
 
       const tempId = 'temp-' + Date.now();
       const existingHtml = listContainer.innerHTML;
-      listContainer.innerHTML = `<div id="${tempId}" style="text-align:center; padding:15px; color: hsl(var(--muted-foreground));"><span class="spinner" style="margin-right: 6px;"></span> "${escapeHtml(word)}" சொல்லுக்குப் பொருள் தேடப்படுகிறது... (Finding meaning...)</div>` + existingHtml;
+      listContainer.innerHTML = `<div id="${tempId}" style="text-align:center; padding:15px; color: hsl(var(--muted-foreground));"><span class="spinner" style="margin-right: 6px;"></span> "${escapeHtml(word)}" சொல்லுக்குப் பொருள் தேடப்படுகிறது...</div>` + existingHtml;
 
       try {
         const context = document.getElementById('transcriptText')?.value.trim() || '';
@@ -1977,7 +1966,7 @@
               <div style="font-size: 13.5px; color: hsl(var(--foreground)); line-height: 1.6;">${escapeHtml(e.meaning_ta)}</div>
             </div>
             <div style="background: rgba(255, 255, 255, 0.03); padding: 8px 12px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08);">
-              <div style="font-size: 11px; font-weight: 600; color: hsl(var(--muted-foreground));">English Meaning:</div>
+              <div style="font-size: 11px; font-weight: 600; color: hsl(var(--muted-foreground));">ஆங்கில விளக்கம்:</div>
               <div style="font-size: 13.5px; color: hsl(var(--foreground)); line-height: 1.6;">${escapeHtml(e.meaning_en)}</div>
             </div>
           </div>
@@ -2038,7 +2027,7 @@
 
       if (btnMain) {
         btnMain.disabled = true;
-        btnMain.innerHTML = '<span><span class="spinner" style="width:14px; height:14px; margin-right:6px;"></span> சுருக்கம் உருவாக்கப்படுகிறது... (Summarizing...)</span>';
+        btnMain.innerHTML = '<span><span class="spinner" style="width:14px; height:14px; margin-right:6px;"></span> சுருக்கம் உருவாக்கப்படுகிறது...</span>';
       }
       if (btnRegen) {
         btnRegen.disabled = true;
@@ -2090,7 +2079,7 @@
       } finally {
         if (btnMain) {
           btnMain.disabled = false;
-          btnMain.innerHTML = '<span>📄 கதைச் சுருக்கம் பெறுக (Generate Story Summary)</span>';
+          btnMain.innerHTML = '<span>📄 கதைச் சுருக்கம் பெறுக</span>';
         }
         if (btnRegen) {
           btnRegen.disabled = false;
@@ -2111,7 +2100,7 @@
         return;
       }
 
-      const formatted = `[மொழி நினைவு - வாய்மொழி கதைச் சுருக்கம்]\n\n🇮🇳 தமிழ் சுருக்கம்:\n${taSummary}\n\n🌐 English Summary:\n${enSummary}\n`;
+      const formatted = `[மொழி நினைவு - வாய்மொழி கதைச் சுருக்கம்]\n\n🇮🇳 தமிழ் சுருக்கம்:\n${taSummary}\n\n🌐 ஆங்கிலச் சுருக்கம்:\n${enSummary}\n`;
 
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(formatted).then(() => {
@@ -2214,7 +2203,7 @@
 
       if (btnMain) {
         btnMain.disabled = true;
-        btnMain.innerHTML = '<span><span class="spinner" style="width:14px; height:14px; margin-right:6px; border-top-color:#38bdf8;"></span> ஆராய்கிறது... (Analyzing...)</span>';
+        btnMain.innerHTML = '<span><span class="spinner" style="width:14px; height:14px; margin-right:6px; border-top-color:#38bdf8;"></span> ஆராய்கிறது...</span>';
       }
       if (btnRegen) {
         btnRegen.disabled = true;
@@ -2254,7 +2243,7 @@
       } finally {
         if (btnMain) {
           btnMain.disabled = false;
-          btnMain.innerHTML = '<span>🧬 வட்டார மொழியை ஆராய்க (Dialect DNA)</span>';
+          btnMain.innerHTML = '<span>🧬 வட்டார மொழி அடையாளம்</span>';
         }
         if (btnRegen) {
           btnRegen.disabled = false;
@@ -2274,7 +2263,7 @@
       if (statsEl) {
         const wCount = data.sampleStats?.wordCount || 0;
         const cCount = data.sampleStats?.characterCount || 0;
-        statsEl.textContent = `மாதிரி: ${wCount} சொற்கள் • ${cCount} எழுத்துகள் | நிலை: ${data.status === 'insufficient_evidence' ? 'குறுகிய மாதிரி (Insufficient Evidence)' : 'சரிபார்க்கப்பட்ட மொழியியல் சான்றுகள்'}`;
+        statsEl.textContent = `மாதிரி: ${wCount} சொற்கள் • ${cCount} எழுத்துகள் | நிலை: ${data.status === 'insufficient_evidence' ? 'குறுகிய மாதிரி (குறைந்த சான்றுகள்)' : 'சரிபார்க்கப்பட்ட மொழியியல் சான்றுகள்'}`;
       }
 
       // 2. Overall Assessment
@@ -2432,7 +2421,7 @@
           const m = metricMap[c.key] || { score: 25, evidenceCount: 1 };
           return `
             <tr style="border-bottom: 1px solid rgba(255, 255, 255, 0.06);">
-              <td style="padding: 6px 8px; color: #FFFFFF;">${escapeHtml(c.label_ta)} (${escapeHtml(c.label_en)})</td>
+              <td style="padding: 6px 8px; color: #FFFFFF;">${escapeHtml(c.label_ta)}</td>
               <td style="padding: 6px 8px; color: #38bdf8; font-weight: 600;">${m.score}%</td>
               <td style="padding: 6px 8px; color: hsl(var(--muted-foreground));">${m.evidenceCount} சான்றுகள்</td>
             </tr>
@@ -2535,10 +2524,10 @@
       if (!table || !btn) return;
       if (table.style.display === 'none' || table.style.display === '') {
         table.style.display = 'block';
-        btn.textContent = '❌ அட்டவணையை மறை (Hide Table)';
+        btn.textContent = '❌ அட்டவணையை மறை';
       } else {
         table.style.display = 'none';
-        btn.textContent = '👁️ தரவு அட்டவணை (Table View)';
+        btn.textContent = '👁️ தரவு அட்டவணை';
       }
     }
 
@@ -2738,7 +2727,7 @@
         });
         const data = await safeParseResponse(resp, 'சேமிப்பில் பிழை');
         if (data.success) {
-          showAlert("🎉 ஆவணம் வெற்றிகரமாகத் தமிழ் மரபுப் பெட்டகத்தில் சேமிக்கப்பட்டது! (Saved to Archive successfully)");
+          showAlert("🎉 ஆவணம் வெற்றிகரமாகத் தமிழ் மரபுப் பெட்டகத்தில் சேமிக்கப்பட்டது!");
           loadSavedRecords();
         } else {
           showAlert("சேமிப்பில் பிழை: " + (data.error || "அறியப்படாத பிழை"), false);
@@ -2747,7 +2736,7 @@
         showAlert("சேமிப்பில் பிழை: " + err.message, false);
       } finally {
         btn.disabled = false;
-        btn.innerHTML = '<span>💾 தமிழ் மரபுப் பெட்டகத்தில் சேமிக்க (Save to Archive)</span>';
+        btn.innerHTML = '<span>💾 தமிழ் மரபுப் பெட்டகத்தில் சேமிக்க</span>';
       }
     }
 
@@ -2928,8 +2917,8 @@
                 <h3 class="dict-word-title">${escapeHtml(e.word)}</h3>
                 <span class="dict-cat-badge">📁 ${escapeHtml(e.category || 'பாரம்பரிய அறிவு')}</span>
                 ${e.review_status === 'verified' 
-                  ? '<span class="dict-status-badge dict-status-verified">✅ சரிபார்க்கப்பட்டது (Verified)</span>' 
-                  : '<span class="dict-status-badge dict-status-pending">⏳ மதிப்பாய்வு தேவை (Pending)</span>'}
+                  ? '<span class="dict-status-badge dict-status-verified">✅ சரிபார்க்கப்பட்டது</span>' 
+                  : '<span class="dict-status-badge dict-status-pending">⏳ மதிப்பாய்வு தேவை</span>'}
               </div>
               <div style="display: flex; gap: 6px; flex-wrap: wrap;">
                 ${e.review_status !== 'verified' 
@@ -2942,25 +2931,25 @@
 
             <div class="dict-meaning-grid">
               <div>
-                <div class="dict-label">தமிழ் விளக்கம் (Tamil Meaning)</div>
+                <div class="dict-label">தமிழ் விளக்கம்</div>
                 <div class="dict-val">${escapeHtml(e.meaning_ta)}</div>
               </div>
               <div>
-                <div class="dict-label">ஆங்கில விளக்கம் (English Meaning)</div>
+                <div class="dict-label">ஆங்கில விளக்கம்</div>
                 <div class="dict-val">${escapeHtml(e.meaning_en)}</div>
               </div>
             </div>
 
             ${e.contextual_meaning_ta ? `
               <div style="margin-bottom: 8px;">
-                <div class="dict-label">சூழல்சார் விளக்கம் (Contextual Nuance in Story)</div>
+                <div class="dict-label">சூழல்சார் விளக்கம்</div>
                 <div class="dict-val" style="color: hsl(var(--muted-foreground));">${escapeHtml(e.contextual_meaning_ta)}</div>
               </div>
             ` : ''}
 
             ${e.example_sentence ? `
               <div style="margin-bottom: 8px;">
-                <div class="dict-label">எடுத்துக்காட்டு வாக்கியம் (Example Usage)</div>
+                <div class="dict-label">எடுத்துக்காட்டு வாக்கியம்</div>
                 <div class="dict-val" style="color: hsl(var(--muted-foreground));">${escapeHtml(e.example_sentence)}</div>
               </div>
             ` : ''}
@@ -3018,8 +3007,8 @@
             <div class="form-group">
               <label>மதிப்பாய்வு நிலை</label>
               <select id="editStatus-${e.id}" class="form-control">
-                <option value="verified" ${e.review_status === 'verified' ? 'selected' : ''}>✅ சரிபார்க்கப்பட்டது (Verified)</option>
-                <option value="pending_review" ${e.review_status === 'pending_review' ? 'selected' : ''}>⏳ மதிப்பாய்வு தேவை (Pending)</option>
+                <option value="verified" ${e.review_status === 'verified' ? 'selected' : ''}>✅ சரிபார்க்கப்பட்டது</option>
+                <option value="pending_review" ${e.review_status === 'pending_review' ? 'selected' : ''}>⏳ மதிப்பாய்வு தேவை</option>
               </select>
             </div>
             <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px;">
@@ -3036,7 +3025,7 @@
       const btn = document.getElementById('btnGenerateDict');
       btn.disabled = true;
       const originalHtml = btn.innerHTML;
-      btn.innerHTML = '<span class="spinner" style="width: 14px; height: 14px; margin-right: 6px;"></span> சொற்கள் பிரித்தெடுக்கப்படுகின்றன... (Extracting words...)';
+      btn.innerHTML = '<span class="spinner" style="width: 14px; height: 14px; margin-right: 6px;"></span> சொற்கள் பிரித்தெடுக்கப்படுகின்றன...';
 
       try {
         const resp = await fetch(`/api/stories/${currentDictStoryId}/dictionary/generate`, {
@@ -3323,7 +3312,7 @@
               <div class="dict-val">${escapeHtml(e.meaning_ta)}</div>
             </div>
             <div>
-              <div class="dict-label">English Meaning</div>
+              <div class="dict-label">ஆங்கில விளக்கம்</div>
               <div class="dict-val">${escapeHtml(e.meaning_en)}</div>
             </div>
           </div>

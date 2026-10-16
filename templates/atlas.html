@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Voice-to-Village Atlas • குரல் வரைபடம் — Velorah® • MARAPOLI</title>
+  <title>குரல் வரைபடம் • தமிழ் ஊர்களின் வாய்மொழி நினைவகம் — மரபொலி</title>
   <link rel="icon" href="{{ url_for('static', filename='img/leaves-svgrepo-com 1.png') }}">
 
   <!-- Google Fonts: Instrument Serif, Inter, Noto Serif Tamil, Noto Sans Tamil -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=Noto+Serif+Tamil:wght@400;600;700&family=Noto+Sans+Tamil:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=Noto+Serif+Tamil:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@400;500;600;700&display=swap">
 
   <style>
     /* ================================================================
@@ -22,8 +22,8 @@
       --primary: 0 0% 100%;
       --border: 0 0% 22%;
 
-      --font-display: 'Instrument Serif', 'Noto Serif Tamil', serif;
-      --font-body: 'Inter', 'Noto Sans Tamil', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-display: 'Noto Serif Tamil', 'Instrument Serif', serif;
+      --font-body: 'Noto Sans Tamil', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 
       --color-bg: hsl(var(--background));
       --color-fg: hsl(var(--foreground));
@@ -623,15 +623,15 @@
     <!-- Navigation Bar -->
     <header class="nav-bar-container">
       <a href="/" class="nav-logo">
-        Velorah<sup style="font-size: 11px;">®</sup>
-        <span class="nav-logo-sub">மரபொலி • மொழி நினைவு</span>
+        மரபொலி<sup style="font-size: 13px;">®</sup>
+        <span class="nav-logo-sub">மொழி நினைவு • தமிழ் அரங்கம்</span>
       </a>
 
       <nav class="nav-links">
-        <a href="/" class="nav-link">Home (முகப்பு)</a>
-        <a href="/atlas" class="nav-link active" style="color: #38bdf8; font-weight: 600;">🗺️ Voice Atlas (குரல் வரைபடம்)</a>
-        <a href="/#audioStudioSection" class="nav-link">Studio (அரங்கம்)</a>
-        <a href="javascript:void(0)" onclick="window.location.href='/#savedArchivesSection'" class="nav-link">Archive (பெட்டகம்)</a>
+        <a href="/" class="nav-link">முகப்பு</a>
+        <a href="/atlas" class="nav-link active" style="color: #38bdf8; font-weight: 600;">🗺️ குரல் வரைபடம்</a>
+        <a href="/#audioStudioSection" class="nav-link">குரல் அரங்கம்</a>
+        <a href="javascript:void(0)" onclick="window.location.href='/#savedArchivesSection'" class="nav-link">ஆவணப் பெட்டகம்</a>
       </nav>
 
       <a href="/#audioStudioSection" class="liquid-glass" style="padding: 9px 20px; font-size: 13.5px; text-decoration: none; border-radius: 9999px;">
@@ -643,7 +643,7 @@
     <section class="atlas-hero-banner">
       <div class="atlas-header-card">
         <div>
-          <div class="atlas-tagline">ஒவ்வொரு ஊருக்கும் ஒரு குரல் • Voice-to-Village Atlas</div>
+          <div class="atlas-tagline">ஒவ்வொரு ஊருக்கும் ஒரு குரல் • தமிழ் குரல் வரைபடம்</div>
           <h1 class="atlas-title-h1">தமிழ் ஊர்களின் வாய்மொழி வரைபடம்</h1>
           <p class="atlas-desc">
             தமிழ்நாட்டின் கிராமங்கள், தொன்மையான நகரங்கள் மற்றும் பண்பாட்டு நிலவெளிகளை அங்கு வாழ்ந்த மக்களின் நேரடிக் குரல்கள், நினைவுகள், நாட்டுப்புறக் கதைகள் மற்றும் வட்டார வழக்கின் வழியாக ஆராயுங்கள்.
@@ -653,7 +653,7 @@
         <div class="atlas-stats-strip">
           <div class="kpi-pill">
             <div class="kpi-num" id="statVillageCount">-</div>
-            <div class="kpi-lbl">ஊர்கள் (Villages)</div>
+            <div class="kpi-lbl">ஊர்கள்</div>
           </div>
           <div class="kpi-pill">
             <div class="kpi-num" id="statStoriesCount">-</div>
@@ -689,7 +689,7 @@
           <!-- District selector dropdown -->
           <div style="margin-top: 8px;">
             <select id="districtFilterSelect" class="form-input" onchange="onFilterChanged()">
-              <option value="all">அனைத்து மாவட்டங்களும் (All Districts)</option>
+              <option value="all">அனைத்து மாவட்டங்களும்</option>
             </select>
           </div>
 
@@ -716,7 +716,7 @@
               <span>🎯</span> தமிழ்நாடு மையம்
             </button>
             <button type="button" class="map-btn" id="btnToggleViewMode" onclick="toggleAccessibleView()">
-              <span>📋</span> பட்டியல் காட்சி (List View)
+              <span>📋</span> பட்டியல் காட்சி
             </button>
           </div>
 
@@ -726,7 +726,7 @@
           <!-- Accessible List View Alternative -->
           <div id="accessibleListView">
             <h3 style="font-family: var(--font-display); font-size: 22px; color: #FFFFFF; margin-top: 0;">
-              தமிழ்நாடு ஊர்களின் வாய்மொழிப் பட்டியல் (Accessible Locations Archive)
+              தமிழ்நாடு ஊர்களின் வாய்மொழிப் பட்டியல்
             </h3>
             <p style="font-size: 13px; color: #cbd5e1;">
               வரைபடம் பயன்படுத்த இயலாத அல்லது பட்டியல் முறையை விரும்பும் பார்வையாளர்களுக்கான நேரடித் தரவுப் பார்வை:
@@ -893,7 +893,7 @@
       const toggleBtn = document.getElementById('btnToggleViewMode');
       if (accessibleView) accessibleView.style.display = 'block';
       if (mapContainer) mapContainer.style.display = 'none';
-      if (toggleBtn) toggleBtn.innerHTML = '<span>🗺️</span> வரைபடம் (Map)';
+      if (toggleBtn) toggleBtn.innerHTML = '<span>🗺️</span> வரைபடம்';
       loadAtlasData();
     }
 
@@ -1442,11 +1442,11 @@
       if (accessibleView.style.display === 'none' || accessibleView.style.display === '') {
         accessibleView.style.display = 'block';
         mapContainer.style.display = 'none';
-        btn.innerHTML = '<span>🗺️</span> வரைபடம் (Map)';
+        btn.innerHTML = '<span>🗺️</span> வரைபடம்';
       } else {
         accessibleView.style.display = 'none';
         mapContainer.style.display = 'block';
-        btn.innerHTML = '<span>📋</span> பட்டியல் காட்சி (List View)';
+        btn.innerHTML = '<span>📋</span> பட்டியல் காட்சி';
         if (atlasMap) {
           google.maps.event.trigger(atlasMap, 'resize');
         }
